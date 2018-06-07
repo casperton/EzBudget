@@ -25,6 +25,6 @@ public class ExampleInstrumentedTest {
     }
 
     public void  testmethod(){
-        return true;
+        return;
     }
 }
