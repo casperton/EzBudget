@@ -23,4 +23,8 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.chabries.kirk.ezbudget", appContext.getPackageName());
     }
+
+    public void  testmethod(){
+        return true;
+    }
 }
