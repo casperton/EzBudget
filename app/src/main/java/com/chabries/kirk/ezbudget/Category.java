@@ -19,18 +19,11 @@ public class Category {
     //
     // Constructors
     //
-    public Category () { };
+    public Category () {
+        myOperation = OPERATION.UNKNOWN;
+    };
 
-    //
-    // Methods
-    //
-
-
-    //
-    // Accessor methods
-    //
-
-    /**
+     /**
      * Set the value of myDescription
      * @param newVar the new value of myDescription
      */
