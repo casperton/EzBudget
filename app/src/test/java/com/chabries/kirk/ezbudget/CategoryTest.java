@@ -49,4 +49,35 @@ public class CategoryTest {
         output = thisCat.isInformative();
         assertEquals(expected,output);
     }
+
+    @Test
+    public void getName() throws Exception {
+        String output;
+        String expected = "TestCredit";
+
+        Category thisCat = new Category();
+        output = thisCat.getName();
+        assertEquals(expected,output);
+    }
+
+    @Test
+    public void getDescription() throws Exception {
+        String output;
+        String expected = "MyTestCreditDescription";
+
+        Category thisCat = new Category();
+        output = thisCat.getDescription();
+        assertEquals(expected,output);
+    }
+
+    @Test
+    public void getMyCategory() throws Exception {
+        BalanceData input = new BalanceData();
+        BalanceData output;
+
+        Category thisCat = new Category();
+        thisCat.setMyCategory(input);
+        output = thisCat.getMyCategory();
+        assertEquals(input,output);
+    }
 }

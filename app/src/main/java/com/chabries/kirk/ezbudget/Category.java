@@ -35,7 +35,7 @@ public class Category {
      * Get the value of myDescription
      * @return the value of myDescription
      */
-    private String getDescription () {
+    public String getDescription () {
         return myDescription;
     }
 
@@ -73,7 +73,7 @@ public class Category {
      * Get the value of myName
      * @return the value of myName
      */
-    private String getName () {
+    public String getName () {
         return myName;
     }
 
@@ -123,6 +123,8 @@ public class Category {
         return myOperation == OPERATION.INFORMATIVE;
     }
 
+    public void setMyCategory(BalanceData _balancedata) {}
 
+    public BalanceData getMyCategory() { return null; }
 }
 
