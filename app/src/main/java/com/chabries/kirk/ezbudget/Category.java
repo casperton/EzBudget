@@ -6,6 +6,16 @@ public class Category {
     // Fields
     //
 
+    /**
+     * FIELDS FOR DATABASE DESCRIPTION
+     */
+    public static final String CATEGORY_TABLE_NAME = "category";
+    public static final String CATEGORY_COLUMN_ID = "id";
+    public static final String CATEGORY_COLUMN_NAME = "name";
+    public static final String CATEGORY_COLUMN_DESCRIPTION = "description";
+    public static final String CATEGORY_COLUMN_OPERATION = "operation";
+
+
     private String myDescription;  /**
 
      * 0: Credit

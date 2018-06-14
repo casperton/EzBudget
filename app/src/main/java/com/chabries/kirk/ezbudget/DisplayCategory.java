@@ -16,6 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This Activity will display the list of Categories in the screen and allow the
+ * user to add, delete or edit them
+ */
 public class DisplayCategory extends Activity {
     int from_Where_I_Am_Coming = 0;
     private DBHelper mydb ;
@@ -43,13 +47,13 @@ public class DisplayCategory extends Activity {
 
             if(Value>0){
                 //means this is the view part not the add contact part.
-                Cursor rs = mydb.getData(Value);
+                Cursor rs = mydb.getCategoryData(Value);
                 id_To_Update = Value;
                 rs.moveToFirst();
 
-                String myName = rs.getString(rs.getColumnIndex(DBHelper.CATEGORY_COLUMN_NAME));
-                String myDescription = rs.getString(rs.getColumnIndex(DBHelper.CATEGORY_COLUMN_DESCRIPTION));
-                String myOperation = rs.getString(rs.getColumnIndex(DBHelper.CATEGORY_COLUMN_OPERATION));
+                String myName = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
+                String myDescription = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
+                String myOperation = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));
 
 
                 if (!rs.isClosed())  {
@@ -91,6 +95,11 @@ public class DisplayCategory extends Activity {
         return true;
     }
 
+    /**
+     *  Action to perform when some menu item is chosen
+     * @param item The Selectedmenu item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         switch(item.getItemId()) {
@@ -147,7 +156,7 @@ public class DisplayCategory extends Activity {
         if(extras !=null) {
             int Value = extras.getInt("id");
             if(Value>0){
-                if(mydb.updateContact(id_To_Update,name.getText().toString(),
+                if(mydb.updateCategory(id_To_Update,name.getText().toString(),
                         description.getText().toString(), operation.getText().toString())){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),ListCategory.class);
