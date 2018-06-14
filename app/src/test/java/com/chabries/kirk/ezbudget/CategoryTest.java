@@ -56,6 +56,7 @@ public class CategoryTest {
         String expected = "TestCredit";
 
         Category thisCat = new Category();
+        thisCat.setName("TestCredit");
         output = thisCat.getName();
         assertEquals(expected,output);
     }

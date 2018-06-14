@@ -27,7 +27,7 @@ public class Category {
      * Set the value of myDescription
      * @param newVar the new value of myDescription
      */
-    private void setDescription (String newVar) {
+    public void setDescription (String newVar) {
         myDescription = newVar;
     }
 
@@ -46,7 +46,7 @@ public class Category {
      * 2: informative (nor credit or debit)
      * @param newOper the new value of myOperation
      */
-    private void setOperation (Integer newOper) {
+    public void setOperation (Integer newOper) {
         myOperation = newOper;
     }
 
@@ -65,7 +65,7 @@ public class Category {
      * Set the value of myName
      * @param newName the new value of myName
      */
-    private void setName (String newName) {
+   public void setName (String newName) {
         myName = newName;
     }
 
@@ -81,7 +81,7 @@ public class Category {
      * Set the value of myID
      * @param newVar the new value of myID
      */
-    private void setID (int newVar) {
+    public void setID (int newVar) {
         myID = newVar;
     }
 
@@ -89,7 +89,7 @@ public class Category {
      * Get the value of myID
      * @return the value of myID
      */
-    private int getID () {
+    public int getID () {
         return myID;
     }
 
