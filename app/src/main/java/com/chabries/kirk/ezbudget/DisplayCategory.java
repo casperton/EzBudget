@@ -26,7 +26,7 @@ public class DisplayCategory extends Activity {
 
     TextView name ;
     TextView description;
-    TextView operation;
+    //TextView operation;
 
     int id_To_Update = 0;
 
@@ -35,8 +35,8 @@ public class DisplayCategory extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_category);
         name = (TextView) findViewById(R.id.editTextName);
-        description = (TextView) findViewById(R.id.editTextPhone);
-        operation = (TextView) findViewById(R.id.editTextStreet);
+        description = (TextView) findViewById(R.id.editTextDescription);
+        //operation = (TextView) findViewById(R.id.editTextStreet);
 
 
         mydb = new DBHelper(this);
@@ -70,9 +70,9 @@ public class DisplayCategory extends Activity {
                 description.setFocusable(false);
                 description.setClickable(false);
 
-                operation.setText((CharSequence)myOperation);
-                operation.setFocusable(false);
-                operation.setClickable(false);
+                //operation.setText((CharSequence)myOperation);
+                //operation.setFocusable(false);
+                //operation.setClickable(false);
 
 
             }
@@ -114,9 +114,9 @@ public class DisplayCategory extends Activity {
                 description.setFocusableInTouchMode(true);
                 description.setClickable(true);
 
-                operation.setEnabled(true);
-                operation.setFocusableInTouchMode(true);
-                operation.setClickable(true);
+                //operation.setEnabled(true);
+                //operation.setFocusableInTouchMode(true);
+                //operation.setClickable(true);
 
 
 
@@ -156,8 +156,11 @@ public class DisplayCategory extends Activity {
         if(extras !=null) {
             int Value = extras.getInt("id");
             if(Value>0){
-                if(mydb.updateCategory(id_To_Update,name.getText().toString(),
-                        description.getText().toString(), operation.getText().toString())){
+                String thisName = name.getText().toString();
+                String thisDesc = description.getText().toString();
+                Integer thisOperation = 1;
+                if(mydb.updateCategory(id_To_Update,thisName,
+                        thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),ListCategory.class);
                     startActivity(intent);
@@ -165,8 +168,11 @@ public class DisplayCategory extends Activity {
                     Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
             } else{
-                if(mydb.insertCategory(name.getText().toString(), description.getText().toString(),
-                        operation.getText().toString())){
+                String thisName = name.getText().toString();
+                String thisDesc = description.getText().toString();
+                Integer thisOperation = 1;
+                if(mydb.insertCategory(thisName,thisDesc ,
+                        thisOperation)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
                 } else{

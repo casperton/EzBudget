@@ -49,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Category methods
     // The following mwethos are to deal with the Category Table
-    public boolean insertCategory (String name, String description, String operation) {
+    public boolean insertCategory (String name, String description, Integer operation) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
@@ -88,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param operation The operation
      * @return true on success
      */
-    public boolean updateCategory (Integer id, String name, String description, String operation) {
+    public boolean updateCategory (Integer id, String name, String description, Integer operation) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
