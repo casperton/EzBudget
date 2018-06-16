@@ -124,7 +124,7 @@ public class DispCategory extends AppCompatActivity {
             case R.id.Delete_Category:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.deleteCategory)
+                builder.setMessage(R.string.deleteConfirmation)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 mydb.deleteCategory(id_To_Update);
@@ -165,8 +165,8 @@ public class DispCategory extends AppCompatActivity {
                 String thisName = myName.getText().toString();
                 String thisDesc = myDescription.getText().toString();
                 if(myIncome.isChecked()) thisOperation = OPERATION.CREDIT;
-                else if(myIncome.isChecked()) thisOperation = OPERATION.DEBIT;
-                else if(myIncome.isChecked()) thisOperation = OPERATION.INFORMATIVE;
+                else if(myOutcome.isChecked()) thisOperation = OPERATION.DEBIT;
+                else if(myInformative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
 
                 if(mydb.updateCategory(id_To_Update,thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
@@ -179,8 +179,8 @@ public class DispCategory extends AppCompatActivity {
                 String thisName = myName.getText().toString();
                 String thisDesc = myDescription.getText().toString();
                 if(myIncome.isChecked()) thisOperation = OPERATION.CREDIT;
-                else if(myIncome.isChecked()) thisOperation = OPERATION.DEBIT;
-                else if(myIncome.isChecked()) thisOperation = OPERATION.INFORMATIVE;
+                else if(myOutcome.isChecked()) thisOperation = OPERATION.DEBIT;
+                else if(myInformative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
                 if(mydb.insertCategory(thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
