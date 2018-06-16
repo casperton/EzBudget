@@ -1,78 +1,78 @@
 package com.chabries.kirk.ezbudget;
 
-import android.os.Bundle;
-import android.app.Activity;
 import android.app.AlertDialog;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * This Activity will display the list of Categories in the screen and allow the
- * user to add, delete or edit them
- */
-public class DisplayCategory extends Activity {
+public class DispCategory extends AppCompatActivity {
+
     int from_Where_I_Am_Coming = 0;
     private DBHelper mydb ;
 
-    TextView name ;
-    TextView description;
-    //TextView operation;
+    TextView myName ;
+    TextView myDescription;
+    RadioGroup myOperation;
 
     int id_To_Update = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_category);
-        name = (TextView) findViewById(R.id.editTextName);
-        description = (TextView) findViewById(R.id.editTextDescription);
-        //operation = (TextView) findViewById(R.id.editTextStreet);
+        setContentView(R.layout.activity_disp_category);
+        myName = (TextView) findViewById(R.id.editTextName);
+        myDescription = (TextView) findViewById(R.id.editTextDescription);
+        myOperation = (RadioGroup) findViewById(R.id.radioGroupOperation);
 
 
         mydb = new DBHelper(this);
+        RadioButton myIncome,myOutcome,myInformative;
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
             int Value = extras.getInt("id");
+            myIncome = (RadioButton) findViewById(R.id.radioIncome);
+            myOutcome = (RadioButton) findViewById(R.id.radioOutcome);
+            myInformative = (RadioButton) findViewById(R.id.radioInformative);
 
             if(Value>0){
-                //means this is the view part not the add contact part.
+                //means this is the view/edit part not the add category part.
                 Cursor rs = mydb.getCategoryData(Value);
                 id_To_Update = Value;
                 rs.moveToFirst();
 
-                String myName = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
-                String myDescription = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
-                String myOperation = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));
+                //column values
+                String thisName = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
+                String thisDescription = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
+                Integer thisOperation = rs.getInt(rs.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));
 
 
                 if (!rs.isClosed())  {
                     rs.close();
                 }
-                Button b = (Button)findViewById(R.id.button1);
+                Button b = (Button)findViewById(R.id.buttonSaveCategory);
                 b.setVisibility(View.INVISIBLE);
 
-                name.setText((CharSequence)myName);
-                name.setFocusable(false);
-                name.setClickable(false);
+                myName.setText((CharSequence)thisName);
+                myName.setFocusable(false);
+                myName.setClickable(false);
 
-                description.setText((CharSequence)myDescription);
-                description.setFocusable(false);
-                description.setClickable(false);
+                myDescription.setText((CharSequence)thisDescription);
+                myDescription.setFocusable(false);
+                myDescription.setClickable(false);
 
-                //operation.setText((CharSequence)myOperation);
-                //operation.setFocusable(false);
-                //operation.setClickable(false);
+                if (thisOperation == OPERATION.CREDIT)  myIncome.setChecked(true);
+                else if (thisOperation == OPERATION.DEBIT) myOutcome.setChecked(true);
+                else if (thisOperation == OPERATION.INFORMATIVE) myInformative.setChecked(true);
 
 
             }
@@ -104,19 +104,19 @@ public class DisplayCategory extends Activity {
         super.onOptionsItemSelected(item);
         switch(item.getItemId()) {
             case R.id.Edit_Category:
-                Button b = (Button)findViewById(R.id.button1);
+                Button b = (Button)findViewById(R.id.buttonSaveCategory);
                 b.setVisibility(View.VISIBLE);
-                name.setEnabled(true);
-                name.setFocusableInTouchMode(true);
-                name.setClickable(true);
+                myName.setEnabled(true);
+                myName.setFocusableInTouchMode(true);
+                myName.setClickable(true);
 
-                description.setEnabled(true);
-                description.setFocusableInTouchMode(true);
-                description.setClickable(true);
+                myDescription.setEnabled(true);
+                myDescription.setFocusableInTouchMode(true);
+                myDescription.setClickable(true);
 
-                //operation.setEnabled(true);
-                //operation.setFocusableInTouchMode(true);
-                //operation.setClickable(true);
+                myOperation.setEnabled(true);
+                myOperation.setFocusableInTouchMode(true);
+                myOperation.setClickable(true);
 
 
 
@@ -153,26 +153,35 @@ public class DisplayCategory extends Activity {
 
     public void run(View view) {
         Bundle extras = getIntent().getExtras();
+        Integer thisOperation= OPERATION.UNKNOWN;
+
+        RadioButton myIncome = (RadioButton) findViewById(R.id.radioIncome);
+        RadioButton myOutcome = (RadioButton) findViewById(R.id.radioOutcome);
+        RadioButton myInformative = (RadioButton) findViewById(R.id.radioInformative);
+
         if(extras !=null) {
             int Value = extras.getInt("id");
-            if(Value>0){
-                String thisName = name.getText().toString();
-                String thisDesc = description.getText().toString();
-                Integer thisOperation = 1;
-                if(mydb.updateCategory(id_To_Update,thisName,
-                        thisDesc, thisOperation)){
+            if(Value>0){  //edit Category
+                String thisName = myName.getText().toString();
+                String thisDesc = myDescription.getText().toString();
+                if(myIncome.isChecked()) thisOperation = OPERATION.CREDIT;
+                else if(myIncome.isChecked()) thisOperation = OPERATION.DEBIT;
+                else if(myIncome.isChecked()) thisOperation = OPERATION.INFORMATIVE;
+
+                if(mydb.updateCategory(id_To_Update,thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),ListCategory.class);
                     startActivity(intent);
                 } else{
                     Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
-            } else{
-                String thisName = name.getText().toString();
-                String thisDesc = description.getText().toString();
-                Integer thisOperation = 1;
-                if(mydb.insertCategory(thisName,thisDesc ,
-                        thisOperation)){
+            } else{ //add Category
+                String thisName = myName.getText().toString();
+                String thisDesc = myDescription.getText().toString();
+                if(myIncome.isChecked()) thisOperation = OPERATION.CREDIT;
+                else if(myIncome.isChecked()) thisOperation = OPERATION.DEBIT;
+                else if(myIncome.isChecked()) thisOperation = OPERATION.INFORMATIVE;
+                if(mydb.insertCategory(thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
                 } else{
@@ -184,4 +193,5 @@ public class DisplayCategory extends Activity {
             }
         }
     }
+
 }

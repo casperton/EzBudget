@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisplayCategory" >
-
+    tools:context=".DispCategory">
 
     <EditText
         android:id="@+id/editTextName"
@@ -16,11 +15,12 @@
         android:layout_marginLeft="52dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="52dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView1"
-        tools:layout_editor_absoluteY="16dp"></EditText>
+        app:layout_constraintTop_toTopOf="parent"></EditText>
 
     <TextView
         android:id="@+id/textView1"
@@ -28,13 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/editTextName"
         android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
         android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="28dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="8dp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonSaveCategory"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_alignLeft="@+id/editTextCity"
@@ -56,10 +57,10 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/editTextDescription"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName"
         tools:layout_editor_absoluteX="8dp" />
 
     <TextView
@@ -73,21 +74,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
         tools:layout_editor_absoluteX="16dp" />
+
     <EditText
         android:id="@+id/editTextDescription"
         android:layout_width="235dp"
-        android:layout_height="39dp"
+        android:layout_height="41dp"
         android:layout_alignLeft="@+id/editTextName"
         android:layout_below="@+id/editTextDescription"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/editTextName">
 
@@ -95,7 +93,7 @@
     </EditText>
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/radioGroupOperation"
         android:layout_width="320dp"
         android:layout_height="84dp"
         android:layout_marginLeft="72dp"
@@ -105,25 +103,24 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Income" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radioOutcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Outcome" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/radioInformative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Informative" />
     </RadioGroup>
-
 </android.support.constraint.ConstraintLayout>

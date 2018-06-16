@@ -94,7 +94,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
         contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
         contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
-        db.update(Category.CATEGORY_COLUMN_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update(Category.CATEGORY_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
 
@@ -105,7 +105,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public Integer deleteCategory (Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(Category.CATEGORY_COLUMN_NAME,
+        return db.delete(Category.CATEGORY_TABLE_NAME,
                 "id = ? ",
                 new String[] { Integer.toString(id) });
     }
