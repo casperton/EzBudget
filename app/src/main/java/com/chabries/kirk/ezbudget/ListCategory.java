@@ -4,10 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 /**
  public class MainActivity extends AppCompatActivity {
 
@@ -24,10 +20,10 @@ import android.os.Bundle;
 
  */
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,16 +34,15 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListCategory extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "MESSAGE";
-    private ListView obj;
+
+    private RecyclerView myRecyclerView;
+    RecyclerView.LayoutManager myLayoutManager;
+
     DBHelper mydb;
     private ProgressBar myProgress=null;
     private List<String> listCategoryNames;
@@ -56,31 +51,19 @@ public class ListCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_category);
 
-        mydb = new DBHelper(this);
-        //ArrayList array_list = mydb.getAllCategories();
-        listCategoryNames = mydb.getAllCategoryNames();
+        myRecyclerView = (RecyclerView) findViewById(R.id.ReciclerViewCategory);
+        myLayoutManager = new LinearLayoutManager(this);
+        myRecyclerView.setLayoutManager(myLayoutManager);
+        myRecyclerView.setHasFixedSize(true);
 
-        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1, listCategoryNames);
         myProgress = (ProgressBar) findViewById(R.id.myBar);
         myProgress.setVisibility(View.INVISIBLE);
-        obj = (ListView)findViewById(R.id.listView1);
-        obj.setAdapter(arrayAdapter);
-        obj.setOnItemClickListener(new OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-                // TODO Auto-generated method stub
-                int id_To_Search = arg2 + 1;
+        mydb = new DBHelper(this);
+        new BackGroundCategory(myRecyclerView,myProgress,this).execute();
 
-                Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", id_To_Search);
 
-                Intent intent = new Intent(getApplicationContext(),DispCategory.class);
-
-                intent.putExtras(dataBundle);
-                startActivity(intent);
-            }
-        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,74 +97,4 @@ public class ListCategory extends AppCompatActivity {
         return super.onKeyDown(keycode, event);
     }
 
-
-    /**
-     * Load database to ListView
-
-     class AssyncLoad extends AsyncTask<Void,Category,Integer>
-     {
-
-     ArrayAdapter<String> assyncAdapter;
-     Category myCat;
-     @Override
-     protected void onPreExecute() {
-     assyncAdapter = (ArrayAdapter<String>) obj.getAdapter();
-     super.onPreExecute();
-     myProgress.setMax(100);
-     myCat = new Category();
-     }
-
-     @Override
-     protected Integer doInBackground(Void... voids) {
-     String message;
-
-
-     myProgress.setVisibility(View.VISIBLE);
-     myProgress.setProgress(0);
-     try {
-
-     FileInputStream fileInputStream = openFileInput("numbers.txt");
-     InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-     StringBuffer stringBuffer = new StringBuffer();
-     int count =0;
-
-     while ((message=bufferedReader.readLine()) != null){
-     count +=1;
-     if (count > 100 ) count = 100;
-     Thread.sleep(250);
-     myCat.setName(message);
-     myCat.setOperation(count);
-     myCat.setDescription("");
-     //will update the progress bar (onProgressUpdate)
-     publishProgress(myCat);
-
-     }
-
-
-     } catch (FileNotFoundException e) {
-     e.printStackTrace();
-     } catch (IOException e) {
-     e.printStackTrace();
-     } catch (InterruptedException e) {
-     e.printStackTrace();
-     }
-     return null;
-     }
-
-     @Override
-     protected void onProgressUpdate(Category... values) {
-     super.onProgressUpdate(values);
-     myProgress.setProgress(10); //todo   Set Progress
-     assyncAdapter.add(values[0].myStringValue);
-     }
-
-     @Override
-     protected void onPostExecute(Integer integer) {
-     super.onPostExecute(integer);
-     Toast.makeText(getApplication().getApplicationContext(),"Load Numbers Finished",Toast.LENGTH_LONG).show();
-     }
-     }
-
-     */
 }
