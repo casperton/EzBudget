@@ -33,6 +33,11 @@ public class Category {
         myOperation = OPERATION.UNKNOWN;
     };
 
+    public Category(String theName, String theDesc,Integer theOper){
+        this.myName = theName;
+        this.myDescription = theDesc;
+        this.myOperation = theOper;
+    }
      /**
      * Set the value of myDescription
      * @param newVar the new value of myDescription

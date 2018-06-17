@@ -47,9 +47,9 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
         //holder.id.setText(Integer.toString(myCategoryList.get(position).getID()));
         int oper = myCategoryList.get(position).getOperation();
         if (oper == OPERATION.CREDIT)
-            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_add_circle_green_24dp));
         else if (oper == OPERATION.DEBIT)
-            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_remove_circle_black_24dp));
+            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_remove_circle_red_24dp));
         else if (oper == OPERATION.INFORMATIVE)
             holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_info_outline_black_24dp));
         else holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_warning_black_24dp));
@@ -57,9 +57,9 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
         //set background color
 
         if(position % 2==0)
-            holder.itemView.setBackgroundColor(Color.GRAY);
+            holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
         else
-            holder.itemView.setBackgroundColor(Color.LTGRAY);
+            holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
         holder.setItemClickListener(new RecyclerClickListener() {
             @Override
             public void OnClick(View view, int position, boolean isLongClick) {
