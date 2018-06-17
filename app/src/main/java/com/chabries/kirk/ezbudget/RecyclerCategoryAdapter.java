@@ -3,6 +3,8 @@ package com.chabries.kirk.ezbudget;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +44,22 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
         holder.name.setText(myCategoryList.get(position).getName());
-        holder.id.setText(Integer.toString(myCategoryList.get(position).getID()));
+        //holder.id.setText(Integer.toString(myCategoryList.get(position).getID()));
+        int oper = myCategoryList.get(position).getOperation();
+        if (oper == OPERATION.CREDIT)
+            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+        else if (oper == OPERATION.DEBIT)
+            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_remove_circle_black_24dp));
+        else if (oper == OPERATION.INFORMATIVE)
+            holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_info_outline_black_24dp));
+        else holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_warning_black_24dp));
 
+        //set background color
+
+        if(position % 2==0)
+            holder.itemView.setBackgroundColor(Color.GRAY);
+        else
+            holder.itemView.setBackgroundColor(Color.LTGRAY);
         holder.setItemClickListener(new RecyclerClickListener() {
             @Override
             public void OnClick(View view, int position, boolean isLongClick) {
@@ -68,14 +85,16 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
 
     public static class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        TextView id,name;
+        TextView name;
+        //TextView id;
+        ImageView icon;
         private RecyclerClickListener myItemClickListener;
 
         public myViewHolder(View itemView) {
             super(itemView);
-            id = (TextView)itemView.findViewById(R.id.textViewCatID);
+            //id = (TextView)itemView.findViewById(R.id.textViewCatID);
             name = (TextView) itemView.findViewById(R.id.textViewCatName);
-
+            icon = (ImageView) itemView.findViewById(R.id.imgOper);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
