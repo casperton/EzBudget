@@ -5,13 +5,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
+    private ArrayAdapter<String> arrayAdapter;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bills = new ArrayList<>();
+        bills.add("Phone bill: $65");
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, bills);
+
+        listView = findViewById(R.id.listview_summary);
+        listView.setAdapter(arrayAdapter);
     }
 
     @Override

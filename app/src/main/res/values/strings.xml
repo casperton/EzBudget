@@ -15,4 +15,7 @@
     <string name="Oper_Income">Income</string>
     <string name="Oper_Outcome">Outcome</string>
     <string name="Oper_Informative">Informative</string>
+    <string name="summary">Summary for month</string>
+    <string name="button_bills">Bills</string>
+    <string name="button_income">Income</string>
 </resources>
