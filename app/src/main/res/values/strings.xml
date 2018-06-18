@@ -18,4 +18,5 @@
     <string name="summary">Summary for month</string>
     <string name="button_bills">Bills</string>
     <string name="button_income">Income</string>
+    <string name="balData_edit">Edit Balance Data</string>
 </resources>

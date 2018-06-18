@@ -2,6 +2,7 @@ package com.chabries.kirk.ezbudget;
 
 /**
  * Class operation
+ * To indicate the type of operation: Credit, debit, etc
  */
 public class OPERATION {
 

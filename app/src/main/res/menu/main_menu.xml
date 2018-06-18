@@ -3,4 +3,10 @@
     <item android:id="@+id/item1"
            android:title="@string/cat_list" >
     </item>
+
+    <item
+        android:id="@+id/Edit_BalData"
+        android:title="@string/balData_edit"/>
+
+
 </menu>

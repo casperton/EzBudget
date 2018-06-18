@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -48,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(dataBundle);
 
                 startActivity(intent);
+                return true;
+
+            case R.id.Edit_BalData:
+                Intent intent2 = new Intent(getApplicationContext(),DispBalData.class);
+                //intent2.putExtras(dataBundle);
+
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

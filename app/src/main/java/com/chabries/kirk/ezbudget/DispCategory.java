@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 public class DispCategory extends AppCompatActivity {
 
-    int from_Where_I_Am_Coming = 0;
     private DBHelper mydb ;
 
     TextView myName ;

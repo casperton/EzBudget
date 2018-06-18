@@ -18,10 +18,13 @@ import java.util.HashMap;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    // TABLE CATEGORY
+
     public static final String DATABASE_NAME = "EzBudgetDB.db";
 
-    ArrayList<Category> myDefaultCategories;
+    //ArrayList<Category> myDefaultCategories;
+    //////////////////////////
+    // TABLE CATEGORY
+    /////////////////////////
 
     private static final String CREATE_TABLE_CATEGORY = "create table " + Category.CATEGORY_TABLE_NAME +
             "(" + Category.CATEGORY_COLUMN_ID + " integer primary key autoincrement, " +
@@ -31,211 +34,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DROP_TABLE_CATEGORY = "DROP TABLE IF EXISTS " + Category.CATEGORY_TABLE_NAME;
 
-    //Most common budget categories
-    /**
-     * HOUSING is generally the largest item in a family budget. Depending on the type and cost of your home,
-     * you may be spending a sizable percentage of your income on paying for this living space.
-     * It is to your advantage to create a basic budget before selecting your living quarters.
-     * By doing this, you can allow your budget numbers to influence your housing decision and
-     * decrease the likelihood of committing to a property that continually pushes your budget
-     * into the red.
-     */
-    private static final String DB_CAT_HOUSING_NAME = "HOUSING";
-    private static final String DB_CAT_HOUSING_DESCRIPTION = "The sum of the monthly mortgage payment, hazard insurance,property taxes, and homeowner association fees.\n" +
-            "\n" +
-            "Housing expense is sometimes referred to as PITI, standing for principal, interest, taxes, and insurance.";
-    private static final Integer DB_CAT_HOUSING_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_HOUSING = new Category(DB_CAT_HOUSING_NAME,DB_CAT_HOUSING_DESCRIPTION,DB_CAT_HOUSING_OPERATION);
-
-    /**
-     FOOD
-     You can’t survive without it. Food needs to be very high on your prioritized budget list.
-
-     Groceries
-     Restaurants
-     Pet Food/Treats
-
-     */
-    private static final String DB_CAT_FOOD_NAME = "FOOD";
-    private static final String DB_CAT_FOOD_DESCRIPTION = "What do you spend on food";
-    private static final Integer DB_CAT_FOOD_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_FOOD = new Category(DB_CAT_FOOD_NAME,DB_CAT_FOOD_DESCRIPTION,DB_CAT_FOOD_OPERATION);
-
-    /**
-     TRANSPORTATION
-     Transportation is important. But you’re going to need more than gasoline and oil changes . . . .
-
-     Fuel
-     Tires
-     Oil Changes
-     Maintenance
-     Parking Fees
-     Repairs
-     DMV Fees
-     Vehicle Replacement – This should be for reasonable vehicle replacements; fancy add-ons should come from your Fun Money category.
-
-     */
-    private static final String DB_CAT_TRANSPORTATION_NAME = "TRANSPORTATION";
-    private static final String DB_CAT_TRANSPORTATION_DESCRIPTION = "    Fuel\n" +
-            "     Tires\n" +
-            "     Oil Changes\n" +
-            "     Maintenance\n" +
-            "     Parking Fees\n" +
-            "     Repairs\n" +
-            "     DMV Fees\n" +
-            "     Vehicle Replacement – This should be for reasonable vehicle replacements; fancy add-ons should come from your Fun Money category.\n";
-    private static final Integer DB_CAT_TRANSPORTATION_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_TRANSPORTATION = new Category(DB_CAT_TRANSPORTATION_NAME,DB_CAT_TRANSPORTATION_DESCRIPTION,DB_CAT_TRANSPORTATION_OPERATION);
-
-    /**
-     Education
-     */
-    private static final String DB_CAT_EDUCATION_NAME = "EDUCATION";
-    private static final String DB_CAT_EDUCATION_DESCRIPTION = "What do you spend with Education";
-    private static final Integer DB_CAT_EDUCATION_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_EDUCATION = new Category(DB_CAT_EDUCATION_NAME,DB_CAT_EDUCATION_DESCRIPTION,DB_CAT_EDUCATION_OPERATION);
-
-    /**
-     Utilities
-
-     Electricity
-     Water
-     Heating
-     Garbage
-     Phones
-     Cable
-     Internet
-
-     */
-    private static final String DB_CAT_UTILITIES_NAME = "UTILITIES";
-    private static final String DB_CAT_UTILITIES_DESCRIPTION = "\n" +
-            "    Electricity\n" +
-            "    Water\n" +
-            "    Heating\n" +
-            "    Garbage\n" +
-            "    Phones\n" +
-            "    Cable\n" +
-            "    Internet\n";
-    private static final Integer DB_CAT_UTILITIES_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_UTILITIES = new Category(DB_CAT_EDUCATION_NAME,DB_CAT_EDUCATION_DESCRIPTION,DB_CAT_EDUCATION_OPERATION);
-
-    /**
-     Clothing
-
-     Wear something. It’s kind of socially important.
-     But don’t go overboard here with all the latest trends – that’s for your Fun Money category to manage.
-
-     Children’s Clothing
-     Adult’s Clothing
-
-     */
-    private static final String DB_CAT_CLOTHING_NAME = "CLOTHING";
-    private static final String DB_CAT_CLOTHING_DESCRIPTION = "Children’s Clothing\n" +
-            "Adult’s Clothing";
-    private static final Integer DB_CAT_CLOTHING_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_CLOTHING = new Category(DB_CAT_CLOTHING_NAME,DB_CAT_CLOTHING_DESCRIPTION,DB_CAT_CLOTHING_OPERATION);
-
-    /**
-     Medical
-
-     Even if you are healthy and don’t have many medical expenditures, make sure you consider these categories.
-
-     Primary Care
-     Dental Care
-     Specialty Care – Think orthodontics, optometrists, etc.
-     Medications
-     Medical Devices
 
 
-     */
-    private static final String DB_CAT_MEDICAL_NAME = "MEDICAL";
-    private static final String DB_CAT_MEDICAL_DESCRIPTION = "Primary Care\n" +
-            "     Dental Care\n" +
-            "     Specialty Care – Think orthodontics, optometrists, etc.\n" +
-            "     Medications\n" +
-            "     Medical Devices";
-    private static final Integer DB_CAT_MEDICAL_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_MEDICAL = new Category(DB_CAT_MEDICAL_NAME,DB_CAT_MEDICAL_DESCRIPTION,DB_CAT_MEDICAL_OPERATION);
+    //////////////////////////
+    // TABLE BALANCE DATA
+    /////////////////////////
+    private static final String CREATE_TABLE_BALANCEDATA = "create table " + BalanceData.BALANCEDATA_TABLE_NAME +
+            "(" + BalanceData.BALANCEDATA_COLUMN_ID + " integer primary key autoincrement, " +
+            BalanceData.BALANCEDATA_COLUMN_DUE_DATE +" text," +
+            BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE +" text," +
+            BalanceData.BALANCEDATA_COLUMN_VALUE + " double," +
+            BalanceData.BALANCEDATA_COLUMN_CATEGORY + " integer," +
+            BalanceData.BALANCEDATA_COLUMN_DESCRIPTION + " text," +
+            BalanceData.BALANCEDATA_COLUMN_STATUS + " integer," +
+            BalanceData.BALANCEDATA_COLUMN_TIMESTAMP + " text)";
 
-    /**
-     *
-     Insurance
+    private static final String DROP_TABLE_BALANCEDATA = "DROP TABLE IF EXISTS " + BalanceData.BALANCEDATA_TABLE_NAME;
 
-     The goal of insurance is to pay for expenses you can’t afford but desperately need to cover. Raise your deductibles to save some money if you have a fully funded emergency fund.
+    //////////////////////////
+    // TABLE BALANCE DATA RECURRENT
+    /////////////////////////
+    private static final String CREATE_TABLE_BALANCEDATAREC = "create table " + BalanceData.BALANCEDATAREC_TABLE_NAME +
+            "(" + BalanceData.BALANCEDATAREC_COLUMN_ID + " integer primary key autoincrement, " +
+            BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE +" date," +
+            BalanceData.BALANCEDATAREC_COLUMN_VALUE + " double," +
+            BalanceData.BALANCEDATAREC_COLUMN_CATEGORY + " integer," +
+            BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION + " text," +
+            BalanceData.BALANCEDATAREC_COLUMN_PERIOD + " integer)";
 
-     Health Insurance
-     Homeowner’s Insurance
-     Renter’s Insurance
-     Auto Insurance
-     Life Insurance
-     Disability Insurance
-     Identity Theft Protection
-     Longterm Care Insurance
-
-     */
-    private static final String DB_CAT_INSURANCE_NAME = "INSURANCE";
-    private static final String DB_CAT_INSURANCE_DESCRIPTION = "     Health Insurance\n" +
-            "     Homeowner’s Insurance\n" +
-            "     Renter’s Insurance\n" +
-            "     Auto Insurance\n" +
-            "     Life Insurance\n" +
-            "     Disability Insurance\n" +
-            "     Identity Theft Protection\n" +
-            "     Longterm Care Insurance";
-    private static final Integer DB_CAT_INSURANCE_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_INSURANCE = new Category(DB_CAT_INSURANCE_NAME,DB_CAT_INSURANCE_DESCRIPTION,DB_CAT_INSURANCE_OPERATION);
-
-    /**
-     *
-     * retirement
-     It’s important to have a retirement plan you can depend on. With Social Security wavering, who knows if you’ll be able to depend on the government for assistance. It is often recommended to save and invest for retirement as a high priority in your prioritized budget.
-
-     Financial Planning
-     Investing
-
-     */
-    private static final String DB_CAT_RETIREMENT_NAME = "RETIREMENT";
-    private static final String DB_CAT_RETIREMENT_DESCRIPTION = "     Health Insurance\n" +
-            "     Homeowner’s Insurance\n" +
-            "     Renter’s Insurance\n" +
-            "     Auto Insurance\n" +
-            "     Life Insurance\n" +
-            "     Disability Insurance\n" +
-            "     Identity Theft Protection\n" +
-            "     Longterm Care Insurance";
-    private static final Integer DB_CAT_RETIREMENT_OPERATION = OPERATION.DEBIT;
-    private static final Category DB_CAT_RETIREMENT = new Category(DB_CAT_RETIREMENT_NAME,DB_CAT_RETIREMENT_DESCRIPTION,DB_CAT_RETIREMENT_OPERATION);
-
-    /**
-     *
-     Salary/Wages
-     */
-    private static final String DB_CAT_SALARY_NAME = "SALARY";
-    private static final String DB_CAT_SALARY_DESCRIPTION = "Salary/Wages";
-    private static final Integer DB_CAT_SALARY_OPERATION = OPERATION.CREDIT;
-    private static final Category DB_CAT_SALARY = new Category(DB_CAT_SALARY_NAME,DB_CAT_SALARY_DESCRIPTION,DB_CAT_SALARY_OPERATION);
-
-    /**
-     *
-     Tax Refunds
-     */
-    private static final String DB_CAT_TAX_REFUNDS_NAME = "TAX_REFUNDS";
-    private static final String DB_CAT_TAX_REFUNDS_DESCRIPTION = "Tax Refunds";
-    private static final Integer DB_CAT_TAX_REFUNDS_OPERATION = OPERATION.CREDIT;
-    private static final Category DB_CAT_TAX_REFUNDS = new Category(DB_CAT_TAX_REFUNDS_NAME,DB_CAT_TAX_REFUNDS_DESCRIPTION,DB_CAT_TAX_REFUNDS_OPERATION);
-
-
-
-    /**
-     *
-     Investment Income (IRA or 401k distributions)
-     Interests
-     */
-    private static final String DB_CAT_INVESTMENTS_NAME = "INVESTMENTS";
-    private static final String DB_CAT_INVESTMENTS_DESCRIPTION = "Investment Income (IRA or 401k distributions)\n" +
-            "Interests";
-    private static final Integer DB_CAT_INVESTMENTS_OPERATION = OPERATION.CREDIT;
-    private static final Category DB_CAT_INVESTMENTS = new Category(DB_CAT_INVESTMENTS_NAME,DB_CAT_INVESTMENTS_DESCRIPTION,DB_CAT_INVESTMENTS_OPERATION);
+    private static final String DROP_TABLE_BALANCEDATAREC = "DROP TABLE IF EXISTS " + BalanceData.BALANCEDATAREC_TABLE_NAME;
 
 
     public DBHelper(Context context) {
@@ -249,13 +76,22 @@ public class DBHelper extends SQLiteOpenHelper {
         //* Table Category*/
         db.execSQL(CREATE_TABLE_CATEGORY);
         insertDefaultCategories(db);
+        //* Table Balance Data*/
+        db.execSQL(CREATE_TABLE_BALANCEDATA);
+        //* Table Balance Data Recurrent*/
+        db.execSQL(CREATE_TABLE_BALANCEDATAREC);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Table Category
         db.execSQL(DROP_TABLE_CATEGORY);
-        insertDefaultCategories(db);
+        //Table Balance Data
+        db.execSQL(DROP_TABLE_BALANCEDATA);
+        //Table Balance Data Recurrent
+        db.execSQL(DROP_TABLE_BALANCEDATAREC);
+
     }
 
     // Category methods
@@ -282,18 +118,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean insertDefaultCategories(SQLiteDatabase theDataBase){
 
-        insertCategory(theDataBase,DB_CAT_HOUSING);
-        insertCategory(theDataBase,DB_CAT_FOOD);
-        insertCategory(theDataBase,DB_CAT_TRANSPORTATION);
-        insertCategory(theDataBase,DB_CAT_EDUCATION);
-        insertCategory(theDataBase,DB_CAT_UTILITIES);
-        insertCategory(theDataBase,DB_CAT_CLOTHING);
-        insertCategory(theDataBase,DB_CAT_MEDICAL);
-        insertCategory(theDataBase,DB_CAT_INSURANCE);
-        insertCategory(theDataBase,DB_CAT_RETIREMENT);
-        insertCategory(theDataBase,DB_CAT_SALARY);
-        insertCategory(theDataBase,DB_CAT_TAX_REFUNDS);
-        insertCategory(theDataBase,DB_CAT_INVESTMENTS);
+        insertCategory(theDataBase,Category.DB_CAT_HOUSING);
+        insertCategory(theDataBase,Category.DB_CAT_FOOD);
+        insertCategory(theDataBase,Category.DB_CAT_TRANSPORTATION);
+        insertCategory(theDataBase,Category.DB_CAT_EDUCATION);
+        insertCategory(theDataBase,Category.DB_CAT_UTILITIES);
+        insertCategory(theDataBase,Category.DB_CAT_CLOTHING);
+        insertCategory(theDataBase,Category.DB_CAT_MEDICAL);
+        insertCategory(theDataBase,Category.DB_CAT_INSURANCE);
+        insertCategory(theDataBase,Category.DB_CAT_RETIREMENT);
+        insertCategory(theDataBase,Category.DB_CAT_SALARY);
+        insertCategory(theDataBase,Category.DB_CAT_TAX_REFUNDS);
+        insertCategory(theDataBase,Category.DB_CAT_INVESTMENTS);
 
         return true;
     }

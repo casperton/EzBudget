@@ -17,11 +17,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListCategory" />
-        <activity android:name=".DispCategory"></activity>
+        <activity android:name=".DispCategory" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".DispBalData"></activity>
     </application>
 
 </manifest>
