@@ -1,10 +1,13 @@
 package com.chabries.kirk.ezbudget;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,6 +41,7 @@ public class DispBalData extends AppCompatActivity {
     RadioButton myStatusNotPaid;
     CheckBox myRecurrent;
     Button mySaveButton;
+    Button catBut;
     int id_To_Update = 0;
 
     @Override
@@ -54,7 +58,7 @@ public class DispBalData extends AppCompatActivity {
         myStatusNotPaid = (RadioButton) findViewById(R.id.radioUnPaid);
         myRecurrent = (CheckBox) findViewById(R.id.checkBoxRecurrent);
         Button mySaveButton = (Button)findViewById(R.id.buttonSaveBalData);
-
+        Button catBut = (Button)findViewById(R.id.buttonShowCat);
 
         mydb = new DBHelper(this);
         RadioButton myIncome,myOutcome,myInformative;
@@ -201,5 +205,22 @@ public class DispBalData extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+    }
+
+    /**
+     * Open the dialog to choose the Category
+     * https://www.youtube.com/watch?v=Z7oekIFb7fA
+     * @param theview
+     */
+    public void openCatDialog(View theview){
+        AlertDialog.Builder theBuilder = new AlertDialog.Builder(this);
+        LayoutInflater theInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View theRow = theInflater.inflate(R.layout.raw_category_item,null);
+
+
+        theBuilder.setView(theRow);
+
+        AlertDialog theDialog = theBuilder.create();
+        theDialog.show();
     }
 }
