@@ -1,5 +1,7 @@
 package com.chabries.kirk.ezbudget;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BalanceData {
@@ -73,38 +75,56 @@ public class BalanceData {
      * Set the value of the payment date
      * @param newVar the new value of payment date
      */
-    private void setPaymentDate (Date newVar) {
+    public void setPaymentDate (Date newVar) {
         myPaymentDate = newVar;
     }
 
      /**
-     * Get the value of payment date
+     * Get the value of payment date in the format "dd/MM/yyyy
      * @return the value of payment date
      */
-    private Date getPaymentDate () {
-        return myPaymentDate;
+    public String getPaymentDate () {
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        String reportDate = df.format(this.myPaymentDate);
+        return reportDate;
+
+
     }
 
      /** Set the value of myDate
      * @param newVar the new value of myDate
      */
-    private void setDate (Date newVar) {
+    public void setDate (Date newVar) {
         myDate = newVar;
     }
 
     /**
-     * Get the value of myDate
+     * Get the value of myDate in the String format dd/MM/yyyy
      * @return the value of myDate
      */
-    private Date getDate () {
-        return myDate;
+    public String getDate () {
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        String reportDate = df.format(myDate);
+        return reportDate;
     }
 
     /**
      * Set the value of myDescription
      * @param newVar the new value of myDescription
      */
-    private void setDescription (String newVar) {
+    public void setDescription (String newVar) {
         myDescription = newVar;
     }
 
@@ -112,7 +132,7 @@ public class BalanceData {
      * Get the value of myDescription
      * @return the value of myDescription
      */
-    private String getDescription () {
+    public String getDescription () {
         return myDescription;
     }
 
@@ -120,7 +140,7 @@ public class BalanceData {
      * Set the value of myValue
      * @param newVar the new value of myValue
      */
-    private void setValue (double newVar) {
+    public void setValue (double newVar) {
         myValue = newVar;
     }
 
@@ -128,7 +148,7 @@ public class BalanceData {
      * Get the value of myValue
      * @return the value of myValue
      */
-    private double getValue () {
+    public double getValue () {
         return myValue;
     }
 
@@ -136,7 +156,7 @@ public class BalanceData {
      * Set the value of myCategory
      * @param newVar the new value of myCategory
      */
-    private void setCategory (Category newVar) {
+    public void setCategory (Category newVar) {
         myCategory = newVar;
     }
 
@@ -144,7 +164,7 @@ public class BalanceData {
      * Get the value of myCategory
      * @return the value of myCategory
      */
-    private Category getCategory () {
+    public Category getCategory () {
         return myCategory;
     }
 
@@ -152,7 +172,7 @@ public class BalanceData {
      * Set the value of isRecurrent
      * @param newVar the new value of isRecurrent
      */
-    private void setRecurrent (boolean newVar) {
+    public void setRecurrent (boolean newVar) {
         isRecurrent = newVar;
     }
 
@@ -160,7 +180,7 @@ public class BalanceData {
      * Get the value of isRecurrent
      * @return the value of isRecurrent
      */
-    private boolean IsRecurrent () {
+    public boolean IsRecurrent () {
         return isRecurrent;
     }
 
@@ -171,7 +191,7 @@ public class BalanceData {
      * if it is an income, it was already received
      * @param newVar the new value of the status
      */
-    private void setStatus (Integer newVar) {
+    public void setStatus (Integer newVar) {
         this.myStatus = newVar;
     }
 
@@ -182,7 +202,7 @@ public class BalanceData {
      * if it is an income, it was already received
      * @return the value of isPaidReceived
      */
-    private int getStatus () {
+    public int getStatus () {
         return this.myStatus;
     }
 
@@ -191,7 +211,7 @@ public class BalanceData {
      * if it is an income, if it is already received
      */
 
-    boolean isPaidReceived(){
+    public boolean isPaidReceived(){
 
         return this.myStatus == PAY_STATUS.PAID_RECEIVED;
     }

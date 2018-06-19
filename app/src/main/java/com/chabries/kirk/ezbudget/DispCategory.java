@@ -150,22 +150,26 @@ public class DispCategory extends AppCompatActivity {
         }
     }
 
+    /**
+     * Run when the save button is clicked
+     * @param view
+     */
     public void run(View view) {
         Bundle extras = getIntent().getExtras();
         Integer thisOperation= OPERATION.UNKNOWN;
 
-        RadioButton myIncome = (RadioButton) findViewById(R.id.radioIncome);
-        RadioButton myOutcome = (RadioButton) findViewById(R.id.radioOutcome);
-        RadioButton myInformative = (RadioButton) findViewById(R.id.radioInformative);
+        RadioButton income = (RadioButton) findViewById(R.id.radioIncome);
+        RadioButton outcome = (RadioButton) findViewById(R.id.radioOutcome);
+        RadioButton informative = (RadioButton) findViewById(R.id.radioInformative);
 
         if(extras !=null) {
             int Value = extras.getInt("id");
             if(Value>0){  //edit Category
                 String thisName = myName.getText().toString();
                 String thisDesc = myDescription.getText().toString();
-                if(myIncome.isChecked()) thisOperation = OPERATION.CREDIT;
-                else if(myOutcome.isChecked()) thisOperation = OPERATION.DEBIT;
-                else if(myInformative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
+                if(income.isChecked()) thisOperation = OPERATION.CREDIT;
+                else if(outcome.isChecked()) thisOperation = OPERATION.DEBIT;
+                else if(informative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
 
                 if(mydb.updateCategory(id_To_Update,thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
@@ -177,9 +181,9 @@ public class DispCategory extends AppCompatActivity {
             } else{ //add Category
                 String thisName = myName.getText().toString();
                 String thisDesc = myDescription.getText().toString();
-                if(myIncome.isChecked()) thisOperation = OPERATION.CREDIT;
-                else if(myOutcome.isChecked()) thisOperation = OPERATION.DEBIT;
-                else if(myInformative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
+                if(income.isChecked()) thisOperation = OPERATION.CREDIT;
+                else if(outcome.isChecked()) thisOperation = OPERATION.DEBIT;
+                else if(informative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
                 if(mydb.insertCategory(thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
