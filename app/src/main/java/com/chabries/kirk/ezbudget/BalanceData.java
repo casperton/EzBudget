@@ -1,12 +1,16 @@
 package com.chabries.kirk.ezbudget;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class BalanceData {
 
 
+    public static final String DATE_FORMAT = "mm/dd/yyyy";
+    public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
     /**
      * FIELDS FOR DATABASE DESCRIPTION
      */
@@ -75,8 +79,20 @@ public class BalanceData {
      * Set the value of the payment date
      * @param newVar the new value of payment date
      */
-    public void setPaymentDate (Date newVar) {
-        myPaymentDate = newVar;
+    public void setPaymentDate (String newVar) {
+
+        if (! newVar.isEmpty()) {
+            DateFormat format = new SimpleDateFormat(DATE_FORMAT);
+            Date date = null;
+            try {
+                date = format.parse(newVar);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            myPaymentDate = date;
+        }
+
     }
 
      /**
@@ -87,7 +103,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 
         if(myPaymentDate != null) {
             // Using DateFormat format method we can create a string
@@ -102,8 +118,19 @@ public class BalanceData {
      /** Set the value of myDate
      * @param newVar the new value of myDate
      */
-    public void setDate (Date newVar) {
-        myDate = newVar;
+    public void setDate (String newVar) {
+
+       if (! newVar.isEmpty()) {
+           DateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
+           Date date = null;
+           try {
+               date = format.parse(newVar);
+           } catch (ParseException e) {
+               e.printStackTrace();
+           }
+
+           myDate = date;
+       }
     }
 
     /**
@@ -114,7 +141,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 
         if(myDate != null) {
             // Using DateFormat format method we can create a string

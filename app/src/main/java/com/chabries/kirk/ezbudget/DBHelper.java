@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //NOW
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateFormat df = new SimpleDateFormat(BalanceData.TIMESTAMP_FORMAT);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();

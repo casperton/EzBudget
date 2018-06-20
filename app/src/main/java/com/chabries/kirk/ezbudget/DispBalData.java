@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.support.design.widget.FloatingActionButton;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class DispBalData extends AppCompatActivity {
 
@@ -161,6 +162,7 @@ public class DispBalData extends AppCompatActivity {
                 myDateDialog = new DatePickerDialog(DispBalData.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
+                        //Todo: How to apply the correct date format here
                         myDueDate.setText(mDay + "/"+(mMonth+1)+"/"+mYear);
 
                     }
@@ -171,7 +173,30 @@ public class DispBalData extends AppCompatActivity {
             }
         });
 
+/**
+ * Long Click Show the DatePick Dialog, otherwhise one can enter date manualy
+ */
+        myPaymentDate.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                myCalendar = Calendar.getInstance();
+                int day = myCalendar.get(Calendar.DAY_OF_MONTH);
+                int month = myCalendar.get(Calendar.MONTH);
+                int year = myCalendar.get(Calendar.YEAR);
 
+                myDateDialog = new DatePickerDialog(DispBalData.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
+                        //Todo: How to apply the correct date format here
+                        myPaymentDate.setText(mDay + "/"+(mMonth+1)+"/"+mYear);
+
+                    }
+                },year,month,day);
+
+                myDateDialog.show();
+                return false;
+            }
+        });
 
 
     }
@@ -211,11 +236,11 @@ public class DispBalData extends AppCompatActivity {
         theData.setValue(theValue);
         theData.setDescription(theDesc);
         theData.setCategory(mydb.getCategory(theCategoryID));
-        //theData.setDate(theDueDate);
-        //theData.setPaymentDate(thePaymentDate);
+        theData.setDate(theDueDate);
+        theData.setPaymentDate(thePaymentDate);
         theData.setStatus(theStatus);
 
-        //fOR NOW JUST ADD OPERATION AVAILABLE
+        //fOR NOW JUST THE ADD OPERATION AVAILABLE
         if(mydb.insertBalanceData(theData)){
             Toast.makeText(getApplicationContext(), "done",
                     Toast.LENGTH_SHORT).show();
@@ -235,7 +260,7 @@ public class DispBalData extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
             } else{ //add
-Log.i("INSERT","Will Insert Database");
+
                 if(mydb.insertBalanceData(theData)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
@@ -249,29 +274,5 @@ Log.i("INSERT","Will Insert Database");
         }
     }
 
-    /**
-     * Open the dialog to choose the Category
-     * https://www.youtube.com/watch?v=Z7oekIFb7fA
-     * @param theview
-     */
-    public void openCatDialog(View theview){
-        /*
-        //AlertDialog.Builder theBuilder = new AlertDialog.Builder(this);
 
-        //LayoutInflater theInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View theRow = theInflater.inflate(R.layout.raw_category_item,null);
-
-
-        myRecyclerView = (RecyclerView) findViewById(R.id.ReciclerViewCategory);
-        myLayoutManager = new LinearLayoutManager(this);
-        myRecyclerView.setLayoutManager(myLayoutManager);
-        myRecyclerView.setHasFixedSize(true);
-        new BackGroundCategory(myRecyclerView,myProgress,this).execute();
-        theBuilder.setView(myRecyclerView);
-
-        AlertDialog theDialog = theBuilder.create();
-        theDialog.show();
-        */
-
-    }
 }
