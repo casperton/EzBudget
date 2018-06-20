@@ -198,6 +198,26 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     *
+     * Return the categoryid of the name
+     * @param theCategoryName
+     * @return The Category IKD
+     */
+    public int getCategoryID(String theCategoryName){
+        int theID = Category.UNKNOWN;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String findNameSQL = "select * from category where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
+
+        Cursor res =  db.rawQuery( findNameSQL , null );
+        if (res != null && res.getCount()>0) {
+            res.moveToFirst();
+            theID =  res.getInt(res.getColumnIndex(Category.CATEGORY_COLUMN_ID));
+
+        }
+        res.close();
+        return theID;
+    }
+    /**
      * This method will update a row in the Category Table
      * @param id The id of the Category to update
      * @param name The name
@@ -322,9 +342,9 @@ public boolean insertBalanceData (Integer , String description, Integer operatio
     }
 
     private boolean insertBalanceData (SQLiteDatabase db , BalanceData theData) {
-
-
-
+        Long result;
+        Log.i("DATABASE_OPERATION", Double.toString(theData.getValue()));
+Log.i("DATABASE_OPER",theData.getCategory().getName());
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory().getID());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
@@ -333,8 +353,9 @@ public boolean insertBalanceData (Integer , String description, Integer operatio
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, getNow());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
-        db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
-        return true;
+        result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
+        if (result > -1 ) return true;
+        else return false;
     }
 
 

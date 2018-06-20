@@ -32,6 +32,7 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
         this.myContext = theContext;
     }
 
+    // Initialize View
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +41,7 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
         return new myViewHolder(view);
     }
 
+    //Bind Data
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
@@ -83,6 +85,10 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerCatego
         return myCategoryList.size();
     }
 
+    /**
+     * The RecyclerView Holder
+     * Defined how the line will be
+     */
     public static class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView name;

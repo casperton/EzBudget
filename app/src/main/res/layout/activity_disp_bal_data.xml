@@ -13,6 +13,12 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteY="11dp">
 
+        <ProgressBar
+            android:id="@+id/progressBarBalData"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:id="@+id/linearLayoutRecurrent"
             android:layout_width="354dp"
@@ -61,9 +67,10 @@
             android:id="@+id/linearLayoutValue"
             android:layout_width="359dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutRecurrent">
 
@@ -81,8 +88,8 @@
 
             <EditText
                 android:id="@+id/editBalDataValue"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
+                android:layout_width="241dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal" />
@@ -96,10 +103,11 @@
         <LinearLayout
             android:id="@+id/linearLayoutDueDate"
             android:layout_width="359dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutValue">
 
@@ -117,8 +125,8 @@
 
             <EditText
                 android:id="@+id/editBalDataDueDate"
-                android:layout_width="238dp"
-                android:layout_height="match_parent"
+                android:layout_width="251dp"
+                android:layout_height="42dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="date" />
@@ -131,11 +139,12 @@
 
         <LinearLayout
             android:id="@+id/linearLayoutCategory"
-            android:layout_width="357dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="359dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutDueDate">
 
@@ -153,11 +162,16 @@
 
             <EditText
                 android:id="@+id/editBalDataCategory"
-                android:layout_width="234dp"
-                android:layout_height="30dp"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="247dp"
+                android:layout_height="44dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="date" />
+                android:fontFamily="monospace"
+                android:singleLine="true"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:typeface="serif" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -169,9 +183,10 @@
             android:id="@+id/linearLayoutDescription"
             android:layout_width="361dp"
             android:layout_height="84dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutCategory">
 
@@ -204,10 +219,10 @@
 
         <LinearLayout
             android:id="@+id/linearLayoutStatus"
-            android:layout_width="363dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutDescription">
@@ -274,21 +289,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonShowCat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="openCatDialog"
-                android:text="Button" />
-
-            <Button
                 android:id="@+id/buttonSaveBalData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:onClick="SaveButton"
                 android:text="Save" />
         </LinearLayout>
 
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

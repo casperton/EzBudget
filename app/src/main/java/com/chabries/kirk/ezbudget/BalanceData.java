@@ -84,14 +84,16 @@ public class BalanceData {
      * @return the value of payment date
      */
     public String getPaymentDate () {
+        String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-
-        // Using DateFormat format method we can create a string
-        // representation of a date with the defined format.
-        String reportDate = df.format(this.myPaymentDate);
+        if(myPaymentDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(this.myPaymentDate);
+        }
         return reportDate;
 
 
@@ -109,14 +111,16 @@ public class BalanceData {
      * @return the value of myDate
      */
     public String getDate () {
+        String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-
-        // Using DateFormat format method we can create a string
-        // representation of a date with the defined format.
-        String reportDate = df.format(myDate);
+        if(myDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(myDate);
+        }
         return reportDate;
     }
 

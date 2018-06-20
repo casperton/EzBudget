@@ -2,6 +2,7 @@ package com.chabries.kirk.ezbudget;
 
 public class Category {
 
+    static public final int UNKNOWN = -1;
     //
     // Fields
     //

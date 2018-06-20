@@ -2,19 +2,26 @@ package com.chabries.kirk.ezbudget;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import android.support.design.widget.FloatingActionButton;
 
 import java.util.Calendar;
 
@@ -41,7 +48,10 @@ public class DispBalData extends AppCompatActivity {
     RadioButton myStatusNotPaid;
     CheckBox myRecurrent;
     Button mySaveButton;
-    Button catBut;
+
+    private RecyclerView myRecyclerView;
+    RecyclerView.LayoutManager myLayoutManager;
+    private ProgressBar myProgress=null;
     int id_To_Update = 0;
 
     @Override
@@ -57,11 +67,28 @@ public class DispBalData extends AppCompatActivity {
         myStatusPaid = (RadioButton) findViewById(R.id.radioPayd);
         myStatusNotPaid = (RadioButton) findViewById(R.id.radioUnPaid);
         myRecurrent = (CheckBox) findViewById(R.id.checkBoxRecurrent);
+        myProgress = (ProgressBar) findViewById(R.id.progressBarBalData);
+        myProgress.setVisibility(View.INVISIBLE);
+
         Button mySaveButton = (Button)findViewById(R.id.buttonSaveBalData);
-        Button catBut = (Button)findViewById(R.id.buttonShowCat);
+
+        final FragmentManager fm=getFragmentManager();
+        final  TVShowFragment tv=new TVShowFragment();
+
+        /**
+         * Show Fragment to select the category on long click
+         */
+        myCategory.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                tv.show(fm,"TV_tag");
+                return true;
+            }
+        });
 
         mydb = new DBHelper(this);
         RadioButton myIncome,myOutcome,myInformative;
+
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
@@ -154,18 +181,26 @@ public class DispBalData extends AppCompatActivity {
      * @param view
      */
     public void SaveButton(View view) {
-        Bundle extras = getIntent().getExtras();
+        Bundle extras = null;
+        extras = getIntent().getExtras();
         Integer theStatus= PAY_STATUS.UNKNOWN;
 
 
         Double theValue = Double.parseDouble(myValue.getText().toString());
         String theDueDate = myDueDate.getText().toString();
-        Integer theCategoryID = Integer.getInteger(myCategory.getText().toString());
+        String theCategoryNAME = myCategory.getText().toString();
+        Integer theCategoryID = mydb.getCategoryID(theCategoryNAME);
+        if (theCategoryID == Category.UNKNOWN) {
+            Toast.makeText(getApplicationContext(), "UNKNOWN CATEGORY",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         String theDesc = myDescription.getText().toString();
         Category theCategory = mydb.getCategory(theCategoryID);
         // STATUS Handling
         if(myStatusNotPaid.isChecked()) theStatus = PAY_STATUS.UNPAID_UNRECEIVED;
         else if(myStatusPaid.isChecked()) theStatus = PAY_STATUS.PAID_RECEIVED;
+        else theStatus = PAY_STATUS.UNKNOWN;
         String thePaymentDate = myPaymentDate.getText().toString();
 
         //RECURRENCE HANDLING
@@ -175,12 +210,19 @@ public class DispBalData extends AppCompatActivity {
         BalanceData theData = new BalanceData();
         theData.setValue(theValue);
         theData.setDescription(theDesc);
-        theData.setCategory(theCategory);
+        theData.setCategory(mydb.getCategory(theCategoryID));
         //theData.setDate(theDueDate);
         //theData.setPaymentDate(thePaymentDate);
         theData.setStatus(theStatus);
 
-
+        //fOR NOW JUST ADD OPERATION AVAILABLE
+        if(mydb.insertBalanceData(theData)){
+            Toast.makeText(getApplicationContext(), "done",
+                    Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(getApplicationContext(), "not done",
+                    Toast.LENGTH_SHORT).show();
+        }
         if(extras !=null) {
             int Value = extras.getInt("id");
             if(Value>0){  //edit
@@ -193,7 +235,7 @@ public class DispBalData extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
             } else{ //add
-
+Log.i("INSERT","Will Insert Database");
                 if(mydb.insertBalanceData(theData)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
@@ -201,8 +243,8 @@ public class DispBalData extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "not done",
                             Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(getApplicationContext(),ListCategory.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getApplicationContext(),ListCategory.class);
+                //startActivity(intent);
             }
         }
     }
@@ -213,14 +255,23 @@ public class DispBalData extends AppCompatActivity {
      * @param theview
      */
     public void openCatDialog(View theview){
-        AlertDialog.Builder theBuilder = new AlertDialog.Builder(this);
-        LayoutInflater theInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View theRow = theInflater.inflate(R.layout.raw_category_item,null);
+        /*
+        //AlertDialog.Builder theBuilder = new AlertDialog.Builder(this);
+
+        //LayoutInflater theInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //View theRow = theInflater.inflate(R.layout.raw_category_item,null);
 
 
-        theBuilder.setView(theRow);
+        myRecyclerView = (RecyclerView) findViewById(R.id.ReciclerViewCategory);
+        myLayoutManager = new LinearLayoutManager(this);
+        myRecyclerView.setLayoutManager(myLayoutManager);
+        myRecyclerView.setHasFixedSize(true);
+        new BackGroundCategory(myRecyclerView,myProgress,this).execute();
+        theBuilder.setView(myRecyclerView);
 
         AlertDialog theDialog = theBuilder.create();
         theDialog.show();
+        */
+
     }
 }
