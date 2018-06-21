@@ -41,13 +41,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Test for shared preferences to store date format
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("date_pref", "mm/dd/yyyy");
-        editor.apply();
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences.Editor editor = sp.edit();
+       // editor.putString("date_pref", "mm/dd/yyyy");
+        //editor.apply();
 
         // Load date format
-        date_pref = sp.getString("date_pref", "");
+       // date_pref = sp.getString("date_pref", "");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

@@ -25,10 +25,18 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private RecyclerCategoryAdapter myAdapter;
     private ArrayList<Category> myCategories;
 
-    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context) {
+    public final static int CAT_ALL = 1;
+    public final static int CAT_INC = 2;
+    public final static int CAT_OUT = 3;
+    public final static int CAT_INFO = 4;
+
+    private int myConsultType;
+
+    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
+        myConsultType = theConsult;
         myCategories= new ArrayList<>();
     }
 
@@ -49,8 +57,22 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
         String name;
         String description;
         Integer operation;
+        Cursor cursor;
+        switch (myConsultType) {
+            case CAT_ALL:  cursor =  mydb.getAllCategoriesCursor(db);
+                break;
+            case  CAT_INC:  cursor =  mydb.getIncomeCategoriesCursor(db);
+                break;
+            case CAT_OUT: cursor =  mydb.getOutcomeCategoriesCursor(db);
+                break;
+            case CAT_INFO:  cursor =  mydb.getInformativeCategoriesCursor(db);
+                break;
 
-        Cursor cursor =  mydb.readFromLocalDatabase(db);
+            default:cursor =  mydb.getAllCategoriesCursor(db);
+                break;
+        }
+
+
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

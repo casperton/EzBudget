@@ -48,7 +48,7 @@ public class ListCategory extends AppCompatActivity {
         myProgress = (ProgressBar) findViewById(R.id.myBar);
         myProgress.setVisibility(View.INVISIBLE);
         mydb = new DBHelper(this);
-        new BackGroundCategory(myRecyclerView,myProgress,this).execute();
+        new BackGroundCategory(myRecyclerView,myProgress,this,BackGroundCategory.CAT_ALL).execute();
 
 
     }

@@ -305,7 +305,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
-    public Cursor readFromLocalDatabase(SQLiteDatabase db){
+    /**
+     * Return a Cursor with all Categories in the database
+     * @param db
+     * @return
+     */
+    public Cursor getAllCategoriesCursor(SQLiteDatabase db){
         //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
         //        Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
@@ -316,7 +321,63 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] Projections = {Category.CATEGORY_COLUMN_ID,Category.CATEGORY_COLUMN_NAME,Category.CATEGORY_COLUMN_DESCRIPTION,Category.CATEGORY_COLUMN_OPERATION};
         cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,null,null,
                 null,null,null);
-        //Log.i("MY CURSOR SIZE: ", Integer.toString(cursor.getCount()));
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Income Categories in the database
+     * @param db
+     * @return
+     */
+    public Cursor getIncomeCategoriesCursor(SQLiteDatabase db){
+        //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
+        //        Category.CATEGORY_COLUMN_NAME + " DESC";
+        //hp = new HashMap();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        //Cursor cursor =  db.rawQuery( selectQuery, null );
+        Cursor cursor;
+        //return cursor;
+        String[] Projections = {Category.CATEGORY_COLUMN_ID,Category.CATEGORY_COLUMN_NAME,Category.CATEGORY_COLUMN_DESCRIPTION,Category.CATEGORY_COLUMN_OPERATION};
+        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString(),null,
+                null,null,null);
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Outcomes Categories in the database
+     * @param db
+     * @return
+     */
+    public Cursor getOutcomeCategoriesCursor(SQLiteDatabase db){
+        //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
+        //        Category.CATEGORY_COLUMN_NAME + " DESC";
+        //hp = new HashMap();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        //Cursor cursor =  db.rawQuery( selectQuery, null );
+        Cursor cursor;
+        //return cursor;
+        String[] Projections = {Category.CATEGORY_COLUMN_ID,Category.CATEGORY_COLUMN_NAME,Category.CATEGORY_COLUMN_DESCRIPTION,Category.CATEGORY_COLUMN_OPERATION};
+        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString(),null,
+                null,null,null);
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Informative Categories in the database
+     * @param db
+     * @return
+     */
+    public Cursor getInformativeCategoriesCursor(SQLiteDatabase db){
+        //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
+        //        Category.CATEGORY_COLUMN_NAME + " DESC";
+        //hp = new HashMap();
+        //SQLiteDatabase db = this.getReadableDatabase();
+        //Cursor cursor =  db.rawQuery( selectQuery, null );
+        Cursor cursor;
+        //return cursor;
+        String[] Projections = {Category.CATEGORY_COLUMN_ID,Category.CATEGORY_COLUMN_NAME,Category.CATEGORY_COLUMN_DESCRIPTION,Category.CATEGORY_COLUMN_OPERATION};
+        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.INFORMATIVE).toString(),null,
+                null,null,null);
         return cursor;
     }
 ////////////////   END CATEGORY METHODS /////////////////////
