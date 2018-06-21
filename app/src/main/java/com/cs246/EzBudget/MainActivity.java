@@ -1,7 +1,9 @@
 package com.cs246.EzBudget;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -24,10 +26,13 @@ import com.cs246.EzBudget.mFragments.InterUniverse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
+    public String date_pref;
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
     ListView listView;
@@ -35,6 +40,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Test for shared preferences to store date format
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("date_pref", "mm/dd/yyyy");
+        editor.apply();
+
+        // Load date format
+        date_pref = sp.getString("date_pref", "");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //REFERNCE NAV VIEW AND ATTACH ITS ITEM SELECTION LISTENER
+        //REFERENCE NAV VIEW AND ATTACH ITS ITEM SELECTION LISTENER
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
