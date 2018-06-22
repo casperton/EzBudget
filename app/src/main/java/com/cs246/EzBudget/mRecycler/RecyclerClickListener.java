@@ -1,4 +1,4 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.mRecycler;
 
 import android.view.View;
 

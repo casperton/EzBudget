@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
+
 import java.util.List;
 
 /**
@@ -48,7 +50,7 @@ public class ListCategory extends AppCompatActivity {
         myProgress = (ProgressBar) findViewById(R.id.myBar);
         myProgress.setVisibility(View.INVISIBLE);
         mydb = new DBHelper(this);
-        new BackGroundCategory(myRecyclerView,myProgress,this,BackGroundCategory.CAT_ALL).execute();
+        new BackGroundCategory(myRecyclerView,myProgress,this,BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_ONE,null).execute();
 
 
     }

@@ -11,12 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
+
 
 public class TVShowFragment extends DialogFragment {
 
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
-
+    BackGroundCategory myBackGroundCat;
     Button myGetIncome;
     Button myGetOutcome;
     Button myGetInformative;
@@ -46,24 +48,30 @@ public class TVShowFragment extends DialogFragment {
         myProgress = (ProgressBar) rootView.findViewById(R.id.myBar2);
         myProgress.setVisibility(View.INVISIBLE);
         mydb = new DBHelper(this.getActivity());
-        new BackGroundCategory(myRecyclerView,myProgress,this.getActivity(),  BackGroundCategory.CAT_ALL).execute();
+        myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,this.getActivity(),  BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_TWO,this);
+
+
+        myBackGroundCat.execute();
 
         myGetIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_INC).execute();
+                //myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_INC, RecyclerViewHolder.LAYOUT_TWO,this);
+                myBackGroundCat.execute();
             }
         });
         myGetOutcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_OUT).execute();
+                //new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_OUT, RecyclerViewHolder.LAYOUT_TWO,this).execute();
+                myBackGroundCat.execute();
             }
         });
         myGetInformative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_INFO).execute();
+                //new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_INFO, RecyclerViewHolder.LAYOUT_TWO, this).execute();
+                myBackGroundCat.execute();
             }
         });
         return rootView;

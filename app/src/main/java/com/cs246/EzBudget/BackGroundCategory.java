@@ -7,9 +7,9 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import com.cs246.EzBudget.mRecycler.RecyclerCategoryAdapter;
 
 import java.util.ArrayList;
 
@@ -19,30 +19,33 @@ import java.util.ArrayList;
  */
 public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
 
-    private RecyclerView mylistView;
+    public RecyclerView mylistView;
     private ProgressBar myProgressBar;
     private Context context;
-    private RecyclerCategoryAdapter myAdapter;
+    public RecyclerCategoryAdapter myAdapter;
     private ArrayList<Category> myCategories;
-
+    private TVShowFragment teste;
     public final static int CAT_ALL = 1;
     public final static int CAT_INC = 2;
     public final static int CAT_OUT = 3;
     public final static int CAT_INFO = 4;
 
     private int myConsultType;
+    private int myLayOut;
 
-    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult) {
+    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, TVShowFragment theFrag) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
         myConsultType = theConsult;
         myCategories= new ArrayList<>();
+        myLayOut = theLayOut;
+        teste = theFrag;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerCategoryAdapter(myCategories,context);
+        myAdapter = new RecyclerCategoryAdapter(myCategories,context,myLayOut,teste);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 
