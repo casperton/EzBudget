@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 import java.util.List;

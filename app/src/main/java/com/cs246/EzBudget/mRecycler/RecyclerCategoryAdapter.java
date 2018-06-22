@@ -5,20 +5,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.DispCategory;
-import com.cs246.EzBudget.TVShowFragment;
+import com.cs246.EzBudget.CategoryShowFragment;
 
 import java.util.ArrayList;
 
@@ -31,8 +28,8 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
     private ArrayList<Category> myCategoryList = new ArrayList<>();
     private Context myContext;
     private int myLayout;
-    private TVShowFragment teste;
-    public RecyclerCategoryAdapter(ArrayList<Category> categoryList, Context theContext, int theLayOut, TVShowFragment theFrag) {
+    private CategoryShowFragment teste;
+    public RecyclerCategoryAdapter(ArrayList<Category> categoryList, Context theContext, int theLayOut, CategoryShowFragment theFrag) {
         this.myCategoryList = categoryList;
         this.myContext = theContext;
         myLayout = theLayOut;

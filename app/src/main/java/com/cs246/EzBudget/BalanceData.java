@@ -35,6 +35,7 @@ public class BalanceData {
     public static final String BALANCEDATAREC_COLUMN_CATEGORY = "idCategory";
     public static final String BALANCEDATAREC_COLUMN_VALUE = "value";
     public static final String BALANCEDATAREC_COLUMN_PERIOD = "period";
+    public static final String BALANCEDATAREC_COLUMN_TIMESTAMP = "modificationDateTime";
 
 
     //
@@ -47,6 +48,7 @@ public class BalanceData {
     private double myValue;
     private Category myCategory;
     private boolean isRecurrent;
+    private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
 
     /**
 
@@ -63,7 +65,9 @@ public class BalanceData {
     // Constructors
     //
     public BalanceData () {
+
         this.myStatus = PAY_STATUS.UNKNOWN;
+        this.myRecPeriod = RECURRENT.NO_PERIODIC;
     }
 
     //
@@ -74,6 +78,22 @@ public class BalanceData {
     //
     // Accessor methods
     //
+
+    /**
+     * Get the period this balance data mus repeat
+     * @return
+     */
+    public int getRecPeriod() {
+        return myRecPeriod;
+    }
+
+    /**
+     * Set the period this balance data must repeat
+     * @param theRecPeriod
+     */
+    public void setRecPeriod(int theRecPeriod) {
+        this.myRecPeriod = theRecPeriod;
+    }
 
     /**
      * Set the value of the payment date
@@ -271,6 +291,42 @@ public class BalanceData {
 
     public boolean isDebit(){
         return myCategory.isDebit();
+    }
+
+
+    /**
+     * Set this balance data to be Daily recurrent
+     */
+    public void setDAILYrec(){
+        this.myRecPeriod = RECURRENT.DAILY;
+    }
+
+    /**
+     * Set this balance data to be Weekly Recurrent
+     */
+    public void setWEEKLYrec(){
+        this.myRecPeriod = RECURRENT.WEEKLY;
+    }
+
+    /**
+     * Set this Balance Data to be Bi weekly recurrent
+     */
+    public void setBIWEEKLYrec(){
+        this.myRecPeriod = RECURRENT.BI_WEEKLI;
+    }
+
+    /**
+     * Set this Balance Data to be monthly recurrent
+     */
+    public void setMONTHLYrec(){
+        this.myRecPeriod = RECURRENT.MONTHLY;
+    }
+
+    /*
+    Set this Balance data to be not recurrent
+     */
+    public void setNOrec(){
+        this.myRecPeriod = RECURRENT.NO_PERIODIC;
     }
 
 

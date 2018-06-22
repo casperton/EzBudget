@@ -1,18 +1,12 @@
 package com.cs246.EzBudget;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,14 +15,16 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import android.support.design.widget.FloatingActionButton;
+
+import com.cs246.EzBudget.Database.DBBalanceData;
+import com.cs246.EzBudget.Database.DBCategory;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class DispBalData extends AppCompatActivity {
 
-    private DBHelper mydb ;
+    private DBCategory mydb ;
+    private DBBalanceData myDBBalanceData;
 /*
     public static final String BALANCEDATA_COLUMN_DUE_DATE = "date";
     public static final String BALANCEDATA_COLUMN_PAYMENT_DATE = "paymentDate";
@@ -74,7 +70,7 @@ public class DispBalData extends AppCompatActivity {
         Button mySaveButton = (Button)findViewById(R.id.buttonSaveBalData);
 
         final FragmentManager fm=getFragmentManager();
-        final  TVShowFragment tv=new TVShowFragment();
+        final CategoryShowFragment tv=new CategoryShowFragment();
 
         /**
          * Show Fragment to select the category on long click
@@ -87,7 +83,8 @@ public class DispBalData extends AppCompatActivity {
             }
         });
 
-        mydb = new DBHelper(this);
+        mydb = new DBCategory(this);
+        myDBBalanceData = new DBBalanceData(this);
         RadioButton myIncome,myOutcome,myInformative;
 
 
@@ -100,7 +97,7 @@ public class DispBalData extends AppCompatActivity {
 
             if(Value>0){
                 //means this is the view/edit part not the add  part.
-                Cursor rs = mydb.getBalanceDataData(Value);
+                Cursor rs = myDBBalanceData.getDataCursor(Value);
                 id_To_Update = Value;
                 rs.moveToFirst();
 
@@ -214,14 +211,14 @@ public class DispBalData extends AppCompatActivity {
         Double theValue = Double.parseDouble(myValue.getText().toString());
         String theDueDate = myDueDate.getText().toString();
         String theCategoryNAME = myCategory.getText().toString();
-        Integer theCategoryID = mydb.getCategoryID(theCategoryNAME);
+        Integer theCategoryID = mydb.getID(theCategoryNAME);
         if (theCategoryID == Category.UNKNOWN) {
             Toast.makeText(getApplicationContext(), "UNKNOWN CATEGORY",
                     Toast.LENGTH_SHORT).show();
             return;
         }
         String theDesc = myDescription.getText().toString();
-        Category theCategory = mydb.getCategory(theCategoryID);
+        Category theCategory = mydb.get(theCategoryID);
         // STATUS Handling
         if(myStatusNotPaid.isChecked()) theStatus = PAY_STATUS.UNPAID_UNRECEIVED;
         else if(myStatusPaid.isChecked()) theStatus = PAY_STATUS.PAID_RECEIVED;
@@ -235,13 +232,13 @@ public class DispBalData extends AppCompatActivity {
         BalanceData theData = new BalanceData();
         theData.setValue(theValue);
         theData.setDescription(theDesc);
-        theData.setCategory(mydb.getCategory(theCategoryID));
+        theData.setCategory(mydb.get(theCategoryID));
         theData.setDate(theDueDate);
         theData.setPaymentDate(thePaymentDate);
         theData.setStatus(theStatus);
 
         //fOR NOW JUST THE ADD OPERATION AVAILABLE
-        if(mydb.insertBalanceData(theData)){
+        if(myDBBalanceData.insert(theData)){
             Toast.makeText(getApplicationContext(), "done",
                     Toast.LENGTH_SHORT).show();
         } else{
@@ -252,7 +249,7 @@ public class DispBalData extends AppCompatActivity {
             int Value = extras.getInt("id");
             if(Value>0){  //edit
 
-                if(mydb.updateBalanceData(id_To_Update,theData)){
+                if(myDBBalanceData.update(id_To_Update,theData)){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),ListCategory.class);
                     startActivity(intent);
@@ -261,7 +258,7 @@ public class DispBalData extends AppCompatActivity {
                 }
             } else{ //add
 
-                if(mydb.insertBalanceData(theData)){
+                if(myDBBalanceData.insert(theData)){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
                 } else{

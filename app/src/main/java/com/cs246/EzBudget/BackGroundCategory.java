@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.mRecycler.RecyclerCategoryAdapter;
 
 import java.util.ArrayList;
@@ -19,12 +20,12 @@ import java.util.ArrayList;
  */
 public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
 
-    public RecyclerView mylistView;
+    private RecyclerView mylistView;
     private ProgressBar myProgressBar;
     private Context context;
-    public RecyclerCategoryAdapter myAdapter;
+    private RecyclerCategoryAdapter myAdapter;
     private ArrayList<Category> myCategories;
-    private TVShowFragment teste;
+    private CategoryShowFragment teste;
     public final static int CAT_ALL = 1;
     public final static int CAT_INC = 2;
     public final static int CAT_OUT = 3;
@@ -33,7 +34,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private int myConsultType;
     private int myLayOut;
 
-    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, TVShowFragment theFrag) {
+    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, CategoryShowFragment theFrag) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -53,7 +54,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
 
     @Override
     protected Void doInBackground(Void... voids) {
-        DBHelper mydb = new DBHelper(context);
+        DBCategory mydb = new DBCategory(context);
         SQLiteDatabase db = mydb.getReadableDatabase();
 
         Integer id;
@@ -62,16 +63,16 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
         Integer operation;
         Cursor cursor;
         switch (myConsultType) {
-            case CAT_ALL:  cursor =  mydb.getAllCategoriesCursor(db);
+            case CAT_ALL:  cursor =  mydb.getAllCursor(db);
                 break;
-            case  CAT_INC:  cursor =  mydb.getIncomeCategoriesCursor(db);
+            case  CAT_INC:  cursor =  mydb.getIncomesCursor(db);
                 break;
-            case CAT_OUT: cursor =  mydb.getOutcomeCategoriesCursor(db);
+            case CAT_OUT: cursor =  mydb.getOutcomesCursor(db);
                 break;
-            case CAT_INFO:  cursor =  mydb.getInformativeCategoriesCursor(db);
+            case CAT_INFO:  cursor =  mydb.getInformativesCursor(db);
                 break;
 
-            default:cursor =  mydb.getAllCategoriesCursor(db);
+            default:cursor =  mydb.getAllCursor(db);
                 break;
         }
 

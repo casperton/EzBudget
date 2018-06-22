@@ -15,9 +15,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cs246.EzBudget.Database.DBCategory;
+import com.cs246.EzBudget.Database.DBHelper;
+
 public class DispCategory extends AppCompatActivity {
 
-    private DBHelper mydb ;
+    private DBCategory mydb ;
 
     TextView myName ;
     TextView myDescription;
@@ -33,7 +36,7 @@ public class DispCategory extends AppCompatActivity {
         myOperation = (RadioGroup) findViewById(R.id.radioGroupOperation);
 
 
-        mydb = new DBHelper(this);
+        mydb = new DBCategory(this);
         RadioButton myIncome,myOutcome,myInformative;
 
         Bundle extras = getIntent().getExtras();
@@ -45,7 +48,7 @@ public class DispCategory extends AppCompatActivity {
 
             if(Value>0){
                 //means this is the view/edit part not the add category part.
-                Cursor rs = mydb.getCategoryData(Value);
+                Cursor rs = mydb.getDataCursor(Value);
                 id_To_Update = Value;
                 rs.moveToFirst();
 
@@ -126,7 +129,7 @@ public class DispCategory extends AppCompatActivity {
                 builder.setMessage(R.string.deleteConfirmation)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mydb.deleteCategory(id_To_Update);
+                                mydb.delete(id_To_Update);
                                 Toast.makeText(getApplicationContext(), "Deleted Successfully",
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(),ListCategory.class);
@@ -171,7 +174,7 @@ public class DispCategory extends AppCompatActivity {
                 else if(outcome.isChecked()) thisOperation = OPERATION.DEBIT;
                 else if(informative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
 
-                if(mydb.updateCategory(id_To_Update,thisName,thisDesc, thisOperation)){
+                if(mydb.update(id_To_Update,thisName,thisDesc, thisOperation)){
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),ListCategory.class);
                     startActivity(intent);

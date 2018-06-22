@@ -1,116 +1,19 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.icu.util.Calendar;
-import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.OPERATION;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
-/**
- * This class will comunicate with the SQLite Database and perform all kinds of database operations
- * Todo: Maybe it is better to create an Interface and a subClass for each Database Table. We have to see the pros and cons and if it is possible or not,
- * remembering that this class extends SQLiteOpenHelper
- */
-public class DBHelper extends SQLiteOpenHelper {
-
-
-    private String getNow() {
-        //NOW
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(BalanceData.TIMESTAMP_FORMAT);
-
-        // Get the date today using Calendar object.
-        Date today = Calendar.getInstance().getTime();
-        // Using DateFormat format method we can create a string
-        // representation of a date with the defined format.
-        String reportDate = df.format(today);
-
-        return reportDate;
-
-    }
-    public static final String DATABASE_NAME = "EzBudgetDB.db";
-
-    //ArrayList<Category> myDefaultCategories;
-    //////////////////////////
-    // TABLE CATEGORY
-    /////////////////////////
-
-    private static final String CREATE_TABLE_CATEGORY = "create table " + Category.CATEGORY_TABLE_NAME +
-            "(" + Category.CATEGORY_COLUMN_ID + " integer primary key autoincrement, " +
-            Category.CATEGORY_COLUMN_NAME +" text," +
-            Category.CATEGORY_COLUMN_DESCRIPTION + " text," +
-            Category.CATEGORY_COLUMN_OPERATION + " integer)";
-
-    private static final String DROP_TABLE_CATEGORY = "DROP TABLE IF EXISTS " + Category.CATEGORY_TABLE_NAME;
-
-
-
-    //////////////////////////
-    // TABLE BALANCE DATA
-    /////////////////////////
-    private static final String CREATE_TABLE_BALANCEDATA = "create table " + BalanceData.BALANCEDATA_TABLE_NAME +
-            "(" + BalanceData.BALANCEDATA_COLUMN_ID + " integer primary key autoincrement, " +
-            BalanceData.BALANCEDATA_COLUMN_DUE_DATE +" text," +
-            BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE +" text," +
-            BalanceData.BALANCEDATA_COLUMN_VALUE + " double," +
-            BalanceData.BALANCEDATA_COLUMN_CATEGORY + " integer," +
-            BalanceData.BALANCEDATA_COLUMN_DESCRIPTION + " text," +
-            BalanceData.BALANCEDATA_COLUMN_STATUS + " integer," +
-            BalanceData.BALANCEDATA_COLUMN_TIMESTAMP + " text)";
-
-    private static final String DROP_TABLE_BALANCEDATA = "DROP TABLE IF EXISTS " + BalanceData.BALANCEDATA_TABLE_NAME;
-
-    //////////////////////////
-    // TABLE BALANCE DATA RECURRENT
-    /////////////////////////
-    private static final String CREATE_TABLE_BALANCEDATAREC = "create table " + BalanceData.BALANCEDATAREC_TABLE_NAME +
-            "(" + BalanceData.BALANCEDATAREC_COLUMN_ID + " integer primary key autoincrement, " +
-            BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE +" date," +
-            BalanceData.BALANCEDATAREC_COLUMN_VALUE + " double," +
-            BalanceData.BALANCEDATAREC_COLUMN_CATEGORY + " integer," +
-            BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION + " text," +
-            BalanceData.BALANCEDATAREC_COLUMN_PERIOD + " integer)";
-
-    private static final String DROP_TABLE_BALANCEDATAREC = "DROP TABLE IF EXISTS " + BalanceData.BALANCEDATAREC_TABLE_NAME;
-
-
-    public DBHelper(Context context) {
-
-        super(context, DATABASE_NAME , null, 1);
-        ArrayList<Category> myDefaultCategories = new ArrayList<>();
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        //* Table Category*/
-        db.execSQL(CREATE_TABLE_CATEGORY);
-        insertDefaultCategories(db);
-        //* Table Balance Data*/
-        db.execSQL(CREATE_TABLE_BALANCEDATA);
-        //* Table Balance Data Recurrent*/
-        db.execSQL(CREATE_TABLE_BALANCEDATAREC);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //Table Category
-        db.execSQL(DROP_TABLE_CATEGORY);
-        //Table Balance Data
-        db.execSQL(DROP_TABLE_BALANCEDATA);
-        //Table Balance Data Recurrent
-        db.execSQL(DROP_TABLE_BALANCEDATAREC);
-
+public class DBCategory extends DBHelper{
+    public DBCategory(Context context) {
+        super(context);
     }
 
     // Category methods
@@ -124,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
         return true;
     }
-    private boolean insertCategory (SQLiteDatabase db , Category theCat) {
+    static private boolean insertCategory (SQLiteDatabase db , Category theCat) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, theCat.getName());
@@ -135,7 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean insertDefaultCategories(SQLiteDatabase theDataBase){
+   static public boolean insertDefaultCategories(SQLiteDatabase theDataBase){
 
         insertCategory(theDataBase,Category.DB_CAT_HOUSING);
         insertCategory(theDataBase,Category.DB_CAT_FOOD);
@@ -158,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param id The id of the Category to retrieve its data
      * @return The Cursor wirh the required Data
      */
-    public Cursor getCategoryData(int id) {
+    public Cursor getDataCursor(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from category where id="+id+"", null );
         return res;
@@ -169,9 +72,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param id The id of the Category to retrieve its data
      * @return The Category with the required Data
      */
-    public Category getCategory(int id) {
+    public Category get(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor rs =  getCategoryData(id);
+        Cursor rs =  getDataCursor(id);
         rs.moveToFirst();
         //column values
         Integer theID = rs.getInt(rs.getColumnIndex(Category.CATEGORY_COLUMN_ID));
@@ -191,7 +94,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Return the number of Rows of the Category table
      * @return the number of rows in the Category table
      */
-    public int getCategoryRows(){
+    public int getRows(){
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, Category.CATEGORY_TABLE_NAME);
         return numRows;
@@ -203,7 +106,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param theCategoryName
      * @return The Category IKD
      */
-    public int getCategoryID(String theCategoryName){
+    public int getID(String theCategoryName){
         int theID = Category.UNKNOWN;
         SQLiteDatabase db = this.getReadableDatabase();
         String findNameSQL = "select * from category where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
@@ -225,7 +128,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param operation The operation
      * @return true on success
      */
-    public boolean updateCategory (Integer id, String name, String description, Integer operation) {
+    public boolean update (Integer id, String name, String description, Integer operation) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
@@ -240,7 +143,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param id The id of the category to delete
      * @return
      */
-    public Integer deleteCategory (Integer id) {
+    public Integer delete (Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(Category.CATEGORY_TABLE_NAME,
                 "id = ? ",
@@ -251,7 +154,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Return a List with all categories in the database
      * @return The List<Category>
      */
-    public ArrayList<Category> getAllCategories() {
+    public ArrayList<Category> getAllArray() {
         ArrayList<Category> array_list = new ArrayList<Category>();
 
         // Select All Query
@@ -282,7 +185,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Return a list with the names of all categories in the database
      * @return
      */
-    public ArrayList<String>getAllCategoryNames(){
+    public ArrayList<String>getAllNamesArray(){
         ArrayList<String> array_list = new ArrayList<String>();
 
         // Select All Query
@@ -310,7 +213,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param db
      * @return
      */
-    public Cursor getAllCategoriesCursor(SQLiteDatabase db){
+    public Cursor getAllCursor(SQLiteDatabase db){
         //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
         //        Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
@@ -329,7 +232,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param db
      * @return
      */
-    public Cursor getIncomeCategoriesCursor(SQLiteDatabase db){
+    public Cursor getIncomesCursor(SQLiteDatabase db){
         //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
         //        Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
@@ -348,7 +251,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param db
      * @return
      */
-    public Cursor getOutcomeCategoriesCursor(SQLiteDatabase db){
+    public Cursor getOutcomesCursor(SQLiteDatabase db){
         //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
         //        Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
@@ -367,7 +270,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param db
      * @return
      */
-    public Cursor getInformativeCategoriesCursor(SQLiteDatabase db){
+    public Cursor getInformativesCursor(SQLiteDatabase db){
         //String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
         //        Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
@@ -381,80 +284,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 ////////////////   END CATEGORY METHODS /////////////////////
-    ///////////    START BALANCE DATA METHODS ///////////////
-
-// The following mwethos are to deal with the Balance Data Table
-    /*
-public boolean insertBalanceData (Integer , String description, Integer operation) {
-    SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
-    contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
-    contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
-    db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
-    return true;
-}
-*/
-
-    public boolean insertBalanceData(BalanceData theData){
-        SQLiteDatabase db = this.getWritableDatabase();
-        return insertBalanceData(db, theData);
-
-    }
-
-    private boolean insertBalanceData (SQLiteDatabase db , BalanceData theData) {
-        Long result;
-        Log.i("DATABASE_OPERATION", Double.toString(theData.getValue()));
-Log.i("DATABASE_OPER",theData.getCategory().getName());
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory().getID());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, getNow());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
-        result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
-        if (result > -1 ) return true;
-        else return false;
-    }
 
 
-    /**
-     * This method will return the data corresponding to the selected id
-     * @param id The id of the Balance Data to retrieve its data
-     * @return The Cursor wirh the required Data
-     */
-    public Cursor getBalanceDataData(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from balanceData where id="+id+"", null );
-        return res;
-    }
 
-    /**
-     * Return the number of Rows of the Balance Data table
-     * @return the number of rows in the Balance Data table
-     */
-    public int getBalDataRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, BalanceData.BALANCEDATA_TABLE_NAME);
-        return numRows;
-    }
-
-    public boolean updateBalanceData (Integer id, BalanceData theData) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS,theData.getStatus());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory().getID());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, getNow());
-        db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
-        return true;
-    }
-    /////////      END BALANCE DATA METHODS  ///////////////
 
 }

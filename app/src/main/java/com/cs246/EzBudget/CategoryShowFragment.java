@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 
-public class TVShowFragment extends DialogFragment {
+public class CategoryShowFragment extends DialogFragment {
 
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
@@ -56,21 +57,21 @@ public class TVShowFragment extends DialogFragment {
         myGetIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_INC, RecyclerViewHolder.LAYOUT_TWO,this);
+                //myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,CategoryShowFragment.this.getActivity(),  BackGroundCategory.CAT_INC, RecyclerViewHolder.LAYOUT_TWO,this);
                 myBackGroundCat.execute();
             }
         });
         myGetOutcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_OUT, RecyclerViewHolder.LAYOUT_TWO,this).execute();
+                //new BackGroundCategory(myRecyclerView,myProgress,CategoryShowFragment.this.getActivity(),  BackGroundCategory.CAT_OUT, RecyclerViewHolder.LAYOUT_TWO,this).execute();
                 myBackGroundCat.execute();
             }
         });
         myGetInformative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //new BackGroundCategory(myRecyclerView,myProgress,TVShowFragment.this.getActivity(),  BackGroundCategory.CAT_INFO, RecyclerViewHolder.LAYOUT_TWO, this).execute();
+                //new BackGroundCategory(myRecyclerView,myProgress,CategoryShowFragment.this.getActivity(),  BackGroundCategory.CAT_INFO, RecyclerViewHolder.LAYOUT_TWO, this).execute();
                 myBackGroundCat.execute();
             }
         });
