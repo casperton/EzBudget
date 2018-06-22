@@ -17,20 +17,7 @@ public class DBBalanceData extends DBHelper{
         super(context);
     }
 
-    ///////////    START BALANCE DATA METHODS ///////////////
 
-// The following mwethos are to deal with the Balance Data Table
-    /*
-public boolean insertBalanceData (Integer , String description, Integer operation) {
-    SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
-    contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
-    contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
-    db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
-    return true;
-}
-*/
 
     public boolean insert(BalanceData theData){
         SQLiteDatabase db = this.getWritableDatabase();

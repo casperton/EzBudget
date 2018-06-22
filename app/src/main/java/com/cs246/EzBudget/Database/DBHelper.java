@@ -10,6 +10,7 @@ import android.icu.util.Calendar;
 import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBCategory;
 
@@ -86,6 +87,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DROP_TABLE_BALANCEDATAREC = "DROP TABLE IF EXISTS " + BalanceData.BALANCEDATAREC_TABLE_NAME;
 
+    //////////////////////////
+    // TABLE BALANCE VIEW
+    /////////////////////////
+    private static final String CREATE_TABLE_BALANCEVIEW = "create table " + BalanceView.BALANCEVIEW_TABLE_NAME +
+            "(" + BalanceView.BALANCEVIEW_COLUMN_ID + " integer primary key autoincrement, " +
+            BalanceView.BALANCEVIEW_COLUMN_INI_DATE + " date," +
+            BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE + " date," +
+            BalanceView.BALANCEVIEW_COLUMN_KEY_DATE + " date," +
+            BalanceView.BALANCEVIEW_COLUMN_END_BALANCE + " double," +
+            BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION + " text)";
+
+    private static final String DROP_TABLE_BALANCEVIEW = "DROP TABLE IF EXISTS " + BalanceView.BALANCEVIEW_TABLE_NAME;
+
 
     public DBHelper(Context context) {
 
@@ -103,6 +117,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_BALANCEDATA);
         //* Table Balance Data Recurrent*/
         db.execSQL(CREATE_TABLE_BALANCEDATAREC);
+        //* Table Balance View*/
+        db.execSQL(CREATE_TABLE_BALANCEVIEW);
+
 
     }
 
@@ -114,6 +131,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE_BALANCEDATA);
         //Table Balance Data Recurrent
         db.execSQL(DROP_TABLE_BALANCEDATAREC);
+        //Table Balance View
+        db.execSQL(DROP_TABLE_BALANCEVIEW);
 
     }
 

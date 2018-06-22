@@ -3,10 +3,22 @@ package com.cs246.EzBudget;
 import java.util.Date;
 
 public class BalanceView{
-    private Date initial_date;
-    private Date final_date;
-    private Date key_date;
-    private String description;
+
+    /**
+     * FIELDS FOR DATABASE DESCRIPTION
+     */
+    public static final String BALANCEVIEW_TABLE_NAME = "balanceView";
+    public static final String BALANCEVIEW_COLUMN_ID = "id";
+    public static final String BALANCEVIEW_COLUMN_INI_DATE = "initialDate";
+    public static final String BALANCEVIEW_COLUMN_FINAL_DATE = "finalDate";
+    public static final String BALANCEVIEW_COLUMN_KEY_DATE = "finalDate";
+    public static final String BALANCEVIEW_COLUMN_DESCRIPTION = "description";
+    public static final String BALANCEVIEW_COLUMN_END_BALANCE = "finalBalance";
+
+    private Date myInitialDate;
+    private Date myFinalDate;
+    private Date myKeyDate;
+    private String myDescription;
     private double myEndBalance;
     private Balance myBalance;
 
@@ -14,43 +26,46 @@ public class BalanceView{
 
     }
 
-    private void setInitial_date(Date _date) {
+    public void setInitialDate(Date _date) {
 
     }
 
-    private Date getInitial_date() {
+    public String getInitialDate() {
+        String date = "";
+        return date;
+    }
+
+    public void setFinalDate(Date _date) {
+
+    }
+
+    public Date getFinalDate() {
         return null;
     }
 
-    private void setFinal_date(Date _date) {
+    public void setKeyDate(Date _date) {
 
     }
 
-    private Date getFinal_date() {
+    public String getKeyDate() {
+
+        String date = "";
+        return date;
+    }
+
+    public void setDescription(String _description){
+
+    }
+
+    public String getDescription() {
         return null;
     }
 
-    private void setKey_date(Date _date) {
+    public void setEndBalance(double _balance) {
 
     }
 
-    private Date getKey_date() {
-        return null;
-    }
-
-    private void setDescription(String _description){
-
-    }
-
-    private String getDescription() {
-        return null;
-    }
-
-    private void setEndBalance(double _balance) {
-
-    }
-
-    private double getMyEndBalance() {
+    public double getEndBalance() {
         return 0;
     }
 
@@ -58,15 +73,8 @@ public class BalanceView{
 
     }
 
-    public Date getInitialDate() {
+    public String getEndDate() {
         return null;
     }
 
-    public Date getEndDate() {
-        return null;
-    }
-
-    public Date getKeyDate() {
-        return null;
-    }
 }

@@ -45,7 +45,8 @@ public class DBBalanceDataRec extends DBHelper{
      */
     public Cursor getBalanceDataData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from balanceDataRec where id="+id+"", null );
+        String query = "select * from "+BalanceData.BALANCEDATAREC_TABLE_NAME+" where id="+id+"";
+        Cursor res =  db.rawQuery( query, null );
         return res;
     }
 
