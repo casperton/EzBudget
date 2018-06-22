@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cs246.EzBudget.R;
-import com.cs246.EzBudget.mRecycler.MyAdapter;
+//import com.cs246.EzBudget.mRecycler.MyAdapter;
 
 
 /**
@@ -40,7 +40,7 @@ public class InterPlanetary extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //ADAPTER
-        rv.setAdapter(new MyAdapter(getActivity(),spacecrafts));
+        //rv.setAdapter(new MyAdapter(getActivity(),spacecrafts));
 
 
 
