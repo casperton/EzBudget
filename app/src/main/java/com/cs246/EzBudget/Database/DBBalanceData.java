@@ -123,8 +123,21 @@ public class DBBalanceData extends DBHelper{
         Cursor cursor;
         //return cursor;
         String[] Projections = getProjections();
-        //Todo: find the correct query selection to get all incomes
-        cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,BalanceData.BALANCEDATA_COLUMN_CATEGORY + " = "+ (OPERATION.CREDIT).toString(),null,
+        //Todo: check if this is the correct query selection to get all incomes
+        /* “inner” join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+        String theTableArg = Category.CATEGORY_TABLE_NAME +
+                " inner join " + BalanceData.BALANCEDATA_TABLE_NAME +
+                " on " +Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+
+        String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
+        cursor = db.query(theTableArg,Projections,theWhere,null,
                 null,null,null);
         return cursor;
     }
@@ -139,9 +152,16 @@ public class DBBalanceData extends DBHelper{
         Cursor cursor;
         //return cursor;
         String[] Projections = getProjections();
-        //Todo: find the correct query selection to get all incomes
-        cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,BalanceData.BALANCEDATA_COLUMN_CATEGORY + " = "+ (OPERATION.DEBIT).toString(),null,
+        //Todo: check if this is the correct query selection to get outcomes
+
+        String theTableArg = Category.CATEGORY_TABLE_NAME +
+                " inner join " + BalanceData.BALANCEDATA_TABLE_NAME +
+                " on " +Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+
+        String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
+        cursor = db.query(theTableArg,Projections,theWhere,null,
                 null,null,null);
+
         return cursor;
     }
     
