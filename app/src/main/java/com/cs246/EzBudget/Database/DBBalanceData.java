@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.OPERATION;
 
 /**
  * Class to Handle the Table BalanceData of the Database
@@ -78,5 +80,70 @@ public class DBBalanceData extends DBHelper{
         db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
+
+    /**
+     * Return a Cursor with all BalanceDatas in the database
+     * @param db
+     * @return
+     */
+    public Cursor getAllCursor(SQLiteDatabase db){
+       
+        Cursor cursor;
+        //return cursor;
+        String[] Projections = {BalanceData.BALANCEDATA_COLUMN_ID,
+                BalanceData.BALANCEDATA_COLUMN_CATEGORY,
+                BalanceData.BALANCEDATA_COLUMN_DESCRIPTION,
+                BalanceData.BALANCEDATA_COLUMN_DUE_DATE,
+                BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,
+                BalanceData.BALANCEDATA_COLUMN_STATUS,
+                BalanceData.BALANCEDATA_COLUMN_TIMESTAMP};
+        cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,null,null,
+                null,null,null);
+        return cursor;
+    }
+
+    private String[] getProjections(){
+        String[] Projections = {BalanceData.BALANCEDATA_COLUMN_ID,
+                BalanceData.BALANCEDATA_COLUMN_CATEGORY,
+                BalanceData.BALANCEDATA_COLUMN_DESCRIPTION,
+                BalanceData.BALANCEDATA_COLUMN_DUE_DATE,
+                BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,
+                BalanceData.BALANCEDATA_COLUMN_STATUS,
+                BalanceData.BALANCEDATA_COLUMN_TIMESTAMP};
+        return Projections;
+    }
+
+    /**
+     * Return a Cursor with all Income BalanceDatas in the database
+     * @param db
+     * @return
+     */
+    public Cursor getIncomesCursor(SQLiteDatabase db){
+
+        Cursor cursor;
+        //return cursor;
+        String[] Projections = getProjections();
+        //Todo: find the correct query selection to get all incomes
+        cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,BalanceData.BALANCEDATA_COLUMN_CATEGORY + " = "+ (OPERATION.CREDIT).toString(),null,
+                null,null,null);
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Outcomes BalanceDatas in the database
+     * @param db
+     * @return
+     */
+    public Cursor getOutcomesCursor(SQLiteDatabase db){
+
+        Cursor cursor;
+        //return cursor;
+        String[] Projections = getProjections();
+        //Todo: find the correct query selection to get all incomes
+        cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,BalanceData.BALANCEDATA_COLUMN_CATEGORY + " = "+ (OPERATION.DEBIT).toString(),null,
+                null,null,null);
+        return cursor;
+    }
+    
     /////////      END BALANCE DATA METHODS  ///////////////
 }

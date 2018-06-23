@@ -1,5 +1,7 @@
 package com.cs246.EzBudget;
 
+import com.cs246.EzBudget.Database.DBHelper;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,8 +11,7 @@ import java.util.Locale;
 public class BalanceData {
 
 
-    public static final String DATE_FORMAT = "mm/dd/yyyy";
-    public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
     /**
      * FIELDS FOR DATABASE DESCRIPTION
      */
@@ -49,6 +50,7 @@ public class BalanceData {
     private Category myCategory;
     private boolean isRecurrent;
     private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
+    private int myID; //the ID of this cat in the database
 
     /**
 
@@ -79,6 +81,15 @@ public class BalanceData {
     // Accessor methods
     //
 
+
+    public void setID(int theID) {
+        this.myID = theID;
+    }
+
+    public int getID() {
+        return myID;
+    }
+
     /**
      * Get the period this balance data mus repeat
      * @return
@@ -102,7 +113,7 @@ public class BalanceData {
     public void setPaymentDate (String newVar) {
 
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -123,7 +134,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
 
         if(myPaymentDate != null) {
             // Using DateFormat format method we can create a string
@@ -141,7 +152,7 @@ public class BalanceData {
     public void setDate (String newVar) {
 
        if (! newVar.isEmpty()) {
-           DateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
+           DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
            Date date = null;
            try {
                date = format.parse(newVar);
@@ -161,7 +172,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
 
         if(myDate != null) {
             // Using DateFormat format method we can create a string
@@ -199,7 +210,7 @@ public class BalanceData {
      * Get the value of myValue
      * @return the value of myValue
      */
-    public double getValue () {
+    public Double getValue () {
         return myValue;
     }
 
@@ -211,6 +222,14 @@ public class BalanceData {
         myCategory = newVar;
     }
 
+    /**
+     * Set the Category. Create a Category by finding it in the database.
+     * @param theID the id of the category to set
+     */
+    public void setCategoryByID(int theID){
+
+
+    }
     /**
      * Get the value of myCategory
      * @return the value of myCategory
