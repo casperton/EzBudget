@@ -14,17 +14,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
+    public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May",
+                            "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     public String date_pref;
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
@@ -46,6 +51,28 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Print 3 month range title
+        TextView textView = findViewById(R.id.textViewMonthRange);
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        //int monthBegin = calendar.get(Calendar.MONTH);
+        int monthBegin = 10;
+        int yearBegin = calendar.get(Calendar.YEAR);
+        int monthEnd = (monthBegin + 2);
+        int yearEnd = yearBegin;
+        if (monthEnd > 11) {
+            monthEnd = (monthEnd - 12);
+            yearEnd++;
+        }
+
+        String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
+                           MONTHS[monthEnd] + " " + yearEnd;
+        String testDate = "This is a test date range.";
+        textView.setText(dateRange);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
