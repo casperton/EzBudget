@@ -14,7 +14,7 @@ import com.cs246.EzBudget.R;
 
 
 /**
- * THIS IS JUST A TEST FRAGMENT. I WILL DETETE IT SOON(SALVATORE)
+ * Created by Oclemy on 9/18/2016.
  */
 public class InterPlanetary extends Fragment {
 

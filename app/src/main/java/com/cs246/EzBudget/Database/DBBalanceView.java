@@ -31,7 +31,7 @@ public class DBBalanceView extends DBHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDate());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
-        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDate());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getEndDate());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDate());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_END_BALANCE, theData.getEndBalance());
         result = db.insert(BalanceView.BALANCEVIEW_TABLE_NAME, null, contentValues);
@@ -68,7 +68,7 @@ public class DBBalanceView extends DBHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDate());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
-        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE,theData.getFinalDate());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE,theData.getEndDate());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE,theData.getKeyDate());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_END_BALANCE,theData.getEndBalance());
         db.update(BalanceView.BALANCEVIEW_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );

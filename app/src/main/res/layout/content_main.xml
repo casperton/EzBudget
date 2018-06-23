@@ -50,7 +50,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.Guideline
-            android:id="@+id/guidelineLeft"
+            android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -59,7 +59,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <android.support.constraint.Guideline
-            android:id="@+id/guidelineRight"
+            android:id="@+id/guideline3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -80,5 +80,12 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewMonthRange" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="26dp" />
 
 </android.support.constraint.ConstraintLayout>

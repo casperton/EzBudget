@@ -43,7 +43,7 @@ public class DBBalanceDataRec extends DBHelper{
      * @param id The id of the Balance Data to retrieve its data
      * @return The Cursor wirh the required Data
      */
-    public Cursor getDataCursor(int id) {
+    public Cursor getBalanceDataData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from "+BalanceData.BALANCEDATAREC_TABLE_NAME+" where id="+id+"";
         Cursor res =  db.rawQuery( query, null );
@@ -54,7 +54,7 @@ public class DBBalanceDataRec extends DBHelper{
      * Return the number of Rows of the Balance Data table
      * @return the number of rows in the Balance Data table
      */
-    public int getRows(){
+    public int getBalDataRows(){
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, BalanceData.BALANCEDATAREC_TABLE_NAME);
         return numRows;
