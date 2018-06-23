@@ -58,23 +58,39 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="8dp"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_end="8dp" />
+
+        <ListView
+            android:id="@+id/listview_summary"
+            android:layout_width="319dp"
+            android:layout_height="443dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/text_monthly_summary" />
         <!--
-                <android.support.constraint.Guideline
-                    android:id="@+id/guidelineRight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintGuide_end="8dp" />
-        -->
-                <ListView
+                <com.bayoz.swipemenulistview.SwipeMenuListView
                     android:id="@+id/listview_summary"
-                    android:layout_width="319dp"
-                    android:layout_height="443dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                    app:layout_constraintTop_toBottomOf="@+id/text_monthly_summary" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewMonthRange"
+                />
+        -->
 
-        </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
