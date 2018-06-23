@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.Database.DBCategory;
-import com.cs246.EzBudget.mFragments.CategoryShowFragment;
 import com.cs246.EzBudget.mRecycler.RecyclerCategoryAdapter;
 
 import java.util.ArrayList;

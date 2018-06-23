@@ -15,7 +15,7 @@ import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.DispCategory;
-import com.cs246.EzBudget.mFragments.CategoryShowFragment;
+import com.cs246.EzBudget.CategoryShowFragment;
 
 import java.util.ArrayList;
 

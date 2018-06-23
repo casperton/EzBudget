@@ -20,8 +20,8 @@ import android.widget.TextView;
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
@@ -48,15 +48,16 @@ public class MainActivity extends AppCompatActivity
        // date_pref = sp.getString("date_pref", "");
 
         // Print 3 month range title
-        TextView viewMonthRange = findViewById(R.id.textViewMonthRange);
+/*        TextView viewMonthRange = (TextView) findViewById(R.id.textViewMonthRange);
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int month = calendar.get(Calendar.MONTH);
 
         String dateRange = MONTHS[month] + " - " + MONTHS[month+3];
-        viewMonthRange.setText(dateRange);
-
+        String testDate = "This is a test date range.";
+        viewMonthRange.setText(testDate);
+*/
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

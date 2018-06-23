@@ -1,10 +1,5 @@
 package com.cs246.EzBudget;
 
-import com.cs246.EzBudget.Database.DBHelper;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BalanceView{
@@ -31,68 +26,31 @@ public class BalanceView{
 
     }
 
-    public void setInitialDate(String newVar) {
-        if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            this.myInitialDate = date;
-        }
+    public void setInitialDate(Date _date) {
 
     }
 
     public String getInitialDate() {
-
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-
-        if(this.myInitialDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myInitialDate);
-        }
-        return reportDate;
+        String date = "";
+        return date;
     }
 
+    public void setFinalDate(Date _date) {
 
+    }
 
+    public Date getFinalDate() {
+        return null;
+    }
 
-
-    public void setKeyDate(String newVar) {
-        if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            this.myKeyDate = date;
-        }
+    public void setKeyDate(Date _date) {
 
     }
 
     public String getKeyDate() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-
-        if(this.myKeyDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myKeyDate);
-        }
-        return reportDate;
+        String date = "";
+        return date;
     }
 
     public void setDescription(String _description){
@@ -115,33 +73,8 @@ public class BalanceView{
 
     }
 
-    public void setFinalDate(String newVar) {
-        if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            this.myFinalDate = date;
-        }
-
-    }
-    public String getFinalDate() {
-
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-
-        if(this.myFinalDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myFinalDate);
-        }
-        return reportDate;
+    public String getEndDate() {
+        return null;
     }
 
 }

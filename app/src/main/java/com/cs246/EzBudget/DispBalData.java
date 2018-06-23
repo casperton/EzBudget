@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBCategory;
-import com.cs246.EzBudget.mFragments.CategoryShowFragment;
 
 import java.util.Calendar;
 
