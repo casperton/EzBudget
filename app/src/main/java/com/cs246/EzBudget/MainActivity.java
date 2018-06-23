@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
     ListView listView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +64,16 @@ public class MainActivity extends AppCompatActivity
             monthEnd = (monthEnd - 12);
             yearEnd++;
         }
-
         String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
                            MONTHS[monthEnd] + " " + yearEnd;
-        String testDate = "This is a test date range.";
         textView.setText(dateRange);
 
-
-
+        // floating action button to add balance
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "This will eventually add a bill/income", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -100,7 +95,6 @@ public class MainActivity extends AppCompatActivity
 
         listView = findViewById(R.id.listview_summary);
         listView.setAdapter(arrayAdapter);
-
     }
 
     //CLOSE DRAWER WHEN BACK BTN IS CLICKED,IF OPEN
