@@ -1,6 +1,8 @@
 package com.cs246.EzBudget;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
@@ -33,8 +39,8 @@ public class MainActivity extends AppCompatActivity
     public String date_pref;
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
-    ListView listView;
-
+    //ListView listView;
+    SwipeMenuListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +102,69 @@ public class MainActivity extends AppCompatActivity
 
         bills = new ArrayList<>();
         bills.add("Phone bill: $65");
+        bills.add("Power bill: $75");
+        bills.add("Car payment: $330");
+        bills.add("Rent: $850");
+
         arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, bills);
 
         listView = findViewById(R.id.listview_summary);
         listView.setAdapter(arrayAdapter);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "open" item
+                SwipeMenuItem openItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+                        0xCE)));
+                // set item width
+                openItem.setWidth(170);
+                // set item title
+                openItem.setTitle("Open");
+                // set item title fontsize
+                openItem.setTitleSize(18);
+                // set item title font color
+                openItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(openItem);
+
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(170);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_done);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+
+        // set creator
+        listView.setMenuCreator(creator);
+
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        // open
+                        break;
+                    case 1:
+                        // delete
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
 
     }
 
@@ -159,4 +224,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
