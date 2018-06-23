@@ -14,22 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
-    public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May",
-                            "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     public String date_pref;
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
@@ -46,18 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         // Load date format
        // date_pref = sp.getString("date_pref", "");
-
-        // Print 3 month range title
-/*        TextView viewMonthRange = (TextView) findViewById(R.id.textViewMonthRange);
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH);
-
-        String dateRange = MONTHS[month] + " - " + MONTHS[month+3];
-        String testDate = "This is a test date range.";
-        viewMonthRange.setText(testDate);
-*/
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

@@ -26,12 +26,15 @@ import java.util.Date;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    public static final String DATE_FORMAT = "mm/dd/yyyy";
+    public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    public static final String DATABASE_NAME = "EzBudgetDB.db";
 
     static public String getNow() {
         //NOW
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(BalanceData.TIMESTAMP_FORMAT);
+        DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -42,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return reportDate;
 
     }
-    public static final String DATABASE_NAME = "EzBudgetDB.db";
+
 
     //ArrayList<Category> myDefaultCategories;
     //////////////////////////
