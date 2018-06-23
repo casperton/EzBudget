@@ -47,22 +47,32 @@ public class MainActivity extends AppCompatActivity
         // Load date format
        // date_pref = sp.getString("date_pref", "");
 
-        // Print 3 month range title
-/*        TextView viewMonthRange = (TextView) findViewById(R.id.textViewMonthRange);
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH);
-
-        String dateRange = MONTHS[month] + " - " + MONTHS[month+3];
-        String testDate = "This is a test date range.";
-        viewMonthRange.setText(testDate);
-*/
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Print 3 month range title
+        TextView textView = findViewById(R.id.textViewMonthRange);
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        //int monthBegin = calendar.get(Calendar.MONTH);
+        int monthBegin = 10;
+        int yearBegin = calendar.get(Calendar.YEAR);
+        int monthEnd = (monthBegin + 2);
+        int yearEnd = yearBegin;
+        if (monthEnd > 11) {
+            monthEnd = (monthEnd - 12);
+            yearEnd++;
+        }
+
+        String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
+                           MONTHS[monthEnd] + " " + yearEnd;
+        String testDate = "This is a test date range.";
+        textView.setText(dateRange);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
