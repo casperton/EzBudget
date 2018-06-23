@@ -18,11 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
+/*
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+*/
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity
     public String date_pref;
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
-    //ListView listView;
-    SwipeMenuListView listView;
+    ListView listView;
+    //SwipeMenuListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 
         listView = findViewById(R.id.listview_summary);
         listView.setAdapter(arrayAdapter);
-
+/*
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-
+*/
     }
 
     //CLOSE DRAWER WHEN BACK BTN IS CLICKED,IF OPEN
