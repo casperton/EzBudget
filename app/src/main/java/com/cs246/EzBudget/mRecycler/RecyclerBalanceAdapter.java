@@ -11,29 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
-import com.cs246.EzBudget.DispCategory;
-import com.cs246.EzBudget.mFragments.CategoryShowFragment;
+
 
 import java.util.ArrayList;
 
 /**
  * This class is the list View to show the categories in the screen
  */
-public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
 
-    private ArrayList<Category> myCategoryList = new ArrayList<>();
+    private ArrayList<BalanceData> myBalanceDataList = new ArrayList<>();
     private Context myContext;
     private int myLayout;
-    private CategoryShowFragment teste;
-    public RecyclerCategoryAdapter(ArrayList<Category> categoryList, Context theContext, int theLayOut, CategoryShowFragment theFrag) {
-        this.myCategoryList = categoryList;
+
+    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, int theLayOut) {
+        this.myBalanceDataList = BalanceDataList;
         this.myContext = theContext;
         myLayout = theLayOut;
-        teste = theFrag;
+
     }
 
     // Initialize View
@@ -49,9 +48,9 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
 
-        holder.name.setText(myCategoryList.get(position).getName());
-        //holder.id.setText(Integer.toString(myCategoryList.get(position).getID()));
-        int oper = myCategoryList.get(position).getOperation();
+        holder.name.setText(myBalanceDataList.get(position).getValue().toString());
+        //holder.id.setText(Integer.toString(myBalanceDataList.get(position).getID()));
+        int oper = myBalanceDataList.get(position).getOperation();
         if (oper == OPERATION.CREDIT)
             holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_add_circle_green_24dp,myContext.getTheme()));
         else if (oper == OPERATION.DEBIT)
@@ -68,44 +67,49 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
         else
             holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
         if (holder.getLayOut() == RecyclerViewHolder.LAYOUT_ONE) {
+            /*
             holder.setItemClickListener(new RecyclerClickListener() {
                 @Override
                 public void OnClick(View view, int position, boolean isLongClick) {
 
-                    int id_To_Search = myCategoryList.get(position).getID();
+                    int id_To_Search = myBalanceDataList.get(position).getID();
 
                     Bundle dataBundle = new Bundle();
                     dataBundle.putInt("id", id_To_Search);
 
-                    Intent intent = new Intent(myContext.getApplicationContext(), DispCategory.class);
+                    Intent intent = new Intent(myContext.getApplicationContext(), DispBalanceData.class);
                     intent.putExtras(dataBundle);
                     myContext.startActivity(intent);
                 }
 
             });
+            */
         }
         if (holder.getLayOut() == RecyclerViewHolder.LAYOUT_TWO) {
+            /*
             holder.setItemClickListener(new RecyclerClickListener() {
+
                 @Override
                 public void OnClick(View view, int position, boolean isLongClick) {
 
-                    String id_To_Search = myCategoryList.get(position).getName();
+                    String id_To_Search = myBalanceDataList.get(position).getName();
 
 
-                    EditText myCat = (EditText) teste.getActivity().getWindow().getDecorView().getRootView().findViewById(R.id.editBalDataCategory);
-                        myCat.setText(id_To_Search);
+                    EditText myCat = (EditText) teste.getActivity().getWindow().getDecorView().getRootView().findViewById(R.id.editBalDataBalanceData);
+                    myCat.setText(id_To_Search);
 
-                        //Todo: Close the fragment
+                    //Todo: Close the fragment
 
                 }
 
             });
+        */
         }
     }
 
     @Override
     public int getItemCount() {
-        return myCategoryList.size();
+        return myBalanceDataList.size();
     }
 
 }
