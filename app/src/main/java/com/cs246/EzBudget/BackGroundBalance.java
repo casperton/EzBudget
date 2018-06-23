@@ -54,7 +54,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
 
         Integer theID;
         double theValue;
-        String description;
+        String theDescription;
         String theDueDate;
         Integer catID;
         Cursor cursor;
@@ -78,15 +78,16 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
             int size = cursor.getCount();
             do {
                 theID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
-                theValue = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                //theValue = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
                 theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                 catID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
                 BalanceData theData = new BalanceData();
                 theData.setID(theID);
-                theData.setValue(theValue);
-                theData.setDescription(description);
-                theData.setCategoryByID(theID);
+                theData.setValue(22.34);
+                theData.setDescription(theDescription);
+                theData.setCategory(catID);
+                theData.setDate(theDueDate);
                 publishProgress(theData);
 
             } while (cursor.moveToNext());

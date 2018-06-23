@@ -29,10 +29,8 @@ public class DBBalanceData extends DBHelper{
 
     private boolean insert (SQLiteDatabase db , BalanceData theData) {
         Long result;
-        Log.i("DATABASE_OPERATION", Double.toString(theData.getValue()));
-        Log.i("DATABASE_OPER",theData.getCategory().getName());
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory().getID());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDate());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDate());
@@ -75,7 +73,7 @@ public class DBBalanceData extends DBHelper{
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDate());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDate());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS,theData.getStatus());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory().getID());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, getNow());
         db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;

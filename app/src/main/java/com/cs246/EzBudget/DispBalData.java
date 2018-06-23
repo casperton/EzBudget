@@ -233,7 +233,7 @@ public class DispBalData extends AppCompatActivity {
         BalanceData theData = new BalanceData();
         theData.setValue(theValue);
         theData.setDescription(theDesc);
-        theData.setCategory(mydb.get(theCategoryID));
+        theData.setCategory(theCategoryID);
         theData.setDate(theDueDate);
         theData.setPaymentDate(thePaymentDate);
         theData.setStatus(theStatus);

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 
+import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.mFragments.InterPlanetary;
+import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +31,12 @@ public class MainActivity extends AppCompatActivity
 
     public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
     public String date_pref;
-    private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
-    private ArrayAdapter<String> arrayAdapter;
-    ListView listView;
 
-
+    private RecyclerView myRecyclerView;
+    RecyclerView.LayoutManager myLayoutManager;
+    BackGroundBalance myBackGroundData;
+    DBHelper mydb;
+    private ProgressBar myProgress=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Test for shared preferences to store date format
@@ -67,12 +73,20 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        bills = new ArrayList<>();
-        bills.add("Phone bill: $65");
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, bills);
+        //RECICLERVIEW FOR THE BILLS
+        myRecyclerView= (RecyclerView) findViewById(R.id.list_summary);
+        myLayoutManager = new LinearLayoutManager(this);
+        myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        myRecyclerView.setHasFixedSize(true);
 
-        listView = findViewById(R.id.listview_summary);
-        listView.setAdapter(arrayAdapter);
+        myProgress = (ProgressBar) findViewById(R.id.myBarMain);
+        myProgress.setVisibility(View.INVISIBLE);
+        mydb = new DBHelper(this);
+        myBackGroundData = new BackGroundBalance(myRecyclerView,myProgress,this,  BackGroundBalance.BAL_ALL, RecyclerViewHolder.LAYOUT_TWO);
+
+        // THIS LINE WILL SHOW THE BILLS ON THE SCREEN
+        myBackGroundData.execute();
+
 
     }
 

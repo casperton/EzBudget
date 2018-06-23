@@ -1,5 +1,6 @@
 package com.cs246.EzBudget;
 
+import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 
 import java.text.DateFormat;
@@ -47,7 +48,7 @@ public class BalanceData {
     private Date myPaymentDate; //the date of payment if it is a bill
     private String myDescription;
     private double myValue;
-    private Category myCategory;
+    private int myCategoryID;
     private boolean isRecurrent;
     private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
     private int myID; //the ID of this cat in the database
@@ -218,24 +219,17 @@ public class BalanceData {
      * Set the value of myCategory
      * @param newVar the new value of myCategory
      */
-    public void setCategory (Category newVar) {
-        myCategory = newVar;
+    public void setCategory (int newVar) {
+        myCategoryID = newVar;
     }
 
-    /**
-     * Set the Category. Create a Category by finding it in the database.
-     * @param theID the id of the category to set
-     */
-    public void setCategoryByID(int theID){
 
-
-    }
     /**
      * Get the value of myCategory
      * @return the value of myCategory
      */
-    public Category getCategory () {
-        return myCategory;
+    public int getCategory () {
+        return myCategoryID;
     }
 
     /**
@@ -289,29 +283,6 @@ public class BalanceData {
     //
     // Other methods
     //
-
-
-
-    /**
-     * Return the type of operation:
-     * 0 = credit opration
-     * 1 = debit operation
-     * 2 = just informative (nor credit or debit)
-     * @return       int
-     */
-    public Integer getOperation()
-    {
-        return myCategory.getOperation();
-    }
-
-    public boolean isCredit() {
-        return myCategory.isCredit();
-    }
-
-    public boolean isDebit(){
-        return myCategory.isDebit();
-    }
-
 
     /**
      * Set this balance data to be Daily recurrent

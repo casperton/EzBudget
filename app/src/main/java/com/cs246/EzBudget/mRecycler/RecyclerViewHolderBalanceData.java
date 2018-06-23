@@ -6,18 +6,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs246.EzBudget.R;
-import com.cs246.EzBudget.mRecycler.RecyclerClickListener;
+
 
 
 /**
  * The RecyclerView Holder for Category
  * Defined how the line will be
  */
-public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-    TextView name;
-    //TextView id;
-    ImageView icon;
+    TextView myDueDate;
+    TextView myValue;
+    TextView myDescription;
+
     private RecyclerClickListener myItemClickListener;
     private int myLayOut;
     public final static int LAYOUT_ONE = 1;
@@ -25,11 +26,12 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
 
 
 
-    public RecyclerViewHolder(View itemView, int LayoutType) {
+    public RecyclerViewHolderBalanceData(View itemView, int LayoutType) {
         super(itemView);
-        //id = (TextView)itemView.findViewById(R.id.textViewCatID);
-        name = (TextView) itemView.findViewById(R.id.textViewCatName);
-        icon = (ImageView) itemView.findViewById(R.id.imgOper);
+
+        this.myDueDate = (TextView) itemView.findViewById(R.id.textViewBDDueDate);
+        this.myValue = (TextView) itemView.findViewById(R.id.textViewBDValue);
+        this.myDescription = (TextView) itemView.findViewById(R.id.textViewBDDescription);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
         myLayOut = LayoutType;

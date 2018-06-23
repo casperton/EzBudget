@@ -26,7 +26,7 @@ public class DBBalanceDataRec extends DBHelper{
     private boolean insert(SQLiteDatabase db , BalanceData theData) {
         Long result;
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theData.getCategory().getID());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theData.getCategory());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theData.getDate());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getValue());
@@ -68,7 +68,7 @@ public class DBBalanceDataRec extends DBHelper{
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,theData.getDate());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD,theData.getRecPeriod());
-        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY,theData.getCategory().getID());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY,theData.getCategory());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP, getNow());
         db.update(BalanceData.BALANCEDATAREC_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
