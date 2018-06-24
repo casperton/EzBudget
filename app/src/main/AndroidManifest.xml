@@ -18,11 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ListCategory" />
         <activity android:name=".DispCategory" />
         <activity android:name=".DispBalData" />
-
+        <activity android:name=".BalanceViewTest"></activity>
     </application>
 
 </manifest>

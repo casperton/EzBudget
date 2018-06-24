@@ -37,7 +37,7 @@ public class ListCategory extends AppCompatActivity {
 
     DBHelper mydb;
     private ProgressBar myProgress=null;
-    private List<String> listCategoryNames;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

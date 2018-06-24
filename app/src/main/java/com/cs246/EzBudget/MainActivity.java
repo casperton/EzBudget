@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity
 
         listView = findViewById(R.id.listview_summary);
         listView.setAdapter(arrayAdapter);
+
+
 /*
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -210,7 +212,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.intergalactic) {
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterGalactic.newInstance()).commit();
+            Intent intent3 = new Intent(getApplicationContext(),BalanceViewTest.class);
+            //intent2.putExtras(dataBundle);
 
+            startActivity(intent3);
         } else if (id == R.id.interuniverse) {
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterUniverse.newInstance()).commit();
 

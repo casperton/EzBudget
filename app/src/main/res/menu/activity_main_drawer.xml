@@ -13,7 +13,7 @@
         <item
             android:id="@+id/intergalactic"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Not Working" />
+            android:title="Balance View Test" />
         <item
             android:id="@+id/interuniverse"
             android:icon="@drawable/ic_menu_manage"
