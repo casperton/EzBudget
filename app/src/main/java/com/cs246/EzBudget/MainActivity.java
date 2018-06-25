@@ -17,13 +17,11 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-/*
+// Swipe menu libraries
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-*/
 import com.cs246.EzBudget.mFragments.InterPlanetary;
 
 import java.util.ArrayList;
@@ -40,8 +38,8 @@ public class MainActivity extends AppCompatActivity
     public String date_pref;
     private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
     private ArrayAdapter<String> arrayAdapter;
-    ListView listView;
-    //SwipeMenuListView listView;
+    //ListView listView;
+    SwipeMenuListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,52 +99,39 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        //  SWIPE MENU FOR BILL ITEMS
+        listView = findViewById(R.id.listview_summary);
+
         bills = new ArrayList<>();
         bills.add("Phone bill: $65");
         bills.add("Power bill: $75");
         bills.add("Car payment: $330");
         bills.add("Rent: $850");
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, bills);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bills);
 
-        listView = findViewById(R.id.listview_summary);
         listView.setAdapter(arrayAdapter);
 
-
-/*
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
             public void create(SwipeMenu menu) {
-                // create "open" item
-                SwipeMenuItem openItem = new SwipeMenuItem(
+                // create "done" item
+                SwipeMenuItem paidItem = new SwipeMenuItem(
                         getApplicationContext());
                 // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
+                paidItem.setBackground(new ColorDrawable(Color.rgb(0x2e,
+                        0x75, 0x25)));
                 // set item width
-                openItem.setWidth(170);
-                // set item title
-                openItem.setTitle("Open");
-                // set item title fontsize
-                openItem.setTitleSize(18);
-                // set item title font color
-                openItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(openItem);
-
-                // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getApplicationContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(170);
+                paidItem.setWidth(180);
+                paidItem.setTitle("Paid");
+                paidItem.setTitleSize(18);
+                paidItem.setTitleColor(Color.WHITE);
                 // set a icon
-                deleteItem.setIcon(R.drawable.ic_done);
+                //paidItem.setIcon(R.drawable.ic_done);
                 // add to menu
-                menu.addMenuItem(deleteItem);
+                menu.addMenuItem(paidItem);
             }
         };
 
@@ -158,17 +143,41 @@ public class MainActivity extends AppCompatActivity
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        // open
-                        break;
-                    case 1:
-                        // delete
+                        // Mark item as paid
+                        bills.remove(index);
+                        arrayAdapter.notifyDataSetChanged();
                         break;
                 }
                 // false : close the menu; true : not close the menu
                 return false;
             }
         });
-*/
+
+        // set SwipeListener
+        listView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+
+            @Override
+            public void onSwipeStart(int position) {
+                // swipe start
+            }
+
+            @Override
+            public void onSwipeEnd(int position) {
+                // swipe end
+            }
+        });
+
+        // set MenuStateChangeListener
+        listView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+            @Override
+            public void onMenuOpen(int position) {
+            }
+
+            @Override
+            public void onMenuClose(int position) {
+            }
+        });
+
     }
 
     //CLOSE DRAWER WHEN BACK BTN IS CLICKED,IF OPEN
