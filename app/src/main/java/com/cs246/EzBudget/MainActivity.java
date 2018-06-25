@@ -99,6 +99,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //MESSAGE TO KIRK
+        // TO GET BILLS CURSOR USE THE METHOD getOutcomesCursor(db)
+        // FROM THE CLASS DBBalanceData
+        //SQLiteDatabase db = mydb.getReadableDatabase();
+        // DBBalanceData theDatabase = new DBBalanceData(context)
+        // cursor theCursor = theDatabase.getOutcomesCursor(db)
+        //
+        //to get incomes use getIncomesCursor(db)
+        // (Salvatore)
+
 
         //  SWIPE MENU FOR BILL ITEMS
         listView = findViewById(R.id.listview_summary);

@@ -17,8 +17,8 @@ public class BalanceData {
      * FIELDS FOR DATABASE DESCRIPTION
      */
     public static final String BALANCEDATA_TABLE_NAME = "balanceData";
-    public static final String BALANCEDATA_COLUMN_ID = "id";
-    public static final String BALANCEDATA_COLUMN_DUE_DATE = "date";
+    public static final String BALANCEDATA_COLUMN_ID = "idBalData";
+    public static final String BALANCEDATA_COLUMN_DUE_DATE = "dueDate";
     public static final String BALANCEDATA_COLUMN_PAYMENT_DATE = "paymentDate";
     public static final String BALANCEDATA_COLUMN_DESCRIPTION = "description";
     public static final String BALANCEDATA_COLUMN_CATEGORY = "idCategory";

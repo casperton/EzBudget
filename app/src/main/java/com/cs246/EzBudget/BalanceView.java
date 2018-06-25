@@ -13,10 +13,10 @@ public class BalanceView{
      * FIELDS FOR DATABASE DESCRIPTION
      */
     public static final String BALANCEVIEW_TABLE_NAME = "balanceView";
-    public static final String BALANCEVIEW_COLUMN_ID = "id";
+    public static final String BALANCEVIEW_COLUMN_ID = "idBalView";
     public static final String BALANCEVIEW_COLUMN_INI_DATE = "initialDate";
     public static final String BALANCEVIEW_COLUMN_FINAL_DATE = "finalDate";
-    public static final String BALANCEVIEW_COLUMN_KEY_DATE = "finalDate";
+    public static final String BALANCEVIEW_COLUMN_KEY_DATE = "keyDate";
     public static final String BALANCEVIEW_COLUMN_DESCRIPTION = "description";
     public static final String BALANCEVIEW_COLUMN_END_BALANCE = "finalBalance";
 

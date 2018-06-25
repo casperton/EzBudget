@@ -27,7 +27,7 @@ public class DBCategory extends DBHelper{
         db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
         return true;
     }
-    static private boolean insertCategory (SQLiteDatabase db , Category theCat) {
+    static public boolean insertCategory (SQLiteDatabase db , Category theCat) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, theCat.getName());
@@ -63,7 +63,8 @@ public class DBCategory extends DBHelper{
      */
     public Cursor getDataCursor(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from category where id="+id+"", null );
+        String theQuery = "select * from category where "+Category.CATEGORY_COLUMN_ID+" = "+id+"";
+        Cursor res =  db.rawQuery( theQuery, null );
         return res;
     }
 
@@ -134,7 +135,8 @@ public class DBCategory extends DBHelper{
         contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
         contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
         contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
-        db.update(Category.CATEGORY_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
+        db.update(Category.CATEGORY_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } );
         return true;
     }
 
@@ -145,8 +147,9 @@ public class DBCategory extends DBHelper{
      */
     public Integer delete (Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
+        String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
         return db.delete(Category.CATEGORY_TABLE_NAME,
-                "id = ? ",
+                theWhere,
                 new String[] { Integer.toString(id) });
     }
 
@@ -168,7 +171,7 @@ public class DBCategory extends DBHelper{
         if (cursor.moveToFirst()) {
             do {
                 Category note = new Category();
-                note.setID(cursor.getInt(cursor.getColumnIndex("id")));
+                note.setID(cursor.getInt(cursor.getColumnIndex(Category.CATEGORY_COLUMN_ID)));
                 note.setName(cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_NAME)));
                 note.setDescription(cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION)));
                 note.setOperation(cursor.getInt(cursor.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION)));

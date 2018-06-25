@@ -130,9 +130,11 @@ join balanceData
 where category.operation = 1
 
          */
-        String theTableArg = Category.CATEGORY_TABLE_NAME +
-                " inner join " + BalanceData.BALANCEDATA_TABLE_NAME +
-                " on " +Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+        //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+        // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+        String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                " inner join " + Category.CATEGORY_TABLE_NAME +
+                " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
 
         String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
         cursor = db.query(theTableArg,Projections,theWhere,null,
@@ -152,9 +154,9 @@ where category.operation = 1
         String[] Projections = getProjections();
         //Todo: check if this is the correct query selection to get outcomes
 
-        String theTableArg = Category.CATEGORY_TABLE_NAME +
-                " inner join " + BalanceData.BALANCEDATA_TABLE_NAME +
-                " on " +Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+        String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                " inner join " + Category.CATEGORY_TABLE_NAME +
+                " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
 
         String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
         cursor = db.query(theTableArg,Projections,theWhere,null,
