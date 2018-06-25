@@ -9,7 +9,7 @@ public class Balance {
      * FIELDS FOR DATABASE DESCRIPTION
      */
     public static final String BALANCE_TABLE_NAME = "balance";
-    public static final String BALANCE_COLUMN_ID = "id";
+    public static final String BALANCE_COLUMN_ID = "idBal";
     public static final String BALANCE_COLUMN_NAME = "name";
     public static final String BALANCE_COLUMN_VIEW = "view_id";
 

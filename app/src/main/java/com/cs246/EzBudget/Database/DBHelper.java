@@ -115,7 +115,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //* Table Category*/
         db.execSQL(CREATE_TABLE_CATEGORY);
-        DBCategory.insertDefaultCategories(db);
+        DBCategory.insertCategory(db,Category.DB_CAT_HOUSING);
+        DBCategory.insertCategory(db,Category.DB_CAT_FOOD);
+        DBCategory.insertCategory(db,Category.DB_CAT_TRANSPORTATION);
+        DBCategory.insertCategory(db,Category.DB_CAT_EDUCATION);
+        DBCategory.insertCategory(db,Category.DB_CAT_UTILITIES);
+        DBCategory.insertCategory(db,Category.DB_CAT_CLOTHING);
+        DBCategory.insertCategory(db,Category.DB_CAT_MEDICAL);
+        DBCategory.insertCategory(db,Category.DB_CAT_INSURANCE);
+        DBCategory.insertCategory(db,Category.DB_CAT_RETIREMENT);
+        DBCategory.insertCategory(db,Category.DB_CAT_SALARY);
+        DBCategory.insertCategory(db,Category.DB_CAT_TAX_REFUNDS);
+        DBCategory.insertCategory(db,Category.DB_CAT_INVESTMENTS);
         //* Table Balance Data*/
         db.execSQL(CREATE_TABLE_BALANCEDATA);
         //* Table Balance Data Recurrent*/

@@ -11,9 +11,9 @@ public class Category {
      * FIELDS FOR DATABASE DESCRIPTION
      */
     public static final String CATEGORY_TABLE_NAME = "category";
-    public static final String CATEGORY_COLUMN_ID = "id";
-    public static final String CATEGORY_COLUMN_NAME = "name";
-    public static final String CATEGORY_COLUMN_DESCRIPTION = "description";
+    public static final String CATEGORY_COLUMN_ID = "idCat";
+    public static final String CATEGORY_COLUMN_NAME = "catName";
+    public static final String CATEGORY_COLUMN_DESCRIPTION = "catDescription";
     public static final String CATEGORY_COLUMN_OPERATION = "operation";
 
     //Most common budget categories
