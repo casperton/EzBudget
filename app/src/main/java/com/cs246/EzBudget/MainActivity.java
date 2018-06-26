@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        //int monthBegin = calendar.get(Calendar.MONTH);
-        int monthBegin = 10;
+        int monthBegin = calendar.get(Calendar.MONTH);
         int yearBegin = calendar.get(Calendar.YEAR);
         int monthEnd = (monthBegin + 2);
         int yearEnd = yearBegin;
@@ -71,12 +70,9 @@ public class MainActivity extends AppCompatActivity
             monthEnd = (monthEnd - 12);
             yearEnd++;
         }
-
         String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
                            MONTHS[monthEnd] + " " + yearEnd;
-        String testDate = "This is a test date range.";
         textView.setText(dateRange);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
