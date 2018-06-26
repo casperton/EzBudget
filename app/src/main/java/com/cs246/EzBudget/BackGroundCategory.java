@@ -56,7 +56,6 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     @Override
     protected Void doInBackground(Void... voids) {
         DBCategory mydb = new DBCategory(context);
-        SQLiteDatabase db = mydb.getReadableDatabase();
 
         Integer id;
         String name;
@@ -64,16 +63,16 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
         Integer operation;
         Cursor cursor;
         switch (myConsultType) {
-            case CAT_ALL:  cursor =  mydb.getAllCursor(db);
+            case CAT_ALL:  cursor =  mydb.getAllCursor();
                 break;
-            case  CAT_INC:  cursor =  mydb.getIncomesCursor(db);
+            case  CAT_INC:  cursor =  mydb.getIncomesCursor();
                 break;
-            case CAT_OUT: cursor =  mydb.getOutcomesCursor(db);
+            case CAT_OUT: cursor =  mydb.getOutcomesCursor();
                 break;
-            case CAT_INFO:  cursor =  mydb.getInformativesCursor(db);
+            case CAT_INFO:  cursor =  mydb.getInformativesCursor();
                 break;
 
-            default:cursor =  mydb.getAllCursor(db);
+            default:cursor =  mydb.getAllCursor();
                 break;
         }
 
@@ -98,7 +97,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+
         return null;
     }
 

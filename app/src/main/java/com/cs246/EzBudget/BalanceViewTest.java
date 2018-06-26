@@ -34,7 +34,7 @@ public class BalanceViewTest extends AppCompatActivity {
 
         myProgress = (ProgressBar) findViewById(R.id.progressBarBVTest);
         myProgress.setVisibility(View.INVISIBLE);
-        mydb = new DBHelper(this);
+        mydb = DBHelper.getInstance(this);
         myBackground = new BackGroundBalance(myRecyclerView,myProgress,this,BackGroundBalance.BAL_ALL, RecyclerViewHolder.LAYOUT_ONE);
         myBackground.execute();
 

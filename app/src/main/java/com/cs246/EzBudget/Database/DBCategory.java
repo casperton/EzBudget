@@ -5,21 +5,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.OPERATION;
 
 import java.util.ArrayList;
 
-public class DBCategory extends DBHelper{
+public class DBCategory {
+
+    private DBHelper myDB;
     public DBCategory(Context context) {
-        super(context);
+        myDB = DBHelper.getInstance(context);
+
     }
 
     // Category methods
     // The following mwethos are to deal with the Category Table
     public boolean insertCategory (String name, String description, Integer operation) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = myDB.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
         contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
@@ -62,7 +66,7 @@ public class DBCategory extends DBHelper{
      * @return The Cursor wirh the required Data
      */
     public Cursor getDataCursor(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         String theQuery = "select * from category where "+Category.CATEGORY_COLUMN_ID+" = "+id+"";
         Cursor res =  db.rawQuery( theQuery, null );
         return res;
@@ -74,7 +78,7 @@ public class DBCategory extends DBHelper{
      * @return The Category with the required Data
      */
     public Category get(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         Cursor rs =  getDataCursor(id);
         rs.moveToFirst();
         //column values
@@ -96,7 +100,7 @@ public class DBCategory extends DBHelper{
      * @return the number of rows in the Category table
      */
     public int getRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, Category.CATEGORY_TABLE_NAME);
         return numRows;
     }
@@ -109,7 +113,7 @@ public class DBCategory extends DBHelper{
      */
     public int getID(String theCategoryName){
         int theID = Category.UNKNOWN;
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         String findNameSQL = "select * from category where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
 
         Cursor res =  db.rawQuery( findNameSQL , null );
@@ -130,14 +134,33 @@ public class DBCategory extends DBHelper{
      * @return true on success
      */
     public boolean update (Integer id, String name, String description, Integer operation) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
-        contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
-        contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
-        String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
-        db.update(Category.CATEGORY_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } );
-        return true;
+        boolean retState = false;
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
+                contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
+                contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
+                String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
+
+                if (db.update(Category.CATEGORY_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
+                    Log.e(myDB.TAG, "Update category failed");
+                }else retState = true;
+
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
+
+        myDB.notifyCategoryChanged();
+        return retState;
     }
 
     /**
@@ -146,11 +169,28 @@ public class DBCategory extends DBHelper{
      * @return
      */
     public Integer delete (Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
-        return db.delete(Category.CATEGORY_TABLE_NAME,
-                theWhere,
-                new String[] { Integer.toString(id) });
+
+
+        Integer result;
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
+                result =  db.delete(Category.CATEGORY_TABLE_NAME,
+                        theWhere,
+                        new String[] { Integer.toString(id) });
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
+
+        myDB.notifyCategoryChanged();
+        return result;
     }
 
     /**
@@ -164,7 +204,7 @@ public class DBCategory extends DBHelper{
         String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
                 Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         Cursor cursor =  db.rawQuery( selectQuery, null );
 
         // looping through all rows and adding to list
@@ -195,7 +235,7 @@ public class DBCategory extends DBHelper{
         String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
                 Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         Cursor cursor =  db.rawQuery( selectQuery, null );
 
         // looping through all rows and adding to list
@@ -222,60 +262,87 @@ public class DBCategory extends DBHelper{
     }
     /**
      * Return a Cursor with all Categories in the database
-     * @param db
      * @return
      */
-    public Cursor getAllCursor(SQLiteDatabase db){
-
+    public Cursor getAllCursor(){
         Cursor cursor;
-        //return cursor;
-        String[] Projections = getProjections();
-        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,null,null,
-                null,null,null);
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,null,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
 
     /**
      * Return a Cursor with all Income Categories in the database
-     * @param db
      * @return
      */
-    public Cursor getIncomesCursor(SQLiteDatabase db){
+    public Cursor getIncomesCursor(){
 
         Cursor cursor;
-        String[] Projections = getProjections();
-        //return cursor;
-        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString(),null,
-                null,null,null);
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString(),null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
 
     /**
      * Return a Cursor with all Outcomes Categories in the database
-     * @param db
      * @return
      */
-    public Cursor getOutcomesCursor(SQLiteDatabase db){
+    public Cursor getOutcomesCursor(){
         Cursor cursor;
-        //return cursor;
-        String[] Projections = getProjections();
-        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString(),null,
-                null,null,null);
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString(),null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
 
     /**
      * Return a Cursor with all Informative Categories in the database
-     * @param db
      * @return
      */
-    public Cursor getInformativesCursor(SQLiteDatabase db){
-
+    public Cursor getInformativesCursor(){
         Cursor cursor;
-        //return cursor;
-        String[] Projections = getProjections();
-        cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.INFORMATIVE).toString(),null,
-                null,null,null);
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(Category.CATEGORY_TABLE_NAME,Projections,Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.INFORMATIVE).toString(),null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
 ////////////////   END CATEGORY METHODS /////////////////////

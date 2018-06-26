@@ -102,7 +102,7 @@ public class Category {
             "    Cable\n" +
             "    Internet\n";
     public static final Integer DB_CAT_UTILITIES_OPERATION = OPERATION.DEBIT;
-    public static final Category DB_CAT_UTILITIES = new Category(DB_CAT_EDUCATION_NAME,DB_CAT_EDUCATION_DESCRIPTION,DB_CAT_EDUCATION_OPERATION);
+    public static final Category DB_CAT_UTILITIES = new Category(DB_CAT_UTILITIES_NAME,DB_CAT_UTILITIES_DESCRIPTION,DB_CAT_UTILITIES_OPERATION);
 
     /**
      Clothing

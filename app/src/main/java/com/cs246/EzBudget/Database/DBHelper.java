@@ -2,22 +2,32 @@ package com.cs246.EzBudget.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.util.Calendar;
+import android.os.HandlerThread;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
 
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBCategory;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * This class will comunicate with the SQLite Database and perform all kinds of database operations
@@ -29,6 +39,65 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DATE_FORMAT = "mm/dd/yyyy";
     public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
     public static final String DATABASE_NAME = "EzBudgetDB.db";
+    public static final int DATABASE_VERSION = 1;
+    protected static final String TAG = "EzBudget.Database";
+
+    private static List<LogChangedListener> myLogChangedListeners = new ArrayList<>();
+    private static List<myAccessChangedListener> myAccessChangedListeners = new ArrayList<>();
+    private static List<ForwardChangedListener> myForwardChangedListeners = new ArrayList<>();
+
+    private static boolean once = true;
+    private static HandlerThread myHthread = null;
+    private static Handler myHandler = null;
+
+    private final static int MSG_LOG = 1;
+    private final static int MSG_CATEGORY = 2;
+    private final static int MSG_FORWARD = 3;
+
+    private SharedPreferences myPrefs;
+    protected ReentrantReadWriteLock myLock = new ReentrantReadWriteLock(true);
+
+    static {
+        myHthread = new HandlerThread("DatabaseHelper");
+        myHthread.start();
+        myHandler = new Handler(myHthread.getLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                handleChangedNotification(msg);
+            }
+        };
+    }
+
+    private static DBHelper dh = null;
+
+    public static DBHelper getInstance(Context context) {
+        if (dh == null)
+            dh = new DBHelper(context.getApplicationContext());
+        return dh;
+    }
+
+
+    protected DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (!once) {
+            once = true;
+
+            File dbfile = context.getDatabasePath(DATABASE_NAME);
+            if (dbfile.exists()) {
+                Log.w(TAG, "Deleting " + dbfile);
+                dbfile.delete();
+            }
+
+            File dbjournal = context.getDatabasePath(DATABASE_NAME + "-journal");
+            if (dbjournal.exists()) {
+                Log.w(TAG, "Deleting " + dbjournal);
+                dbjournal.delete();
+            }
+        }
+        if(dh== null) dh=this;
+    }
 
     static public String getNow() {
         //NOW
@@ -104,11 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DROP_TABLE_BALANCEVIEW = "DROP TABLE IF EXISTS " + BalanceView.BALANCEVIEW_TABLE_NAME;
 
 
-    public DBHelper(Context context) {
 
-        super(context, DATABASE_NAME , null, 1);
-        ArrayList<Category> myDefaultCategories = new ArrayList<>();
-    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -149,9 +214,100 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE_BALANCEVIEW);
 
     }
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        db.enableWriteAheadLogging();
+        super.onConfigure(db);
+    }
 
+    public void addLogChangedListener(LogChangedListener listener) {
+        myLogChangedListeners.add(listener);
+    }
 
+    public void removeLogChangedListener(LogChangedListener listener) {
+        myLogChangedListeners.remove(listener);
+    }
 
+    public void addAccessChangedListener(myAccessChangedListener listener) {
+        myAccessChangedListeners.add(listener);
+    }
 
+    public void removeAccessChangedListener(myAccessChangedListener listener) {
+        myAccessChangedListeners.remove(listener);
+    }
 
+    public void addForwardChangedListener(ForwardChangedListener listener) {
+        myForwardChangedListeners.add(listener);
+    }
+
+    public void removeForwardChangedListener(ForwardChangedListener listener) {
+        myForwardChangedListeners.remove(listener);
+    }
+
+    private void notifyLogChanged() {
+        Message msg = myHandler.obtainMessage();
+        msg.what = MSG_LOG;
+        myHandler.sendMessage(msg);
+    }
+
+    protected void notifyCategoryChanged() {
+        Message msg = myHandler.obtainMessage();
+        msg.what = MSG_CATEGORY;
+        myHandler.sendMessage(msg);
+    }
+
+    private void notifyForwardChanged() {
+        Message msg = myHandler.obtainMessage();
+        msg.what = MSG_FORWARD;
+        myHandler.sendMessage(msg);
+    }
+
+    private static void handleChangedNotification(Message msg) {
+        // Batch notifications
+        try {
+            Thread.sleep(1000);
+            if (myHandler.hasMessages(msg.what))
+                myHandler.removeMessages(msg.what);
+        } catch (InterruptedException ignored) {
+        }
+
+        // Notify listeners
+        if (msg.what == MSG_LOG) {
+            for (LogChangedListener listener : myLogChangedListeners)
+                try {
+                    listener.onChanged();
+                } catch (Throwable ex) {
+                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
+
+        } else if (msg.what == MSG_CATEGORY) {
+            for (myAccessChangedListener listener : myAccessChangedListeners)
+                try {
+                    listener.onChanged();
+                } catch (Throwable ex) {
+                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
+
+        } else if (msg.what == MSG_FORWARD) {
+            for (ForwardChangedListener listener : myForwardChangedListeners)
+                try {
+                    listener.onChanged();
+                } catch (Throwable ex) {
+                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
+        }
+    }
+
+    public interface LogChangedListener {
+        void onChanged();
+    }
+
+    public interface myAccessChangedListener {
+        void onChanged();
+    }
+
+    public interface ForwardChangedListener {
+        void onChanged();
+    }
 }
+

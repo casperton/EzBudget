@@ -35,7 +35,7 @@ public class ListCategory extends AppCompatActivity {
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
 
-    DBHelper mydb;
+
     private ProgressBar myProgress=null;
 
     @Override
@@ -50,7 +50,7 @@ public class ListCategory extends AppCompatActivity {
 
         myProgress = (ProgressBar) findViewById(R.id.myBar);
         myProgress.setVisibility(View.INVISIBLE);
-        mydb = new DBHelper(this);
+
         new BackGroundCategory(myRecyclerView,myProgress,this,BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_ONE,null).execute();
 
 
