@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -52,7 +53,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
         DBBalanceData theBalanceData= new DBBalanceData(context);
 
         Integer theID;
-        double theValue;
+        Double theValue;
         String theDescription;
         String theDueDate;
         Integer catID;
@@ -73,23 +74,31 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
 
 
         // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            int size = cursor.getCount();
-            do {
+        while (cursor.moveToNext()) {
+            Integer size = cursor.getCount();
+            Integer count = cursor.getColumnCount();
+            //String index = cursor.getString(cursor.getColumnIndex("value"));
+               // Log.i("CURSOR_BAL_DATA_INDEX", index);
+            Log.i("CURSOR_BAL_DATA_INDEX_COUNT", count.toString());
+            for (Integer i =0 ; i< count; i++)
+            {
+                String data = cursor.getString(i);
+                Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
+            }
                 theID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
-                //theValue = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                theValue = cursor.getDouble(4);
                 theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
                 theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                 catID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
                 BalanceData theData = new BalanceData();
                 theData.setID(theID);
-                theData.setValue(22.34);
+                theData.setValue(theValue);
                 theData.setDescription(theDescription);
                 theData.setCategory(catID);
                 theData.setDate(theDueDate);
                 publishProgress(theData);
 
-            } while (cursor.moveToNext());
+
         }
         cursor.close();
 

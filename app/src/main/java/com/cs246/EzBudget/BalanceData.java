@@ -47,7 +47,7 @@ public class BalanceData {
     private Date myDate;  //due date if it is a bill or the day we eill receive if it is income
     private Date myPaymentDate; //the date of payment if it is a bill
     private String myDescription;
-    private double myValue;
+    private Double myValue;
     private int myCategoryID;
     private boolean isRecurrent;
     private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
@@ -203,7 +203,7 @@ public class BalanceData {
      * Set the value of myValue
      * @param newVar the new value of myValue
      */
-    public void setValue (double newVar) {
+    public void setValue (Double newVar) {
         myValue = newVar;
     }
 
