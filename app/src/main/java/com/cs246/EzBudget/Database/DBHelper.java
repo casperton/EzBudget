@@ -140,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "(" + BalanceData.BALANCEDATA_COLUMN_ID + " integer primary key autoincrement, " +
             BalanceData.BALANCEDATA_COLUMN_DUE_DATE +" text," +
             BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE +" text," +
-            BalanceData.BALANCEDATA_COLUMN_VALUE + " double," +
+            BalanceData.BALANCEDATA_COLUMN_VALUE + " real," +
             BalanceData.BALANCEDATA_COLUMN_CATEGORY + " integer," +
             BalanceData.BALANCEDATA_COLUMN_DESCRIPTION + " text," +
             BalanceData.BALANCEDATA_COLUMN_STATUS + " integer," +
@@ -166,10 +166,12 @@ public class DBHelper extends SQLiteOpenHelper {
     /////////////////////////
     private static final String CREATE_TABLE_BALANCEVIEW = "create table " + BalanceView.BALANCEVIEW_TABLE_NAME +
             "(" + BalanceView.BALANCEVIEW_COLUMN_ID + " integer primary key autoincrement, " +
-            BalanceView.BALANCEVIEW_COLUMN_INI_DATE + " date," +
-            BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE + " date," +
-            BalanceView.BALANCEVIEW_COLUMN_KEY_DATE + " date," +
-            BalanceView.BALANCEVIEW_COLUMN_END_BALANCE + " double," +
+            BalanceView.BALANCEVIEW_COLUMN_INI_DATE + " text," +
+            BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE + " text," +
+            BalanceView.BALANCEVIEW_COLUMN_KEY_DATE + " text," +
+            BalanceView.BALANCEVIEW_COLUMN_TITLE + " text," +
+            BalanceView.BALANCEVIEW_COLUMN_END_BALANCE + " real," +
+            BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT + " integer," +
             BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION + " text)";
 
     private static final String DROP_TABLE_BALANCEVIEW = "DROP TABLE IF EXISTS " + BalanceView.BALANCEVIEW_TABLE_NAME;
@@ -200,6 +202,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_BALANCEDATAREC);
         //* Table Balance View*/
         db.execSQL(CREATE_TABLE_BALANCEVIEW);
+        DBBalanceView.insertBalView(db,BalanceView.DB_BALVIEW_LAST_MONTH);
+        DBBalanceView.insertBalView(db,BalanceView.DB_BALVIEW_THIS_MONTH);
+        DBBalanceView.insertBalView(db,BalanceView.DB_BALVIEW_NEXT_MONTH);
 
 
     }

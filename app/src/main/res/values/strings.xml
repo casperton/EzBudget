@@ -25,5 +25,11 @@
     <string name="button_bills">Bills</string>
     <string name="button_income">Income</string>
     <string name="balData_edit">Edit Balance Data</string>
+    <string name="viewTitle">View Title</string>
+
+    <!-- DATES -->
+    <string name="dateInitial">Initial Date</string>
+    <string name="dateFinal">End Date</string>
+    <string name="dateKey">Key Date</string>
 
 </resources>

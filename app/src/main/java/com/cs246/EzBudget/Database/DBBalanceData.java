@@ -154,6 +154,7 @@ public class DBBalanceData {
                 BalanceData.BALANCEDATA_COLUMN_DUE_DATE,
                 BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,
                 BalanceData.BALANCEDATA_COLUMN_STATUS,
+                BalanceData.BALANCEDATA_COLUMN_VALUE,
                 BalanceData.BALANCEDATA_COLUMN_TIMESTAMP};
         return Projections;
     }

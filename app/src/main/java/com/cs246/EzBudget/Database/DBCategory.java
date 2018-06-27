@@ -128,7 +128,7 @@ public class DBCategory {
      * @return The Cursor wirh the required Data
      */
     public Cursor getDataCursor(int id) {
-        String theQuery = "select * from category where "+Category.CATEGORY_COLUMN_ID+" = "+id+"";
+        String theQuery = "select * from "+Category.CATEGORY_TABLE_NAME+" where "+Category.CATEGORY_COLUMN_ID+" = "+id+"";
 
         Cursor res;
         myDB.myLock.readLock().lock();

@@ -16,8 +16,9 @@ import com.cs246.EzBudget.Category;
  */
 public class DBBalanceView  {
 
-    private final String TAG = "DB_BALANCE_VIEW";
+    private static final String TAG = "DB_BALANCE_VIEW";
     private DBHelper myDB;
+
     public DBBalanceView(Context context) {
         myDB = DBHelper.getInstance(context);
 
@@ -25,10 +26,31 @@ public class DBBalanceView  {
 
 
     /**
-     * Insert data into the Balance View Database
-     * @param theData The BalanceView to be inserted
-     * @return the number of the inserted row or -1 if some error ocurred
+     *  Insert Test Data in the Database
+     * @param db The Database
+     * @param theData the Data to Add
+     * @return the number of the inserted row or -1 on error
      */
+    static public Long insertBalView (SQLiteDatabase db , BalanceView theData) {
+        Long status;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDate());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDate());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDate());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_TITLE, theData.getTitle());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT, theData.isCurrent());
+        status = db.insert(BalanceView.BALANCEVIEW_TABLE_NAME, null, contentValues);
+        Log.i(DBBalanceView.TAG,"Data Inserted: "+ theData.getTitle());
+        return status;
+    }
+
+
+        /**
+         * Insert data into the Balance View Database
+         * @param theData The BalanceView to be inserted
+         * @return the number of the inserted row or -1 if some error ocurred
+         */
     public Long insert (BalanceView theData) {
         Long result;
 
@@ -43,6 +65,9 @@ public class DBBalanceView  {
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDate());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDate());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_END_BALANCE, theData.getEndBalance());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_TITLE,theData.getTitle());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT,theData.isCurrent());
+
                 result = db.insert(BalanceView.BALANCEVIEW_TABLE_NAME, null, contentValues);
                 if (result < 0){
                     Log.e(TAG, "Insert forward failed");
@@ -96,6 +121,8 @@ public class DBBalanceView  {
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE,theData.getFinalDate());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE,theData.getKeyDate());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_END_BALANCE,theData.getEndBalance());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_TITLE,theData.getTitle());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT,theData.isCurrent());
                 String theWhere = BalanceView.BALANCEVIEW_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
                 if (db.update(BalanceView.BALANCEVIEW_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
@@ -152,5 +179,42 @@ public class DBBalanceView  {
         return result;
     }
 
+    public Cursor getCurrentCursor() {
+        String theQuery = "select * from "+BalanceView.BALANCEVIEW_TABLE_NAME+" where "+BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT+" = 1";
+
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( theQuery, null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
+        return res;
+    }
+
+    public BalanceView getCurrent(){
+        BalanceView theView = new BalanceView();
+        Cursor rs =  getCurrentCursor();
+        rs.moveToFirst();
+        //column values
+        Long theID = rs.getLong(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_ID));
+        String theName = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
+        String theDescription = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION));
+        String theInitialDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_INI_DATE));
+        String theFinalDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE));
+        String theKeyDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE));
+
+        theView.setID(theID);
+        theView.setTitle(theName);
+        theView.setDescription(theDescription);
+        theView.setInitialDate(theInitialDate);
+        theView.setFinalDate(theFinalDate);
+        theView.setKeyDate(theKeyDate);
+        theView.setCurrent();
+        return theView;
+    }
 }
 

@@ -1,5 +1,9 @@
 package com.cs246.EzBudget;
 
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,14 +19,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 // Swipe menu libraries
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.cs246.EzBudget.mFragments.InterPlanetary;
+import com.cs246.EzBudget.Database.DBBalanceView;
+import com.cs246.EzBudget.mFragments.BalViewEditFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +58,9 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DBBalanceView myCurrentView = new DBBalanceView(this);
+        BalanceView myBalanceView = myCurrentView.getCurrent();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,9 +77,11 @@ public class MainActivity extends AppCompatActivity
             monthEnd = (monthEnd - 12);
             yearEnd++;
         }
+
         String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
                            MONTHS[monthEnd] + " " + yearEnd;
-        textView.setText(dateRange);
+        textView.setText(myBalanceView.getTitle());
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -207,7 +216,7 @@ public class MainActivity extends AppCompatActivity
         //OPEN APPROPRIATE FRAGMENT WHEN NAV ITEM IS SELECTED
         if (id == R.id.interplanetary) {
             //PERFORM TRANSACTION TO REPLACE CONTAINER WITH FRAGMENT
-            MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterPlanetary.newInstance()).commit();
+            //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterPlanetary.newInstance()).commit();
 
                 Bundle dataBundle = new Bundle();
                 dataBundle.putInt("id", 0);
@@ -232,7 +241,12 @@ public class MainActivity extends AppCompatActivity
 
             startActivity(intent3);
         } else if (id == R.id.interuniverse) {
-            //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterUniverse.newInstance()).commit();
+            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.containerID, BalViewEditFragment.newInstance());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, BalViewEditFragment.newInstance()).commit();
 
         } else if (id == R.id.nav_share) {
 
