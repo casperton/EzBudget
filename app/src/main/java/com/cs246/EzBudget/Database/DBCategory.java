@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class DBCategory {
 
+    private final String TAG = "DB_CATEGORY";
     private DBHelper myDB;
     public DBCategory(Context context) {
         myDB = DBHelper.getInstance(context);
@@ -22,15 +23,74 @@ public class DBCategory {
 
     // Category methods
     // The following mwethos are to deal with the Category Table
-    public boolean insertCategory (String name, String description, Integer operation) {
-        SQLiteDatabase db = myDB.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
-        contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
-        contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
-        db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
-        return true;
+
+    /**
+     * Insert a row in the category database
+     * @param name
+     * @param description
+     * @param operation
+     * @return the number of the row inserted or -1 if failed
+     */
+    public Long insert (String name, String description, Integer operation) {
+        Long result;
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Category.CATEGORY_COLUMN_NAME, name);
+                contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
+                contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
+                result = db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
+                if (result < 0){
+                    Log.e(TAG, "Insert forward failed");
+                }else
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
+
+        myDB.notifyCategoryChanged();
+        return result;
     }
+
+
+    /**
+     * Insert a row in the Category Database
+     * @param theCat the category to be inserted
+     * @return the row id of the category or -1 if failed
+     */
+    public Long insert (Category theCat) {
+        Long result;
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Category.CATEGORY_COLUMN_NAME, theCat.getName());
+                contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, theCat.getDescription());
+                contentValues.put( Category.CATEGORY_COLUMN_OPERATION, theCat.getOperation());
+                result = db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
+                if (result < 0){
+                    Log.e(TAG, "Insert forward failed");
+                }else
+                    db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
+
+        myDB.notifyCategoryChanged();
+        return result;
+    }
+
     static public boolean insertCategory (SQLiteDatabase db , Category theCat) {
 
         ContentValues contentValues = new ContentValues();
@@ -38,6 +98,8 @@ public class DBCategory {
         contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, theCat.getDescription());
         contentValues.put( Category.CATEGORY_COLUMN_OPERATION, theCat.getOperation());
         db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
+
+
         return true;
     }
 
@@ -66,9 +128,18 @@ public class DBCategory {
      * @return The Cursor wirh the required Data
      */
     public Cursor getDataCursor(int id) {
-        SQLiteDatabase db = myDB.getReadableDatabase();
         String theQuery = "select * from category where "+Category.CATEGORY_COLUMN_ID+" = "+id+"";
-        Cursor res =  db.rawQuery( theQuery, null );
+
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( theQuery, null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
         return res;
     }
 
@@ -113,10 +184,18 @@ public class DBCategory {
      */
     public int getID(String theCategoryName){
         int theID = Category.UNKNOWN;
-        SQLiteDatabase db = myDB.getReadableDatabase();
         String findNameSQL = "select * from category where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
 
-        Cursor res =  db.rawQuery( findNameSQL , null );
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( findNameSQL , null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
         if (res != null && res.getCount()>0) {
             res.moveToFirst();
             theID =  res.getInt(res.getColumnIndex(Category.CATEGORY_COLUMN_ID));
@@ -145,9 +224,9 @@ public class DBCategory {
                 contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, description);
                 contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
                 String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
-
+                //update returns the number of rows affected
                 if (db.update(Category.CATEGORY_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
-                    Log.e(myDB.TAG, "Update category failed");
+                    Log.e(TAG, "Update category failed");
                 }else retState = true;
 
 
@@ -166,22 +245,31 @@ public class DBCategory {
     /**
      * Delete a Category from the Database
      * @param id The id of the category to delete
-     * @return
+     * @return true if the delete was a success
      */
-    public Integer delete (Integer id) {
+    public boolean delete (Integer id) {
 
 
-        Integer result;
+        boolean result = false;
         myDB.myLock.writeLock().lock();
         try {
             SQLiteDatabase db = myDB.getWritableDatabase();
             db.beginTransactionNonExclusive();
             try {
                 String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
-                result =  db.delete(Category.CATEGORY_TABLE_NAME,
+                /**
+                 * the number of rows affected if a whereClause is passed in, 0 otherwise.
+                 * To remove all rows and get a count pass "1" as the whereClause.
+                 */
+                int theResult =  db.delete(Category.CATEGORY_TABLE_NAME,
                         theWhere,
                         new String[] { Integer.toString(id) });
-                db.setTransactionSuccessful();
+                if(theResult == 1) {
+                    db.setTransactionSuccessful();
+                    result= true;
+                }else {
+                    result = false;
+                }
             } finally {
                 db.endTransaction();
             }
@@ -204,9 +292,15 @@ public class DBCategory {
         String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
                 Category.CATEGORY_COLUMN_NAME + " DESC";
         //hp = new HashMap();
-        SQLiteDatabase db = myDB.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( selectQuery, null );
+        Cursor cursor;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            cursor =  db.rawQuery( selectQuery, null );
 
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
@@ -220,7 +314,7 @@ public class DBCategory {
         }
 
         // close db connection
-        db.close();
+        cursor.close();
         return array_list;
     }
 
@@ -230,13 +324,19 @@ public class DBCategory {
      */
     public ArrayList<String>getAllNamesArray(){
         ArrayList<String> array_list = new ArrayList<String>();
-
         // Select All Query
         String selectQuery = "SELECT  * FROM " + Category.CATEGORY_TABLE_NAME + " ORDER BY " +
                 Category.CATEGORY_COLUMN_NAME + " DESC";
-        //hp = new HashMap();
-        SQLiteDatabase db = myDB.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( selectQuery, null );
+        Cursor cursor;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            cursor =  db.rawQuery( selectQuery, null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -246,8 +346,6 @@ public class DBCategory {
             } while (cursor.moveToNext());
         }
 
-        // close db connection
-        db.close();
         return array_list;
     }
 

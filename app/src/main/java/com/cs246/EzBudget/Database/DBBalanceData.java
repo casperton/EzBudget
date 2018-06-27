@@ -14,32 +14,50 @@ import com.cs246.EzBudget.OPERATION;
 /**
  * Class to Handle the Table BalanceData of the Database
  */
-public class DBBalanceData extends DBHelper{
+public class DBBalanceData {
+
+    private final String TAG = "DB_BALANCE_DATA";
+    private DBHelper myDB;
     public DBBalanceData(Context context) {
-        super(context);
-    }
-
-
-
-    public boolean insert(BalanceData theData){
-        SQLiteDatabase db = this.getWritableDatabase();
-        return insert(db, theData);
+        myDB = DBHelper.getInstance(context);
 
     }
 
-    private boolean insert (SQLiteDatabase db , BalanceData theData) {
+    /**
+     *  Insert a Register of Balance Data into the Database
+     * @param theData
+     * @return the number of the row inserted or -1 if failed
+     */
+    public Long insert (BalanceData theData) {
         Long result;
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, getNow());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
-        result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
-        if (result > -1 ) return true;
-        else return false;
+
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDate());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDate());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, myDB.getNow());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
+                result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
+                if (result < 0){
+                    Log.e(TAG, "Insert forward failed");
+                }else
+                    db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
+
+        myDB.notifyBalanceDataChanged();
+        return result;
     }
 
 
@@ -49,8 +67,16 @@ public class DBBalanceData extends DBHelper{
      * @return The Cursor wirh the required Data
      */
     public Cursor getDataCursor(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from balanceData where id="+id+"", null );
+        String theQuery = "select * from "+BalanceData.BALANCEDATA_TABLE_NAME+ " where "+BalanceData.BALANCEDATA_COLUMN_ID+"="+id+"";
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( theQuery, null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return res;
     }
 
@@ -59,44 +85,65 @@ public class DBBalanceData extends DBHelper{
      * @return the number of rows in the Balance Data table
      */
     public int getRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = myDB.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, BalanceData.BALANCEDATA_TABLE_NAME);
         return numRows;
     }
 
     public boolean update (Integer id, BalanceData theData) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        boolean retState = false;
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDate());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDate());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS,theData.getStatus());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, myDB.getNow());
+                String theWhere = BalanceData.BALANCEDATA_COLUMN_ID+" = ? ";
+                //update returns the number of rows affected
+                if (db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
+                    Log.e(TAG, "Update Balance Data failed");
+                }else {
+                    retState = true;
+                    db.setTransactionSuccessful();
+                }
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDate());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS,theData.getStatus());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, getNow());
-        db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
-        return true;
+        myDB.notifyBalanceDataChanged();
+        return retState;
     }
 
     /**
      * Return a Cursor with all BalanceDatas in the database
-     * @param db
-     * @return
+     * @return the Cursor with Outcomes and Incomes and Informative data ion the database
      */
-    public Cursor getAllCursor(SQLiteDatabase db){
-       
+    public Cursor getAllCursor(){
         Cursor cursor;
         //return cursor;
-        String[] Projections = {BalanceData.BALANCEDATA_COLUMN_ID,
-                BalanceData.BALANCEDATA_COLUMN_CATEGORY,
-                BalanceData.BALANCEDATA_COLUMN_DESCRIPTION,
-                BalanceData.BALANCEDATA_COLUMN_DUE_DATE,
-                BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,
-                BalanceData.BALANCEDATA_COLUMN_STATUS,
-                BalanceData.BALANCEDATA_COLUMN_TIMESTAMP};
-        cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,null,null,
-                null,null,null);
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,null,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
 
@@ -113,16 +160,18 @@ public class DBBalanceData extends DBHelper{
 
     /**
      * Return a Cursor with all Income BalanceDatas in the database
-     * @param db
-     * @return
+     * @return TheCursor with all Incomes
      */
-    public Cursor getIncomesCursor(SQLiteDatabase db){
+    public Cursor getIncomesCursor(){
 
         Cursor cursor;
-        //return cursor;
-        String[] Projections = getProjections();
-        //Todo: check if this is the correct query selection to get all incomes
-        /* “inner” join.
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* “inner” join.
         select *
 from category
 join balanceData
@@ -130,40 +179,128 @@ join balanceData
 where category.operation = 1
 
          */
-        //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
-        // FROM category inner join balanceData on id = idCategory WHERE operation = 1
-        String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
-                " inner join " + Category.CATEGORY_TABLE_NAME +
-                " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
 
-        String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
-        cursor = db.query(theTableArg,Projections,theWhere,null,
-                null,null,null);
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
 
     /**
      * Return a Cursor with all Outcomes BalanceDatas in the database
-     * @param db
-     * @return
+     * @return the Cursor with all Outcomes
      */
-    public Cursor getOutcomesCursor(SQLiteDatabase db){
+    public Cursor getOutcomesCursor(){
 
         Cursor cursor;
-        //return cursor;
-        String[] Projections = getProjections();
-        //Todo: check if this is the correct query selection to get outcomes
 
-        String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
-                " inner join " + Category.CATEGORY_TABLE_NAME +
-                " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
 
-        String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
-        cursor = db.query(theTableArg,Projections,theWhere,null,
-                null,null,null);
+            /* “inner” join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
 
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
         return cursor;
     }
-    
+    /**
+     * Return a Cursor with all Income BalanceDatas in the database
+     * @return TheCursor with all Informative data
+     */
+    public Cursor getInformativesCursor(){
+
+        Cursor cursor;
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* “inner” join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.INFORMATIVE).toString();
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
+
+    /**
+     * Delete a Balance Data from the Database
+     * @param id The id of the Balance Data to delete
+     * @return true if the delete was a success, false otherwise
+     */
+    public boolean delete (Integer id) {
+
+
+        boolean result = false;
+        myDB.myLock.writeLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getWritableDatabase();
+            db.beginTransactionNonExclusive();
+            try {
+                String theWhere = BalanceData.BALANCEDATA_COLUMN_ID+" = ? ";
+                /**
+                 * the number of rows affected if a whereClause is passed in, 0 otherwise.
+                 * To remove all rows and get a count pass "1" as the whereClause.
+                 */
+                int theResult =  db.delete(BalanceData.BALANCEDATA_TABLE_NAME,
+                        theWhere,
+                        new String[] { Integer.toString(id) });
+                if (theResult == 1) {
+                    db.setTransactionSuccessful();
+                    result = true;
+                }else result =false;
+            } finally {
+                db.endTransaction();
+            }
+        } finally {
+            myDB.myLock.writeLock().unlock();
+        }
+
+        myDB.notifyBalanceDataChanged();
+        return result;
+    }
     /////////      END BALANCE DATA METHODS  ///////////////
 }

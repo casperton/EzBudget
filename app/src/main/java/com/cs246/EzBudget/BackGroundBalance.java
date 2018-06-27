@@ -50,7 +50,6 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         DBBalanceData theBalanceData= new DBBalanceData(context);
-        SQLiteDatabase db = theBalanceData.getReadableDatabase();
 
         Integer theID;
         double theValue;
@@ -59,15 +58,15 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
         Integer catID;
         Cursor cursor;
         switch (myConsultType) {
-            case BAL_ALL:  cursor =  theBalanceData.getAllCursor(db);
+            case BAL_ALL:  cursor =  theBalanceData.getAllCursor();
                 break;
-            case  BAL_INCOMES:  cursor =  theBalanceData.getIncomesCursor(db);
+            case  BAL_INCOMES:  cursor =  theBalanceData.getIncomesCursor();
                 break;
-            case BAL_BILLS: cursor =  theBalanceData.getOutcomesCursor(db);
+            case BAL_BILLS: cursor =  theBalanceData.getOutcomesCursor();
                 break;
 
 
-            default:cursor =  theBalanceData.getAllCursor(db);
+            default:cursor =  theBalanceData.getAllCursor();
                 break;
         }
 
@@ -93,7 +92,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+
         return null;
     }
 

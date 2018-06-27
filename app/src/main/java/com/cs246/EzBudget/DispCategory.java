@@ -187,7 +187,7 @@ public class DispCategory extends AppCompatActivity {
                 if(income.isChecked()) thisOperation = OPERATION.CREDIT;
                 else if(outcome.isChecked()) thisOperation = OPERATION.DEBIT;
                 else if(informative.isChecked()) thisOperation = OPERATION.INFORMATIVE;
-                if(mydb.insertCategory(thisName,thisDesc, thisOperation)){
+                if(mydb.insert(thisName,thisDesc, thisOperation)>0){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
                 } else{

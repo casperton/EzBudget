@@ -42,17 +42,19 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     protected static final String TAG = "EzBudget.Database";
 
-    private static List<LogChangedListener> myLogChangedListeners = new ArrayList<>();
-    private static List<myAccessChangedListener> myAccessChangedListeners = new ArrayList<>();
-    private static List<ForwardChangedListener> myForwardChangedListeners = new ArrayList<>();
-
+    //listeners of the observer patern
+    private static List<CategoryChangedListener> myCategoryChangedListeners = new ArrayList<>();
+    private static List<BalanceDataChangedListener> myBalanceDataChangedListeners = new ArrayList<>();
+    private static List<BalanceViewChangedListener> myBalanceViewChangedListeners = new ArrayList<>();
+    private static List<BalanceDataRecChangedListener> myBalanceDataRecChangedListeners= new ArrayList<>();
     private static boolean once = true;
     private static HandlerThread myHthread = null;
     private static Handler myHandler = null;
 
-    private final static int MSG_LOG = 1;
+    private final static int MSG_BALDATA = 1;
     private final static int MSG_CATEGORY = 2;
-    private final static int MSG_FORWARD = 3;
+    private final static int MSG_BALDATAREC = 3;
+    private final static int MSG_BALVIEW = 4;
 
     private SharedPreferences myPrefs;
     protected ReentrantReadWriteLock myLock = new ReentrantReadWriteLock(true);
@@ -220,33 +222,79 @@ public class DBHelper extends SQLiteOpenHelper {
         super.onConfigure(db);
     }
 
-    public void addLogChangedListener(LogChangedListener listener) {
-        myLogChangedListeners.add(listener);
+    /**
+     * Add listener to any changes in the Category Database
+     * @param listener
+     */
+    public void addCategoryChangedListener(CategoryChangedListener listener) {
+        myCategoryChangedListeners.add(listener);
     }
 
-    public void removeLogChangedListener(LogChangedListener listener) {
-        myLogChangedListeners.remove(listener);
+    /**
+     * Remove listener to changes in the Category Database
+     * @param listener
+     */
+    public void removeCategoryChangedListener(CategoryChangedListener listener) {
+        myCategoryChangedListeners.remove(listener);
     }
 
-    public void addAccessChangedListener(myAccessChangedListener listener) {
-        myAccessChangedListeners.add(listener);
+    /**
+     * Add listener to changes in the Balance Data Database
+     * @param listener
+     */
+    public void addBalanceDataChangedListener(BalanceDataChangedListener listener) {
+        myBalanceDataChangedListeners.add(listener);
     }
 
-    public void removeAccessChangedListener(myAccessChangedListener listener) {
-        myAccessChangedListeners.remove(listener);
+    /**
+     * remove istener to changes in the Balance Data Database
+     * @param listener
+     */
+    public void removeBalanceDataChangedListener(BalanceDataChangedListener listener) {
+        myBalanceDataChangedListeners.remove(listener);
     }
 
-    public void addForwardChangedListener(ForwardChangedListener listener) {
-        myForwardChangedListeners.add(listener);
+    /**
+     * add listener to chjanges in the Balance Data Recurrent Database
+     * @param listener
+     */
+    public void addBalanceDataRecChangedListener(BalanceDataRecChangedListener listener) {
+        myBalanceDataRecChangedListeners.add(listener);
     }
 
-    public void removeForwardChangedListener(ForwardChangedListener listener) {
-        myForwardChangedListeners.remove(listener);
+    /**
+     * remove listener to chjanges in the Balance Data Recurrent Database
+     * @param listener
+     */
+    public void removeBalanceDataRecChangedListener(BalanceDataRecChangedListener listener) {
+        myBalanceDataRecChangedListeners.remove(listener);
     }
 
-    private void notifyLogChanged() {
+    /**
+     * add listener to changes in the Balance View Database
+     * @param listener
+     */
+    public void addBalanceViewChangedListener(BalanceViewChangedListener listener) {
+        myBalanceViewChangedListeners.add(listener);
+    }
+
+    /**
+     * remove listener to changes in the Balance View Database
+     * @param listener
+     */
+    public void removeBalanceViewChangedListener(BalanceViewChangedListener listener) {
+        myBalanceViewChangedListeners.remove(listener);
+    }
+
+
+    protected void notifyBalanceDataChanged() {
         Message msg = myHandler.obtainMessage();
-        msg.what = MSG_LOG;
+        msg.what = MSG_BALDATA;
+        myHandler.sendMessage(msg);
+    }
+    protected void notifyBalanceViewChanged() {
+        Message msg = myHandler.obtainMessage();
+        msg.what = MSG_BALVIEW;
         myHandler.sendMessage(msg);
     }
 
@@ -256,12 +304,16 @@ public class DBHelper extends SQLiteOpenHelper {
         myHandler.sendMessage(msg);
     }
 
-    private void notifyForwardChanged() {
+    protected void notifyBalanceDataRecChanged() {
         Message msg = myHandler.obtainMessage();
-        msg.what = MSG_FORWARD;
+        msg.what = MSG_BALDATAREC;
         myHandler.sendMessage(msg);
     }
 
+    /**
+     * Handler for the change notifications of the databases
+     * @param msg the message to handle
+     */
     private static void handleChangedNotification(Message msg) {
         // Batch notifications
         try {
@@ -272,8 +324,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         // Notify listeners
-        if (msg.what == MSG_LOG) {
-            for (LogChangedListener listener : myLogChangedListeners)
+        if (msg.what == MSG_BALDATA) {
+            for (CategoryChangedListener listener : myCategoryChangedListeners)
                 try {
                     listener.onChanged();
                 } catch (Throwable ex) {
@@ -281,33 +333,47 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
 
         } else if (msg.what == MSG_CATEGORY) {
-            for (myAccessChangedListener listener : myAccessChangedListeners)
+            for (BalanceDataChangedListener listener : myBalanceDataChangedListeners)
                 try {
                     listener.onChanged();
                 } catch (Throwable ex) {
                     Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
                 }
 
-        } else if (msg.what == MSG_FORWARD) {
-            for (ForwardChangedListener listener : myForwardChangedListeners)
+
+        }else if (msg.what == MSG_BALVIEW) {
+            for (BalanceViewChangedListener listener : myBalanceViewChangedListeners)
                 try {
                     listener.onChanged();
                 } catch (Throwable ex) {
                     Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
                 }
+
+        }else if (msg.what == MSG_BALDATAREC) {
+            for (BalanceDataRecChangedListener listener : myBalanceDataRecChangedListeners)
+                try {
+                    listener.onChanged();
+                } catch (Throwable ex) {
+                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
+
         }
     }
 
-    public interface LogChangedListener {
+    public interface CategoryChangedListener {
         void onChanged();
     }
 
-    public interface myAccessChangedListener {
+    public interface BalanceDataChangedListener {
+        void onChanged();
+    }
+    public interface BalanceDataRecChangedListener {
         void onChanged();
     }
 
-    public interface ForwardChangedListener {
+    public interface BalanceViewChangedListener {
         void onChanged();
     }
+    
 }
 

@@ -239,7 +239,7 @@ public class DispBalData extends AppCompatActivity {
         theData.setStatus(theStatus);
 
         //fOR NOW JUST THE ADD OPERATION AVAILABLE
-        if(myDBBalanceData.insert(theData)){
+        if(myDBBalanceData.insert(theData) > 0){
             Toast.makeText(getApplicationContext(), "done",
                     Toast.LENGTH_SHORT).show();
         } else{
@@ -259,7 +259,7 @@ public class DispBalData extends AppCompatActivity {
                 }
             } else{ //add
 
-                if(myDBBalanceData.insert(theData)){
+                if(myDBBalanceData.insert(theData)>0){
                     Toast.makeText(getApplicationContext(), "done",
                             Toast.LENGTH_SHORT).show();
                 } else{
