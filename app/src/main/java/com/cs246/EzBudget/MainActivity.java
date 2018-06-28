@@ -1,7 +1,6 @@
 package com.cs246.EzBudget;
 
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -26,7 +25,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cs246.EzBudget.Database.DBBalanceView;
-import com.cs246.EzBudget.mFragments.BalViewEditFragment;
+import com.cs246.EzBudget.mFragments.DispBalViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +79,8 @@ public class MainActivity extends AppCompatActivity
 
         String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
                            MONTHS[monthEnd] + " " + yearEnd;
-        textView.setText(myBalanceView.getTitle());
 
+        textView.setText(myBalanceView.getTitle() + " - "+dateRange);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //MESSAGE TO KIRK
-        // TO GET BILLS CURSOR USE THE METHOD getOutcomesCursor(db)
+        // TO GET BILLS CURSOR USE THE METHOD getOutcomesCursor()
         // FROM THE CLASS DBBalanceData
         //SQLiteDatabase db = mydb.getReadableDatabase();
         // DBBalanceData theDatabase = new DBBalanceData(context)
@@ -243,11 +242,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.interuniverse) {
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.containerID, BalViewEditFragment.newInstance());
+            fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, BalViewEditFragment.newInstance()).commit();
+            //Intent intent4 = new Intent(getApplicationContext(),DispBalView.class);
+            //intent2.putExtras(dataBundle);
 
+            //startActivity(intent4);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

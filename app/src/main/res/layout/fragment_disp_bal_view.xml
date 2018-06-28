@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mFragments.BalViewEditFragment"
+    tools:context=".mFragments.DispBalViewFragment"
     android:background="#ffffff">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +26,7 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/EditViewTitle"
+                android:id="@+id/dispBalViewEditViewTitle"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -47,9 +46,10 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/EditInitialDate"
+                android:id="@+id/dispBalViewEditInitialDate"
                 android:layout_width="175dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="date"/>
         </LinearLayout>
 
         <LinearLayout
@@ -68,14 +68,15 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/EditFinalDate"
+                android:id="@+id/dispBalViewEditFinalDate"
                 android:layout_width="175dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="date"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="394dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -89,7 +90,28 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/EditKeyDate"
+                android:id="@+id/dispBalViewEditKeyDate"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="394dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="102dp"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/editBalViewDispBalViewDescr"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -101,9 +123,11 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/viewSave"/>
+                android:id="@+id/dispBalViewSave"
+                android:text="@string/Add_New"/>
 
 
         </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>

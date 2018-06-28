@@ -26,14 +26,7 @@ public class DispBalData extends AppCompatActivity {
 
     private DBCategory mydb ;
     private DBBalanceData myDBBalanceData;
-/*
-    public static final String BALANCEDATA_COLUMN_DUE_DATE = "date";
-    public static final String BALANCEDATA_COLUMN_PAYMENT_DATE = "paymentDate";
-    public static final String BALANCEDATA_COLUMN_DESCRIPTION = "description";
-    public static final String BALANCEDATA_COLUMN_CATEGORY = "idCategory";
-    public static final String BALANCEDATA_COLUMN_VALUE = "value";
-    public static final String BALANCEDATA_COLUMN_STATUS = "status";
-*/
+
     Calendar myCalendar;
     DatePickerDialog myDateDialog;
 

@@ -32,4 +32,7 @@
     <string name="dateFinal">End Date</string>
     <string name="dateKey">Key Date</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

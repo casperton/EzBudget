@@ -177,8 +177,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DROP_TABLE_BALANCEVIEW = "DROP TABLE IF EXISTS " + BalanceView.BALANCEVIEW_TABLE_NAME;
 
 
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
