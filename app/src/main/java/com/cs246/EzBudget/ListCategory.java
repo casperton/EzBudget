@@ -11,10 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.cs246.EzBudget.Database.DBHelper;
+import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
-
-import java.util.List;
 
 /**
  * public class MainActivity extends AppCompatActivity {
@@ -30,7 +28,7 @@ import java.util.List;
  */
 
 public class ListCategory extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "MESSAGE";
+
 
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;

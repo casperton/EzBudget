@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.cs246.EzBudget.BackGroundCategory;
+import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;

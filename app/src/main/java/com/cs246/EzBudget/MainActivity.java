@@ -26,6 +26,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.mFragments.DispBalViewFragment;
+import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,7 +243,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.interuniverse) {
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
+            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
+            fragmentTransaction.replace(R.id.containerID, ListBalViewFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, BalViewEditFragment.newInstance()).commit();

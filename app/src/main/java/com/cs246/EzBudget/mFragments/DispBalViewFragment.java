@@ -3,6 +3,7 @@ package com.cs246.EzBudget.mFragments;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
@@ -13,10 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
@@ -32,16 +36,16 @@ import java.util.Date;
  */
 public class DispBalViewFragment extends Fragment {
 
-    private Button mySaveBtn;
+    private Button mySaveButton;
     private DBBalanceView myDBBalView;
     private Calendar myCalendar;
     DatePickerDialog myDateDialog;
     EditText myInitialDate;
     EditText myFinalDate;
     EditText myKeyDate;
-    private EditText myDesc;
+    private EditText myDescription;
     private EditText myTitle;
-    private Boolean isCurrent;
+    private CheckBox isCurrent;
     int id_To_Update = 0;
 
     View myView;
@@ -67,13 +71,71 @@ public class DispBalViewFragment extends Fragment {
         View theView= inflater.inflate(R.layout.fragment_disp_bal_view, container, false);
         myView = theView;
         myDBBalView = new DBBalanceView(getActivity());
-        mySaveBtn = theView.findViewById(R.id.dispBalViewSave);
-        EditText myInitialDate = theView.findViewById(R.id.dispBalViewEditInitialDate);
-        EditText myFinalDate = theView.findViewById(R.id.dispBalViewEditFinalDate);
-        EditText myKeyDate = theView.findViewById(R.id.dispBalViewEditKeyDate);
-        EditText myDesc = theView.findViewById(R.id.editBalViewDispBalViewDescr);
-        EditText myTitle = theView.findViewById(R.id.dispBalViewEditViewTitle);
-        Boolean isCurrent = false;
+        mySaveButton = theView.findViewById(R.id.dispBalViewSave);
+        myInitialDate = theView.findViewById(R.id.dispBalViewEditInitialDate);
+        myFinalDate = theView.findViewById(R.id.dispBalViewEditFinalDate);
+        myKeyDate = theView.findViewById(R.id.dispBalViewEditKeyDate);
+        myDescription = theView.findViewById(R.id.editBalViewDispBalViewDescr);
+        myTitle = theView.findViewById(R.id.dispBalViewEditViewTitle);
+        isCurrent = theView.findViewById(R.id.dispBalViewIsCurrent);
+
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        if(extras !=null) {
+            int Value = extras.getInt("id");
+            
+
+            if(Value>0){
+                //means this is the view/edit part not the add  part.
+                Cursor rs = myDBBalView.getDataCursor(Value);
+                id_To_Update = Value;
+                rs.moveToFirst();
+
+                //column values
+                Long theID = rs.getLong(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_ID));
+                String theName = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
+                String theDescription = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION));
+                String theInitialDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_INI_DATE));
+                String theFinalDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE));
+                String theKeyDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE));
+                Integer theCurrent = rs.getInt(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT));
+
+
+                if (!rs.isClosed())  {
+                    rs.close();
+                }
+
+                mySaveButton.setVisibility(View.INVISIBLE);
+
+
+                myTitle.setText((CharSequence)theDescription);
+                myTitle.setFocusable(false);
+                myTitle.setClickable(false);
+
+                myDescription.setText((CharSequence)theDescription);
+                myDescription.setFocusable(false);
+                myDescription.setClickable(false);
+
+                myInitialDate.setText((CharSequence)theInitialDate);
+                myInitialDate.setFocusable(false);
+                myInitialDate.setClickable(false);
+
+                myFinalDate.setText((CharSequence)theFinalDate);
+                myFinalDate.setFocusable(false);
+                myFinalDate.setClickable(false);
+
+                myKeyDate.setText((CharSequence)theFinalDate);
+                myKeyDate.setFocusable(false);
+                myKeyDate.setClickable(false);
+
+                if (theCurrent == 1)  isCurrent.setChecked(true);
+                else  isCurrent.setChecked(false);
+
+
+            }
+        }
+        
+        
 /*
         final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -84,7 +146,7 @@ public class DispBalViewFragment extends Fragment {
             }
         };
         */
-        mySaveBtn.setOnClickListener(new View.OnClickListener() {
+        mySaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View theView) {
                 SaveButton(theView);
@@ -130,7 +192,7 @@ public class DispBalViewFragment extends Fragment {
                 myDateDialog = new DatePickerDialog(myView.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
-                        setKeyDateText(mDay ,mMonth+1,mYear);
+                        setKeyDateText(mDay ,mMonth,mYear);
 
                     }
                 },year,month,day);
@@ -155,8 +217,7 @@ public class DispBalViewFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
                         Integer moth = mMonth;
-                        Log.i("DATE_SAL_MONTH: ",moth.toString());
-                        setInitialDateText(mDay,mMonth+1,mYear);
+                        setInitialDateText(mDay,mMonth,mYear);
 
                     }
                 },year,month,day);
@@ -166,29 +227,54 @@ public class DispBalViewFragment extends Fragment {
             }
         });
 
+/**
+ * Long Click Show the DatePick Dialog, otherwhise one can enter date manualy
+ */
+        myFinalDate.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                myCalendar = Calendar.getInstance();
+                int day = myCalendar.get(Calendar.DAY_OF_MONTH);
+                int month = myCalendar.get(Calendar.MONTH);
+                int year = myCalendar.get(Calendar.YEAR);
 
+                myDateDialog = new DatePickerDialog(myView.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
+                        Integer moth = mMonth;
+                        setFinalDateText(mDay,mMonth,mYear);
+
+                    }
+                },year,month,day);
+
+                myDateDialog.show();
+                return false;
+            }
+        });
 
         return theView;
     }
 
-    public void setKeyDateText(int mDay ,int mMonth,int mYear){
+    public void setKeyDateText(Integer mDay ,Integer mMonth,Integer mYear){
+
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH,mMonth);
         c.set(Calendar.DAY_OF_MONTH,mDay);
         c.set(Calendar.YEAR,mYear);
         SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-        EditText myDate = myView.findViewById(R.id.dispBalViewEditKeyDate);
+        //EditText myDate = myView.findViewById(R.id.dispBalViewEditKeyDate);
         // Get the date today using Calendar object.
         Date today = c.getTime();
         // Using DateFormat format method we can create a string
         // representation of a date with the defined format.
         String reportDate = sdf.format(today);
-        myDate.setText(reportDate);
+        myKeyDate.setText(reportDate);
 
     }
 
     public void setInitialDateText(int mDay ,int mMonth,int mYear){
-        GregorianCalendar c = new GregorianCalendar(mYear, mMonth+1, mDay);
+
+        GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
         SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
         EditText myDate = myView.findViewById(R.id.dispBalViewEditInitialDate);
         myDate.setText(sdf.format(c.getTime()));
@@ -197,10 +283,11 @@ public class DispBalViewFragment extends Fragment {
     public void setFinalDateText(int mDay ,int mMonth,int mYear){
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
         SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
-        EditText myDate = myView.findViewById(R.id.dispBalViewEditFinalDate);
-        myDate.setText(sdf.format(c.getTime()));
+        //EditText myDate = myView.findViewById(R.id.dispBalViewEditFinalDate);
+        myFinalDate.setText(sdf.format(c.getTime()));
 
     }
+
 
 
 
@@ -225,7 +312,7 @@ public class DispBalViewFragment extends Fragment {
         String theKeyDate = myKeyDate.getText().toString();
         String theTitle = myTitle.getText().toString();
         Long theID;
-        String theDesc = myDesc.getText().toString();
+        String theDesc = myDescription.getText().toString();
 
 
         BalanceView theData = new BalanceView();

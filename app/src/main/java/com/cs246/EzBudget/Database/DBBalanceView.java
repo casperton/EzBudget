@@ -87,16 +87,24 @@ public class DBBalanceView  {
 
     /**
      * This method will return the data corresponding to the selected id
-     * @param id The id of the Balance Data to retrieve its data
+     * @param id The id of the Balance View to retrieve its data
      * @return The Cursor wirh the required Data
      */
-    public Cursor getDataCursor(int id) {
-        SQLiteDatabase db = myDB.getReadableDatabase();
-        String query = "select * from "+BalanceView.BALANCEVIEW_TABLE_NAME+" where id="+id+"";
-        Cursor res =  db.rawQuery( query, null );
+      public Cursor getDataCursor(int id) {
+        String theQuery = "select * from "+BalanceView.BALANCEVIEW_TABLE_NAME+" where "+BalanceView.BALANCEVIEW_COLUMN_ID+" = "+id+"";
+
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( theQuery, null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
         return res;
     }
-
     /**
      * Return the number of Rows of the Balance Data table
      * @return the number of rows in the Balance Data table
@@ -195,6 +203,7 @@ public class DBBalanceView  {
         return res;
     }
 
+    //Todo: What if there is no current setted?
     public BalanceView getCurrent(){
         BalanceView theView = new BalanceView();
         Cursor rs =  getCurrentCursor();
@@ -215,6 +224,39 @@ public class DBBalanceView  {
         theView.setKeyDate(theKeyDate);
         theView.setCurrent();
         return theView;
+    }
+
+    String[] getProjections(){
+        String[] Projections = {
+                BalanceView.BALANCEVIEW_COLUMN_ID,
+                BalanceView.BALANCEVIEW_COLUMN_TITLE,
+                BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION,
+                BalanceView.BALANCEVIEW_COLUMN_INI_DATE,
+                BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE,
+                BalanceView.BALANCEVIEW_COLUMN_KEY_DATE,
+                BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT
+        };
+        return Projections;
+    }
+    /**
+     * Return a Cursor with all Categories in the database
+     * @return
+     */
+    public Cursor getAllCursor(){
+        Cursor cursor;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(BalanceView.BALANCEVIEW_TABLE_NAME,Projections,null,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
     }
 }
 

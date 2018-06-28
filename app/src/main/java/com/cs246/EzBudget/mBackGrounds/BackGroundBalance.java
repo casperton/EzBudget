@@ -1,4 +1,4 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.mBackGrounds;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 

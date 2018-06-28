@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.Database.DBHelper;
+import com.cs246.EzBudget.mBackGrounds.BackGroundBalance;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 public class BalanceViewTest extends AppCompatActivity {

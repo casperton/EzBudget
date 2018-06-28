@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/Edit_BalData"
-        android:title="@string/balData_edit"/>
+        android:title="@string/balDataEdit"/>
 
 
 </menu>

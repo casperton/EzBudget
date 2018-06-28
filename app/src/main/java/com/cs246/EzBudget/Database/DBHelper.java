@@ -36,7 +36,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATE_FORMAT = "mm/dd/yyyy";
+    public static final String DATE_FORMAT = "MM/dd/yyyy";
     public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
     public static final String DATABASE_NAME = "EzBudgetDB.db";
     public static final int DATABASE_VERSION = 1;
