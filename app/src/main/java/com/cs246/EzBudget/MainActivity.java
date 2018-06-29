@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         bills = new ArrayList<>();
+        //Use this for now.
+        // this method will return all rows in the database
+        // The getOutcomesCursor still miss some modification in order to work here
        Cursor cursor = myBalanceData.getAllCursor();
         if (cursor.moveToFirst()) {
             do {

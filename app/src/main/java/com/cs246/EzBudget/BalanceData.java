@@ -47,7 +47,7 @@ public class BalanceData {
      Payment income.
      bu weekly
      */
-    public static final String DB_REC_PAYMENT_DESCRIPTION = "Bi Weekly Payment";
+    public static final String DB_REC_PAYMENT_DESCRIPTION = "Payment";
     public static final Integer DB_REC_PAYMENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_PAYMENT_VALUE = 1500.00;
     public static final Integer DB_REC_PAYMENT_RECURRENCE = RECURRENT.BI_WEEKLI;
