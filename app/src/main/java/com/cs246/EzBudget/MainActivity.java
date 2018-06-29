@@ -29,6 +29,7 @@ import com.cs246.EzBudget.mFragments.DispBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListCategoryFragment;
+import com.cs246.EzBudget.mFragments.ListRecBalDataFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,11 +248,13 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.drawerListRecurrent) {
-            //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterGalactic.newInstance()).commit();
-            Intent intent3 = new Intent(getApplicationContext(),BalanceViewTest.class);
-            //intent2.putExtras(dataBundle);
-
-            startActivity(intent3);
+            //startActivity(intent2);
+            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
+            fragmentTransaction.replace(R.id.containerID, ListRecBalDataFragment.newInstance());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         } else if (id == R.id.drawerListBalView) {
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

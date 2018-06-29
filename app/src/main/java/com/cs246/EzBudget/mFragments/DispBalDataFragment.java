@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -41,7 +42,7 @@ public class DispBalDataFragment extends Fragment {
 
     private DBCategory mydb ;
     private DBBalanceData myDBBalanceData;
-
+    private boolean myIsRecurrent = false;
     Calendar myCalendar;
     DatePickerDialog myDateDialog;
 
@@ -61,7 +62,7 @@ public class DispBalDataFragment extends Fragment {
     RecyclerView.LayoutManager myLayoutManager;
     private ProgressBar myProgress=null;
     private Long myIDtoChange = Long.valueOf(-1);
-
+    private LinearLayout myStatusLayOut;
 
 
 
@@ -84,7 +85,10 @@ public class DispBalDataFragment extends Fragment {
         myView = inflater.inflate(R.layout.fragment_disp_bal_data, container, false);
 
         Bundle args = getArguments();
-        if (args !=null) myIDtoChange = args.getLong("id");
+        if (args !=null) {
+            myIDtoChange = args.getLong("id");
+            myIsRecurrent = args.getBoolean("isRecurrent");
+        }
 
         myDueDate = (EditText) myView.findViewById(R.id.dispBalDataDueDate);
         myValue = (EditText) myView.findViewById(R.id.dispBalDataValue);
@@ -96,7 +100,7 @@ public class DispBalDataFragment extends Fragment {
         myRecurrent = (CheckBox) myView.findViewById(R.id.dispBalDataCheckBoxRecurrent);
         myProgress = (ProgressBar) myView.findViewById(R.id.dispBalDataBar);
         myProgress.setVisibility(View.INVISIBLE);
-
+        myStatusLayOut = (LinearLayout) myView.findViewById(R.id.dispBalDataLayoutStatus);
         mySaveButton = (Button)myView.findViewById(R.id.dispBalDataSave);
         myUpdateButton = (Button)myView.findViewById(R.id.dispBalDataUpdate);
         myDeleteButton = (Button)myView.findViewById(R.id.dispBalDataDelete);
@@ -104,6 +108,7 @@ public class DispBalDataFragment extends Fragment {
         final FragmentManager fm=getActivity().getSupportFragmentManager();
         final DispCategoryDialogFrag tv=new DispCategoryDialogFrag();
 
+        if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
         /**
          * Show Fragment to select the category on long click
          */

@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#ffffff">
 
 
         <LinearLayout
             android:layout_width="372dp"
-            android:layout_height="430dp"
+            android:layout_height="517dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="11dp">
 
@@ -26,7 +22,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutRecurrent"
-                android:layout_width="354dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="10dp"
@@ -56,7 +52,7 @@
 
                 <RadioGroup
                     android:id="@+id/radioGroupRecurrence"
-                    android:layout_width="wrap_content"
+                    android:layout_width="124dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/editTextDescription">
@@ -64,29 +60,29 @@
 
                     <RadioButton
                         android:id="@+id/dispBalDataRadioWeekly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:text="@string/recWeekly" />
 
                     <RadioButton
                         android:id="@+id/dispBalDataRadioBiWeekly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:text="@string/recBiWeekly" />
 
                     <RadioButton
                         android:id="@+id/dispBalDataRadioMonthly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:text="@string/recMonthly" />
 
                     <RadioButton
                         android:id="@+id/dispBalDataRadioDaily"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:text="@string/recDaily" />
                 </RadioGroup>
@@ -99,12 +95,12 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutValue"
-                android:layout_width="359dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutRecurrent">
 
@@ -136,12 +132,12 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutDueDate"
-                android:layout_width="359dp"
-                android:layout_height="42dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutValue">
 
@@ -160,7 +156,7 @@
                 <EditText
                     android:id="@+id/dispBalDataDueDate"
                     android:layout_width="251dp"
-                    android:layout_height="42dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="date" />
@@ -173,8 +169,8 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutCategory"
-                android:layout_width="359dp"
-                android:layout_height="44dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
                 android:orientation="horizontal"
@@ -198,7 +194,7 @@
                     android:id="@+id/dispBalDataCategory"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="247dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:fontFamily="monospace"
@@ -215,8 +211,8 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutDescription"
-                android:layout_width="361dp"
-                android:layout_height="84dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
                 android:orientation="horizontal"
@@ -252,9 +248,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayoutStatus"
+                android:id="@+id/dispBalDataLayoutStatus"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
                 android:orientation="horizontal"
@@ -263,7 +259,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutDescription">
 
                 <RadioGroup
-                    android:id="@+id/radioGroupBalDataStatus"
+                    android:id="@+id/dispBalDataRadioGroupBalDataStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -329,12 +325,14 @@
                     android:layout_height="36dp"
                     android:layout_weight="1"
                     android:text="@string/Save" />
+
                 <Button
                     android:id="@+id/dispBalDataUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:layout_weight="1"
                     android:text="@string/Update" />
+
                 <Button
                     android:id="@+id/dispBalDataDelete"
                     android:layout_width="match_parent"
@@ -347,4 +345,3 @@
 
     </android.support.constraint.ConstraintLayout>
 
-</FrameLayout>

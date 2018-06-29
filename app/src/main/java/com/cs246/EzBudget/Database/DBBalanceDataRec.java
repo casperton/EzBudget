@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.OPERATION;
 
 /**
  * Class to Handle the Table BalanceDataRec (The Recurrent Data) of the Database
@@ -168,5 +170,145 @@ public class DBBalanceDataRec{
         return result;
     }
 
-    /////////      END BALANCE DATA METHODS  ///////////////
+    /**
+     * Return a Cursor with all BalanceDatas in the database
+     * @return the Cursor with Outcomes and Incomes and Informative data ion the database
+     */
+    public Cursor getAllCursor(){
+        Cursor cursor;
+        //return cursor;
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+
+            //return cursor;
+            String[] Projections = getProjections();
+            cursor = db.query(BalanceData.BALANCEDATAREC_TABLE_NAME,Projections,null,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
+
+    private String[] getProjections(){
+        String[] Projections = {BalanceData.BALANCEDATAREC_COLUMN_ID,
+                BalanceData.BALANCEDATAREC_COLUMN_CATEGORY,
+                BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION,
+                BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,
+                BalanceData.BALANCEDATAREC_COLUMN_PERIOD,
+                BalanceData.BALANCEDATAREC_COLUMN_VALUE,
+                BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP};
+        return Projections;
+    }
+
+    /**
+     * Return a Cursor with all Income BalanceDatas in the database
+     * @return TheCursor with all Incomes
+     */
+    public Cursor getIncomesCursor(){
+
+        Cursor cursor;
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* “inner” join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATAREC_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATAREC_TABLE_NAME+"."+BalanceData.BALANCEDATAREC_COLUMN_CATEGORY;
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Outcomes BalanceDatas in the database
+     * @return the Cursor with all Outcomes
+     */
+    public Cursor getOutcomesCursor(){
+
+        Cursor cursor;
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* “inner” join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATAREC_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATAREC_TABLE_NAME+"."+BalanceData.BALANCEDATAREC_COLUMN_CATEGORY;
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
+    /**
+     * Return a Cursor with all Income BalanceDatas in the database
+     * @return TheCursor with all Informative data
+     */
+    public Cursor getInformativesCursor(){
+
+        Cursor cursor;
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* “inner” join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATAREC_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATAREC_TABLE_NAME+"."+BalanceData.BALANCEDATAREC_COLUMN_CATEGORY;
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.INFORMATIVE).toString();
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
 }

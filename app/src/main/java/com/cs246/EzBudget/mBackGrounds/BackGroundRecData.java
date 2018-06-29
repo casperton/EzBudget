@@ -11,14 +11,13 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Database.DBBalanceData;
-import com.cs246.EzBudget.mRecycler.RecyclerBalDataAdapter;
+import com.cs246.EzBudget.Database.DBBalanceDataRec;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
 
 
-
-public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
+public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
@@ -33,7 +32,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
 
 
-    public BackGroundBalData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult ) {
+    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult ) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -53,14 +52,14 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        DBBalanceData theBalanceData= new DBBalanceData(context);
+        DBBalanceDataRec theBalanceData= new DBBalanceDataRec(context);
 
         Long theID;
         Double theValue;
         String theDescription;
         String theDueDate;
-        Integer theStatus;
         Long catID;
+        Integer thePeriod;
         Cursor cursor;
         switch (myConsultType) {
             case BAL_ALL:  cursor =  theBalanceData.getAllCursor();
@@ -87,21 +86,21 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
             for (Integer i =0 ; i< count; i++)
             {
                 String data = cursor.getString(i);
-                Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
+               // Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
             }
-            theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
+            theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_ID));
             theValue = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-            theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-            theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-            catID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
-            theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+            theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION));
+            theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE));
+            catID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY));
+            thePeriod = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_PERIOD));
             BalanceData theData = new BalanceData();
             theData.setID(theID);
             theData.setValue(theValue);
             theData.setDescription(theDescription);
             theData.setCategory(catID);
             theData.setDate(theDueDate);
-            theData.setStatus(theStatus);
+            theData.setRecPeriod(thePeriod);
             publishProgress(theData);
 
 
