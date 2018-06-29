@@ -11,7 +11,6 @@ import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
-import com.cs246.EzBudget.ListCategory;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 
@@ -325,8 +321,8 @@ public class DispBalViewFragment extends Fragment {
                      myDBBalView.delete(myIDtoChange);
                      Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
                              Toast.LENGTH_SHORT).show();
-                     Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                     startActivity(intent);
+                     //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
+                     //startActivity(intent);
                  }
              })
              .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

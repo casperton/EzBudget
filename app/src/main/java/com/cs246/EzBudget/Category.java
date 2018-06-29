@@ -2,7 +2,7 @@ package com.cs246.EzBudget;
 
 public class Category {
 
-    static public final int UNKNOWN = -1;
+    static public final Long UNKNOWN = Long.valueOf(-1);
     //
     // Fields
     //
@@ -230,7 +230,7 @@ public class Category {
 
     private Integer myOperation;
     private String myName;
-    private int myID;
+    private Long myID;
 
     //
     // Constructors
@@ -302,7 +302,7 @@ public class Category {
      * Set the value of myID
      * @param newVar the new value of myID
      */
-    public void setID (int newVar) {
+    public void setID (Long newVar) {
         myID = newVar;
     }
 
@@ -310,7 +310,7 @@ public class Category {
      * Get the value of myID
      * @return the value of myID
      */
-    public int getID () {
+    public Long getID () {
         return myID;
     }
 

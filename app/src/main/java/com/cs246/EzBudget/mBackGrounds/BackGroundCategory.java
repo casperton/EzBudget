@@ -2,8 +2,8 @@ package com.cs246.EzBudget.mBackGrounds;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBCategory;
-import com.cs246.EzBudget.mFragments.CategoryShowFragment;
 import com.cs246.EzBudget.mRecycler.RecyclerCategoryAdapter;
 
 import java.util.ArrayList;
@@ -27,7 +26,8 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private Context context;
     private RecyclerCategoryAdapter myAdapter;
     private ArrayList<Category> myCategories;
-    private CategoryShowFragment teste;
+    //private DispCategoryDialogFrag teste;
+    private FragmentManager myFragmentManager;
     public final static int CAT_ALL = 1;
     public final static int CAT_INC = 2;
     public final static int CAT_OUT = 3;
@@ -36,19 +36,19 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private int myConsultType;
     private int myLayOut;
 
-    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, CategoryShowFragment theFrag) {
+    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, FragmentManager theFrag) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
         myConsultType = theConsult;
         myCategories= new ArrayList<>();
         myLayOut = theLayOut;
-        teste = theFrag;
+        myFragmentManager = theFrag;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerCategoryAdapter(myCategories,context,myLayOut,teste);
+        myAdapter = new RecyclerCategoryAdapter(myCategories,context,myLayOut,myFragmentManager);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 
@@ -58,7 +58,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     protected Void doInBackground(Void... voids) {
         DBCategory mydb = new DBCategory(context);
 
-        Integer id;
+        Long id;
         String name;
         String description;
         Integer operation;
@@ -84,7 +84,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
             int size = cursor.getCount();
             Log.i("SALVATORE: SIZE: ", Integer.toString(size));
             do {
-                id = cursor.getInt(cursor.getColumnIndex(Category.CATEGORY_COLUMN_ID));
+                id = cursor.getLong(cursor.getColumnIndex(Category.CATEGORY_COLUMN_ID));
                 name = cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
                 description = cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
                 operation = cursor.getInt(cursor.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));

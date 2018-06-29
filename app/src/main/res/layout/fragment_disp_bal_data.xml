@@ -36,7 +36,7 @@
 
 
                 <CheckBox
-                    android:id="@+id/checkBoxRecurrent"
+                    android:id="@+id/dispBalDataCheckBoxRecurrent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

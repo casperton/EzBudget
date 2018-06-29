@@ -72,7 +72,7 @@ public class ListBalDataFragment extends Fragment {
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerID, fragInfo);
+                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_FRAG");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

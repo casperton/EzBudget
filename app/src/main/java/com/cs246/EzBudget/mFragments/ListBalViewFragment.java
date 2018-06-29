@@ -31,6 +31,7 @@ public class ListBalViewFragment extends Fragment {
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
     private Button myAddButton;
+
     @NonNull
     static public ListBalViewFragment newInstance(){
         return new ListBalViewFragment();

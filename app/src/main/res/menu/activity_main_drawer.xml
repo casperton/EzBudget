@@ -3,19 +3,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/interplanetary"
+            android:id="@+id/drawerListCat"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Category List" />
+            android:title="@string/catList" />
         <item
-            android:id="@+id/interstellar"
+            android:id="@+id/drawerListBalData"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/balDataList" />
         <item
-            android:id="@+id/intergalactic"
+            android:id="@+id/drawerListRecurrent"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Balance View Test" />
+            android:title="@string/balDataRecList" />
         <item
-            android:id="@+id/interuniverse"
+            android:id="@+id/drawerListBalView"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/balViewList" />
     </group>

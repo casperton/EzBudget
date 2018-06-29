@@ -25,13 +25,10 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
-import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
-import com.cs246.EzBudget.DispBalData;
-import com.cs246.EzBudget.ListCategory;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 
@@ -105,7 +102,7 @@ public class DispBalDataFragment extends Fragment {
         myDeleteButton = (Button)myView.findViewById(R.id.dispBalDataDelete);
 
         final FragmentManager fm=getActivity().getSupportFragmentManager();
-        final CategoryShowFragment tv=new CategoryShowFragment();
+        final DispCategoryDialogFrag tv=new DispCategoryDialogFrag();
 
         /**
          * Show Fragment to select the category on long click
@@ -113,7 +110,7 @@ public class DispBalDataFragment extends Fragment {
         myCategory.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                //tv.show(fm,"TV_tag");
+                tv.show(fm,"CATEGORY_SHOW_FRAGMENT");
                 return true;
             }
         });
@@ -281,8 +278,8 @@ public class DispBalDataFragment extends Fragment {
                         myDBBalanceData.delete(myIDtoChange);
                         Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
                                 Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
+                       // startActivity(intent);
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -298,7 +295,10 @@ public class DispBalDataFragment extends Fragment {
 
     }
 
+public void setCateGoryText(String theText){
 
+        myCategory.setText(theText);
+}
     /**
      * Run when the save button is clicked
      * @param view
@@ -310,7 +310,7 @@ public class DispBalDataFragment extends Fragment {
         Double theValue = Double.parseDouble(myValue.getText().toString());
         String theDueDate = myDueDate.getText().toString();
         String theCategoryNAME = myCategory.getText().toString();
-        Integer theCategoryID = mydb.getID(theCategoryNAME);
+        Long theCategoryID = mydb.getID(theCategoryNAME);
         if (theCategoryID == Category.UNKNOWN) {
             Toast.makeText(getActivity().getApplicationContext(), "UNKNOWN CATEGORY",
                     Toast.LENGTH_SHORT).show();

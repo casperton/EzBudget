@@ -26,15 +26,19 @@
     <string name="button_bills">Bills</string>
     <string name="button_income">Income</string>
     <!-- CATEGORIES -->
-    <string name="categoryTitle">Categories</string>
-    <string name="cat_edit">Edit Category</string>
-    <string name="cat_delete">Delete Category</string>
-    <string name="cat_save">Save Category</string>
-    <string name="cat_list">List Categories</string>
+    <string name="catTitle">Categories</string>
+    <string name="catEdit">Edit Category</string>
+    <string name="catDelete">Delete Category</string>
+    <string name="catSave">Save Category</string>
+    <string name="catList">List Categories</string>
     <!-- BALANCE DATA -->
     <string name="balDataTitle">Financial Data</string>
     <string name="balDataList">List Balance Data</string>
     <string name="balDataEdit">Edit Balance Data</string>
+    <!-- BALANCE DATA RECURRENT-->
+    <string name="balDataRecTitle">Recurrent Data</string>
+    <string name="balDataRecList">List Recurrent Data</string>
+    <string name="balDataRecEdit">Edit Recurrent Data</string>
     <!-- BALANCE VIEW -->
     <string name="viewTitle">Title</string>
     <string name="balViewList">List Periods</string>

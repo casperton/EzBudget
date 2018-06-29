@@ -59,7 +59,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
         Double theValue;
         String theDescription;
         String theDueDate;
-        Integer catID;
+        Long catID;
         Cursor cursor;
         switch (myConsultType) {
             case BAL_ALL:  cursor =  theBalanceData.getAllCursor();
@@ -92,7 +92,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
             theValue = cursor.getDouble(4);
             theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
             theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-            catID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+            catID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
             BalanceData theData = new BalanceData();
             theData.setID(theID);
             theData.setValue(theValue);

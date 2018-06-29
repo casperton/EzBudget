@@ -1,21 +1,21 @@
 package com.cs246.EzBudget.mRecycler;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
-import com.cs246.EzBudget.DispCategory;
-import com.cs246.EzBudget.mFragments.CategoryShowFragment;
+import com.cs246.EzBudget.mFragments.DispBalDataFragment;
+import com.cs246.EzBudget.mFragments.DispCategoryFragment;
 
 import java.util.ArrayList;
 
@@ -28,12 +28,13 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
     private ArrayList<Category> myCategoryList = new ArrayList<>();
     private Context myContext;
     private int myLayout;
-    private CategoryShowFragment teste;
-    public RecyclerCategoryAdapter(ArrayList<Category> categoryList, Context theContext, int theLayOut, CategoryShowFragment theFrag) {
+    //private DispCategoryDialogFrag teste;
+    private FragmentManager myFagmentManager;
+    public RecyclerCategoryAdapter(ArrayList<Category> categoryList, Context theContext, int theLayOut, FragmentManager theFrag) {
         this.myCategoryList = categoryList;
         this.myContext = theContext;
         myLayout = theLayOut;
-        teste = theFrag;
+        myFagmentManager = theFrag;
     }
 
     // Initialize View
@@ -72,14 +73,18 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
                 @Override
                 public void OnClick(View view, int position, boolean isLongClick) {
 
-                    int id_To_Search = myCategoryList.get(position).getID();
+                    Long id_To_Search = myCategoryList.get(position).getID();
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("id", id_To_Search );
 
-                    Bundle dataBundle = new Bundle();
-                    dataBundle.putInt("id", id_To_Search);
+                    DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
+                    fragInfo.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerID, fragInfo,"CATEGORY_SHOW_FRAGMENT");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
 
-                    Intent intent = new Intent(myContext.getApplicationContext(), DispCategory.class);
-                    intent.putExtras(dataBundle);
-                    myContext.startActivity(intent);
+
                 }
 
             });
@@ -90,10 +95,11 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
                 public void OnClick(View view, int position, boolean isLongClick) {
 
                     String id_To_Search = myCategoryList.get(position).getName();
-
-
-                    EditText myCat = (EditText) teste.getActivity().getWindow().getDecorView().getRootView().findViewById(R.id.editBalDataCategory);
-                        myCat.setText(id_To_Search);
+                    DispBalDataFragment myFragment =  (DispBalDataFragment) myFagmentManager.findFragmentByTag("DISPLAY_BAL_DATA_FRAG");
+                    myFragment.setCateGoryText(id_To_Search);
+                    // to do the same if using activity instead of fragment
+                    // EditText myCat = (EditText) myFragment.getActivity().getWindow().getDecorView().getRootView().findViewById(R.id.editBalDataCategory);
+                    // myCat.setText(id_To_Search);
 
                         //Todo: Close the fragment
 

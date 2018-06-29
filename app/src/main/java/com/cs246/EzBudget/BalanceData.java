@@ -48,7 +48,7 @@ public class BalanceData {
     private Date myPaymentDate; //the date of payment if it is a bill
     private String myDescription;
     private Double myValue;
-    private int myCategoryID;
+    private Long myCategoryID;
     private boolean isRecurrent;
     private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
     private Long myID; //the ID of this cat in the database
@@ -219,7 +219,7 @@ public class BalanceData {
      * Set the value of myCategory
      * @param newVar the new value of myCategory
      */
-    public void setCategory (int newVar) {
+    public void setCategory (Long newVar) {
         myCategoryID = newVar;
     }
 
@@ -228,7 +228,7 @@ public class BalanceData {
      * Get the value of myCategory
      * @return the value of myCategory
      */
-    public int getCategory () {
+    public Long getCategory () {
         return myCategoryID;
     }
 

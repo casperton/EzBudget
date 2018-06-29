@@ -127,7 +127,7 @@ public class DBCategory {
      * @param id The id of the Category to retrieve its data
      * @return The Cursor wirh the required Data
      */
-    public Cursor getDataCursor(int id) {
+    public Cursor getDataCursor(Long id) {
         String theQuery = "select * from "+Category.CATEGORY_TABLE_NAME+" where "+Category.CATEGORY_COLUMN_ID+" = "+id+"";
 
         Cursor res;
@@ -148,12 +148,12 @@ public class DBCategory {
      * @param id The id of the Category to retrieve its data
      * @return The Category with the required Data
      */
-    public Category get(int id) {
+    public Category get(Long id) {
         SQLiteDatabase db = myDB.getReadableDatabase();
         Cursor rs =  getDataCursor(id);
         rs.moveToFirst();
         //column values
-        Integer theID = rs.getInt(rs.getColumnIndex(Category.CATEGORY_COLUMN_ID));
+        Long theID = rs.getLong(rs.getColumnIndex(Category.CATEGORY_COLUMN_ID));
         String theName = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
         String theDescription = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
         Integer theOperation = rs.getInt(rs.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));
@@ -182,8 +182,8 @@ public class DBCategory {
      * @param theCategoryName
      * @return The Category IKD
      */
-    public int getID(String theCategoryName){
-        int theID = Category.UNKNOWN;
+    public Long getID(String theCategoryName){
+        Long theID = Category.UNKNOWN;
         String findNameSQL = "select * from category where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
 
         Cursor res;
@@ -198,7 +198,7 @@ public class DBCategory {
 
         if (res != null && res.getCount()>0) {
             res.moveToFirst();
-            theID =  res.getInt(res.getColumnIndex(Category.CATEGORY_COLUMN_ID));
+            theID =  res.getLong(res.getColumnIndex(Category.CATEGORY_COLUMN_ID));
 
         }
         res.close();
@@ -212,7 +212,7 @@ public class DBCategory {
      * @param operation The operation
      * @return true on success
      */
-    public boolean update (Integer id, String name, String description, Integer operation) {
+    public boolean update (Long id, String name, String description, Integer operation) {
         boolean retState = false;
         myDB.myLock.writeLock().lock();
         try {
@@ -225,7 +225,7 @@ public class DBCategory {
                 contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
                 String theWhere = Category.CATEGORY_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
-                if (db.update(Category.CATEGORY_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
+                if (db.update(Category.CATEGORY_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){
                     Log.e(TAG, "Update category failed");
                 }else retState = true;
 
@@ -247,7 +247,7 @@ public class DBCategory {
      * @param id The id of the category to delete
      * @return true if the delete was a success
      */
-    public boolean delete (Integer id) {
+    public boolean delete (Long id) {
 
 
         boolean result = false;
@@ -263,7 +263,7 @@ public class DBCategory {
                  */
                 int theResult =  db.delete(Category.CATEGORY_TABLE_NAME,
                         theWhere,
-                        new String[] { Integer.toString(id) });
+                        new String[] { Long.toString(id) });
                 if(theResult == 1) {
                     db.setTransactionSuccessful();
                     result= true;
@@ -305,7 +305,7 @@ public class DBCategory {
         if (cursor.moveToFirst()) {
             do {
                 Category note = new Category();
-                note.setID(cursor.getInt(cursor.getColumnIndex(Category.CATEGORY_COLUMN_ID)));
+                note.setID(cursor.getLong(cursor.getColumnIndex(Category.CATEGORY_COLUMN_ID)));
                 note.setName(cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_NAME)));
                 note.setDescription(cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION)));
                 note.setOperation(cursor.getInt(cursor.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION)));
