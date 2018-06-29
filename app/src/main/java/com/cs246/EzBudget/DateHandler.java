@@ -10,8 +10,10 @@ import java.util.Date;
  * Handles Dates in the correct Format
  */
 public class DateHandler {
-    public static final String DATE_FORMAT = "MM/dd/yyyy";
-    public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
+
+    public static final String DATE_FORMAT = "MM-dd-yyyy";
+    public static final String TIMESTAMP_FORMAT = "MM-dd-yyyy HH:mm:ss";
 
     static public String getNow() {
         //NOW

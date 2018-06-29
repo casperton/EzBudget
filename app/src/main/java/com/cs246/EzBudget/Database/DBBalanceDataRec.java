@@ -23,17 +23,19 @@ public class DBBalanceDataRec{
         myDB = DBHelper.getInstance(context);
 
     }
-    static public boolean insertBalDataRec (SQLiteDatabase db , BalanceData theCat) {
-        //todo: falta adicionar categoria
+    static public Long insertBalDataRec (SQLiteDatabase db , BalanceData theCat, Long theCatID) {
+
+        Long id;
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theCat.getDescription());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theCat.getDate());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theCat.getRecPeriod());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theCat.getValue());
-        db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theCatID);
+        id = db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
 
 
-        return true;
+        return id;
     }
 
     /**

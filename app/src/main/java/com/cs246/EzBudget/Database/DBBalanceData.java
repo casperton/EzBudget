@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
@@ -23,7 +24,7 @@ public class DBBalanceData {
         myDB = DBHelper.getInstance(context);
 
     }
-    static public boolean insertBalData (SQLiteDatabase db , BalanceData theCat) {
+    static public boolean insertBalData (SQLiteDatabase db , BalanceData theCat, Long theCatID) {
         //todo: falta adicionar categoria
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theCat.getDescription());
@@ -31,6 +32,7 @@ public class DBBalanceData {
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theCat.getStatus());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theCat.getValue());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theCatID);
         db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
 
 
@@ -142,9 +144,11 @@ public class DBBalanceData {
      * Return a Cursor with all BalanceDatas in the database
      * @return the Cursor with Outcomes and Incomes and Informative data ion the database
      */
-    public Cursor getAllCursor(){
+    public Cursor getAllCursor(BalanceView theView){
         Cursor cursor;
         //return cursor;
+        String theInitialDate = theView.getInitialDate();
+        String theFinalDate = theView.getFinalDate();
 
         myDB.myLock.readLock().lock();
         try {
@@ -152,7 +156,9 @@ public class DBBalanceData {
 
             //return cursor;
             String[] Projections = getProjections();
-            cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,null,null,
+            String theWhere = BalanceData.BALANCEDATA_COLUMN_DUE_DATE+
+                    " BETWEEN "+theInitialDate+" AND "+theFinalDate;
+            cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,theWhere,null,
                     null,null,null);
 
         } finally {
@@ -177,7 +183,7 @@ public class DBBalanceData {
      * Return a Cursor with all Income BalanceDatas in the database
      * @return TheCursor with all Incomes
      */
-    public Cursor getIncomesCursor(){
+    public Cursor getIncomesCursor(BalanceView theView){
 
         Cursor cursor;
 
@@ -213,7 +219,7 @@ where category.operation = 1
      * Return a Cursor with all Outcomes BalanceDatas in the database
      * @return the Cursor with all Outcomes
      */
-    public Cursor getOutcomesCursor(){
+    public Cursor getOutcomesCursor(BalanceView theView){
 
         Cursor cursor;
 

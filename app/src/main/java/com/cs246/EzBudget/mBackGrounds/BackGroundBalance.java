@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceData;
+import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
     private Context context;
+    private BalanceView myCurrentView;
     private RecyclerBalanceAdapter myAdapter;
     private ArrayList<BalanceData> myBalanceData;
     //private DispCategoryDialogFrag teste;
@@ -38,6 +41,9 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
         myConsultType = theConsult;
         myBalanceData= new ArrayList<>();
         myLayOut = theLayOut;
+        DBBalanceView myCurrentViewDB = new DBBalanceView(context);
+        myCurrentView = myCurrentViewDB.getCurrent();
+
 
     }
 
@@ -60,15 +66,15 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
         Long catID;
         Cursor cursor;
         switch (myConsultType) {
-            case BAL_ALL:  cursor =  theBalanceData.getAllCursor();
+            case BAL_ALL:  cursor =  theBalanceData.getAllCursor(myCurrentView);
                 break;
-            case  BAL_INCOMES:  cursor =  theBalanceData.getIncomesCursor();
+            case  BAL_INCOMES:  cursor =  theBalanceData.getIncomesCursor(myCurrentView);
                 break;
-            case BAL_BILLS: cursor =  theBalanceData.getOutcomesCursor();
+            case BAL_BILLS: cursor =  theBalanceData.getOutcomesCursor(myCurrentView);
                 break;
 
 
-            default:cursor =  theBalanceData.getAllCursor();
+            default:cursor =  theBalanceData.getAllCursor(myCurrentView);
                 break;
         }
 

@@ -91,16 +91,17 @@ public class DBCategory {
         return result;
     }
 
-    static public boolean insertCategory (SQLiteDatabase db , Category theCat) {
+    static public Long insertCategory (SQLiteDatabase db , Category theCat) {
 
+        Long id;
         ContentValues contentValues = new ContentValues();
         contentValues.put(Category.CATEGORY_COLUMN_NAME, theCat.getName());
         contentValues.put(Category.CATEGORY_COLUMN_DESCRIPTION, theCat.getDescription());
         contentValues.put( Category.CATEGORY_COLUMN_OPERATION, theCat.getOperation());
-        db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
+        id = db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
 
 
-        return true;
+        return id;
     }
 
 
