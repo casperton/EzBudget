@@ -157,7 +157,7 @@ public class DBBalanceData {
             //return cursor;
             String[] Projections = getProjections();
             String theWhere = BalanceData.BALANCEDATA_COLUMN_DUE_DATE+
-                    " BETWEEN "+theInitialDate+" AND "+theFinalDate;
+                    " BETWEEN "+"\""+theInitialDate+"\""+" AND "+"\""+theFinalDate+"\"";
             cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME,Projections,theWhere,null,
                     null,null,null);
 
@@ -186,7 +186,8 @@ public class DBBalanceData {
     public Cursor getIncomesCursor(BalanceView theView){
 
         Cursor cursor;
-
+        String theInitialDate = theView.getInitialDate();
+        String theFinalDate = theView.getFinalDate();
         myDB.myLock.readLock().lock();
         try {
             SQLiteDatabase db = myDB.getReadableDatabase();
@@ -206,7 +207,10 @@ where category.operation = 1
                     " inner join " + Category.CATEGORY_TABLE_NAME +
                     " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
 
-            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString()+
+                    " AND "+BalanceData.BALANCEDATA_COLUMN_DUE_DATE+
+                    " BETWEEN "+"\""+theInitialDate+"\""+" AND "+"\""+theFinalDate+"\"";
+
             cursor = db.query(theTableArg,Projections,theWhere,null,
                     null,null,null);
         } finally {
@@ -222,7 +226,8 @@ where category.operation = 1
     public Cursor getOutcomesCursor(BalanceView theView){
 
         Cursor cursor;
-
+        String theInitialDate = theView.getInitialDate();
+        String theFinalDate = theView.getFinalDate();
         myDB.myLock.readLock().lock();
         try {
             SQLiteDatabase db = myDB.getReadableDatabase();
@@ -242,7 +247,10 @@ where category.operation = 1
                     " inner join " + Category.CATEGORY_TABLE_NAME +
                     " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
 
-            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString()+
+                    " AND "+BalanceData.BALANCEDATA_COLUMN_DUE_DATE+
+                    " BETWEEN "+"\""+theInitialDate+"\""+" AND "+"\""+theFinalDate+"\"";
             cursor = db.query(theTableArg,Projections,theWhere,null,
                     null,null,null);
 
