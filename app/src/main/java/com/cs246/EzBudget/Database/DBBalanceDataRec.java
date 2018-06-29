@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
 
 /**
@@ -22,7 +23,18 @@ public class DBBalanceDataRec{
         myDB = DBHelper.getInstance(context);
 
     }
+    static public boolean insertBalDataRec (SQLiteDatabase db , BalanceData theCat) {
+        //todo: falta adicionar categoria
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theCat.getDescription());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theCat.getDate());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theCat.getRecPeriod());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theCat.getValue());
+        db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
 
+
+        return true;
+    }
 
     /**
      * Insert a register into the Balance Data Recurrent database
@@ -43,7 +55,6 @@ public class DBBalanceDataRec{
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theData.getDate());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getValue());
-                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP, myDB.getNow());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theData.getStatus());
                 ;
                 result = db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
@@ -113,7 +124,7 @@ public class DBBalanceDataRec{
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,theData.getDate());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD,theData.getRecPeriod());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY,theData.getCategory());
-                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP, myDB.getNow());
+                //contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP, DateHandler.getNow());
                 String theWhere = BalanceData.BALANCEDATAREC_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
                 if (db.update(BalanceData.BALANCEDATAREC_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
@@ -199,8 +210,7 @@ public class DBBalanceDataRec{
                 BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION,
                 BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,
                 BalanceData.BALANCEDATAREC_COLUMN_PERIOD,
-                BalanceData.BALANCEDATAREC_COLUMN_VALUE,
-                BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP};
+                BalanceData.BALANCEDATAREC_COLUMN_VALUE};
         return Projections;
     }
 

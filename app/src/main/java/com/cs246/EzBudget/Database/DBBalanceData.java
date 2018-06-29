@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
 
 /**
@@ -21,6 +22,19 @@ public class DBBalanceData {
     public DBBalanceData(Context context) {
         myDB = DBHelper.getInstance(context);
 
+    }
+    static public boolean insertBalData (SQLiteDatabase db , BalanceData theCat) {
+        //todo: falta adicionar categoria
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theCat.getDescription());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theCat.getDate());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theCat.getStatus());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theCat.getValue());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
+        db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
+
+
+        return true;
     }
 
     /**
@@ -42,7 +56,7 @@ public class DBBalanceData {
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDate());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDate());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, myDB.getNow());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
                 result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
                 if (result < 0){
@@ -104,7 +118,7 @@ public class DBBalanceData {
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDate());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS,theData.getStatus());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, myDB.getNow());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
                 String theWhere = BalanceData.BALANCEDATA_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
                 if (db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){

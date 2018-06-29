@@ -37,8 +37,117 @@ public class BalanceData {
     public static final String BALANCEDATAREC_COLUMN_CATEGORY = "idCategory";
     public static final String BALANCEDATAREC_COLUMN_VALUE = "value";
     public static final String BALANCEDATAREC_COLUMN_PERIOD = "period";
-    public static final String BALANCEDATAREC_COLUMN_TIMESTAMP = "modificationDateTime";
 
+
+
+    ////////////////DATA FOR TESTING //////////////////////////////
+
+    //Most common budget payments
+    /**
+     Payment income.
+     bu weekly
+     */
+    public static final String DB_REC_PAYMENT_DESCRIPTION = "Bi Weekly Payment";
+    public static final Integer DB_REC_PAYMENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_PAYMENT_VALUE = 1500.00;
+    public static final Integer DB_REC_PAYMENT_RECURRENCE = RECURRENT.BI_WEEKLI;
+    public static final String DB_REC_PAYMENT_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_PAYMENT = new BalanceData(DB_REC_PAYMENT_DESCRIPTION,
+            DB_REC_PAYMENT_VALUE,
+            DB_REC_PAYMENT_STATUS,
+            DB_REC_PAYMENT_DUEDATE,
+            DB_REC_PAYMENT_RECURRENCE);
+
+    /**
+     Payment groceries.
+     bI weekly
+     */
+    public static final String DB_REC_GROCERY_DESCRIPTION = "Grocery bill";
+    public static final Integer DB_REC_GROCERY_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_GROCERY_VALUE = 15.00;
+    public static final Integer DB_REC_GROCERY_RECURRENCE = RECURRENT.WEEKLY;
+    public static final String DB_REC_GROCERY_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_GROCERY = new BalanceData(DB_REC_GROCERY_DESCRIPTION,
+            DB_REC_GROCERY_VALUE,
+            DB_REC_GROCERY_STATUS,
+            DB_REC_GROCERY_DUEDATE,
+            DB_REC_GROCERY_RECURRENCE);
+
+    /**
+     Payment electric Energy.
+     MONTHLY
+     */
+    public static final String DB_REC_ELETRICITY_DESCRIPTION = "Power bill";
+    public static final Integer DB_REC_ELETRICITY_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_ELETRICITY_VALUE = 75.00;
+    public static final Integer DB_REC_ELETRICITY_RECURRENCE = RECURRENT.MONTHLY;
+    public static final String DB_REC_ELETRICITY_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_ELETRICITY = new BalanceData(DB_REC_ELETRICITY_DESCRIPTION,
+            DB_REC_ELETRICITY_VALUE,
+            DB_REC_ELETRICITY_STATUS,
+            DB_REC_ELETRICITY_DUEDATE,
+            DB_REC_ELETRICITY_RECURRENCE);
+
+    /**
+     Payment Water.
+     MONTHLY
+     */
+    public static final String DB_REC_WATER_DESCRIPTION = "Water bill";
+    public static final Integer DB_REC_WATER_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_WATER_VALUE = 105.00;
+    public static final Integer DB_REC_WATER_RECURRENCE = RECURRENT.MONTHLY;
+    public static final String DB_REC_WATER_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_WATER = new BalanceData(DB_REC_WATER_DESCRIPTION,
+            DB_REC_WATER_VALUE,
+            DB_REC_WATER_STATUS,
+            DB_REC_WATER_DUEDATE,
+            DB_REC_WATER_RECURRENCE);
+
+
+    /**
+     Payment Phone Bill.
+     monthly
+     */
+    public static final String DB_REC_PHONE_DESCRIPTION = "Phone bill";
+    public static final Integer DB_REC_PHONE_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_PHONE_VALUE = 65.00;
+    public static final Integer DB_REC_PHONE_RECURRENCE = RECURRENT.MONTHLY;
+    public static final String DB_REC_PHONE_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_PHONE = new BalanceData(DB_REC_PHONE_DESCRIPTION,
+            DB_REC_PHONE_VALUE,
+            DB_REC_PHONE_STATUS,
+            DB_REC_PHONE_DUEDATE,
+            DB_REC_PHONE_RECURRENCE);
+
+    /**
+     Payment Car Bill.
+     monthly
+     */
+    public static final String DB_REC_CAR_DESCRIPTION = "Car payment";
+    public static final Integer DB_REC_CAR_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_CAR_VALUE = 330.00;
+    public static final Integer DB_REC_CAR_RECURRENCE = RECURRENT.MONTHLY;
+    public static final String DB_REC_CAR_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_CAR = new BalanceData(DB_REC_CAR_DESCRIPTION,
+            DB_REC_CAR_VALUE,
+            DB_REC_CAR_STATUS,
+            DB_REC_CAR_DUEDATE,
+            DB_REC_CAR_RECURRENCE);
+
+    /**
+     Payment Rent.
+     monthly
+     */
+    public static final String DB_REC_RENT_DESCRIPTION = "Rent";
+    public static final Integer DB_REC_RENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
+    public static final Double DB_REC_RENT_VALUE = 850.00;
+    public static final Integer DB_REC_RENT_RECURRENCE = RECURRENT.MONTHLY;
+    public static final String DB_REC_RENT_DUEDATE = DateHandler.getNowDate();
+    public static final BalanceData DB_REC_RENT = new BalanceData(DB_REC_RENT_DESCRIPTION,
+            DB_REC_RENT_VALUE,
+            DB_REC_RENT_STATUS,
+            DB_REC_RENT_DUEDATE,
+            DB_REC_RENT_RECURRENCE);
 
     //
     // Fields
@@ -72,7 +181,14 @@ public class BalanceData {
         this.myStatus = PAY_STATUS.UNKNOWN;
         this.myRecPeriod = RECURRENT.NO_PERIODIC;
     }
+    public BalanceData (String theDescr, Double theValue, Integer theStatus, String theDueDate, Integer theRecurrence) {
 
+        this.myStatus = theStatus;
+        this.myRecPeriod = theRecurrence;
+        setDate(theDueDate);
+        myValue = theValue;
+        myDescription = theDescr;
+    }
     //
     // Methods
     //
@@ -114,7 +230,7 @@ public class BalanceData {
     public void setPaymentDate (String newVar) {
 
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -135,7 +251,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
 
         if(myPaymentDate != null) {
             // Using DateFormat format method we can create a string
@@ -153,7 +269,7 @@ public class BalanceData {
     public void setDate (String newVar) {
 
        if (! newVar.isEmpty()) {
-           DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+           DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
            Date date = null;
            try {
                date = format.parse(newVar);
@@ -173,7 +289,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
 
         if(myDate != null) {
             // Using DateFormat format method we can create a string

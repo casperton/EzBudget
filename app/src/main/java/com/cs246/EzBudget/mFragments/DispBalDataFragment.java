@@ -30,6 +30,7 @@ import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
+import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 
@@ -261,14 +262,14 @@ public class DispBalDataFragment extends Fragment {
     public void setDueDateText(int mDay ,int mMonth,int mYear){
 
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditInitialDate);
         myDueDate.setText(sdf.format(c.getTime()));
 
     }
     public void setMyPaymentDateText(int mDay ,int mMonth,int mYear){
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditFinalDate);
         myPaymentDate.setText(sdf.format(c.getTime()));
 

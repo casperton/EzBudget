@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalData;
+import com.cs246.EzBudget.mBackGrounds.BackGroundRecData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,7 +81,7 @@ public class ListRecBalDataFragment extends Fragment {
         });
 
 
-       // new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundBalData.BAL_ALL ).execute();
+        new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundBalData.BAL_ALL ).execute();
 
         return myView;
     }

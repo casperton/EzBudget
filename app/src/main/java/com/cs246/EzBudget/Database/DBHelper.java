@@ -36,8 +36,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATE_FORMAT = "MM/dd/yyyy";
-    public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
     public static final String DATABASE_NAME = "EzBudgetDB.db";
     public static final int DATABASE_VERSION = 1;
     protected static final String TAG = "EzBudget.Database";
@@ -101,21 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if(dh== null) dh=this;
     }
 
-    static public String getNow() {
-        //NOW
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT);
 
-        // Get the date today using Calendar object.
-        Date today = Calendar.getInstance().getTime();
-        // Using DateFormat format method we can create a string
-        // representation of a date with the defined format.
-        String reportDate = df.format(today);
-
-        return reportDate;
-
-    }
 
 
     //ArrayList<Category> myDefaultCategories;
@@ -196,8 +181,22 @@ public class DBHelper extends SQLiteOpenHelper {
         DBCategory.insertCategory(db,Category.DB_CAT_INVESTMENTS);
         //* Table Balance Data*/
         db.execSQL(CREATE_TABLE_BALANCEDATA);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_PAYMENT);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_GROCERY );
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_ELETRICITY);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_WATER);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_PHONE);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_CAR);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_RENT);
         //* Table Balance Data Recurrent*/
         db.execSQL(CREATE_TABLE_BALANCEDATAREC);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PAYMENT);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_GROCERY );
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_ELETRICITY);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_WATER);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PHONE);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_CAR);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_RENT);
         //* Table Balance View*/
         db.execSQL(CREATE_TABLE_BALANCEVIEW);
         DBBalanceView.insertBalView(db,BalanceView.DB_BALVIEW_LAST_MONTH);

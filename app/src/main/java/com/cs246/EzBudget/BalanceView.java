@@ -34,7 +34,7 @@ public class BalanceView{
     public static Date getDateFromLastMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         Calendar aCalendar = Calendar.getInstance();
         String firstDateOfPreviousMonth_str;
         String lastDateOfPreviousMonth_str;
@@ -59,7 +59,7 @@ public class BalanceView{
     public static Date getDateFromNextMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         Calendar aCalendar = Calendar.getInstance();
         String firstDateOfPreviousMonth_str;
         String lastDateOfPreviousMonth_str;
@@ -84,7 +84,7 @@ public class BalanceView{
     public static Date getDateFromThisMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         Calendar aCalendar = Calendar.getInstance();
         String firstDateOfPreviousMonth_str;
         String lastDateOfPreviousMonth_str;
@@ -197,7 +197,7 @@ public class BalanceView{
 
     public void setInitialDate(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -215,7 +215,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
 
         if(this.myInitialDate != null) {
             // Using DateFormat format method we can create a string
@@ -231,7 +231,7 @@ public class BalanceView{
 
     public void setKeyDate(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -249,7 +249,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
 
         if(this.myKeyDate != null) {
             // Using DateFormat format method we can create a string
@@ -284,7 +284,7 @@ public class BalanceView{
 
     public void setFinalDate(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -301,7 +301,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
 
         if(this.myFinalDate != null) {
             // Using DateFormat format method we can create a string

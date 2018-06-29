@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
+import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 
@@ -282,7 +283,7 @@ public class DispBalViewFragment extends Fragment {
         c.set(Calendar.MONTH,mMonth);
         c.set(Calendar.DAY_OF_MONTH,mDay);
         c.set(Calendar.YEAR,mYear);
-        SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditKeyDate);
         // Get the date today using Calendar object.
         Date today = c.getTime();
@@ -296,14 +297,14 @@ public class DispBalViewFragment extends Fragment {
     public void setInitialDateText(int mDay ,int mMonth,int mYear){
 
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         EditText myDate = myView.findViewById(R.id.dispBalViewEditInitialDate);
         myDate.setText(sdf.format(c.getTime()));
 
     }
     public void setFinalDateText(int mDay ,int mMonth,int mYear){
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditFinalDate);
         myFinalDate.setText(sdf.format(c.getTime()));
 

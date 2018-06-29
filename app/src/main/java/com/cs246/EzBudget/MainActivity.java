@@ -1,6 +1,7 @@
 package com.cs246.EzBudget;
 
 
+import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.mFragments.DispBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DBBalanceView myCurrentView = new DBBalanceView(this);
+        DBBalanceData myBalanceData = new DBBalanceData(this);
         BalanceView myBalanceView = myCurrentView.getCurrent();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,25 +110,22 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //MESSAGE TO KIRK
-        // TO GET BILLS CURSOR USE THE METHOD getOutcomesCursor()
-        // FROM THE CLASS DBBalanceData
-        //SQLiteDatabase db = mydb.getReadableDatabase();
-        // DBBalanceData theDatabase = new DBBalanceData(context)
-        // cursor theCursor = theDatabase.getOutcomesCursor(db)
-        //
-        //to get incomes use getIncomesCursor(db)
-        // (Salvatore)
+        bills = new ArrayList<>();
+       Cursor cursor = myBalanceData.getAllCursor();
+        if (cursor.moveToFirst()) {
+            do {
+                String TheDescr = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                Double value =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                bills.add(TheDescr+ " - $ "+value.toString());
+            } while (cursor.moveToNext());
+        }
 
 
         //  SWIPE MENU FOR BILL ITEMS
         listView = findViewById(R.id.listview_summary);
 
-        bills = new ArrayList<>();
-        bills.add("Phone bill: $65");
-        bills.add("Power bill: $75");
-        bills.add("Car payment: $330");
-        bills.add("Rent: $850");
+
+
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bills);
 
