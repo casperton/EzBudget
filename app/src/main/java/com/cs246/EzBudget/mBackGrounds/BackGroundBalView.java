@@ -3,6 +3,7 @@ package com.cs246.EzBudget.mBackGrounds;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -22,22 +23,21 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
     private Context context;
     private RecyclerBalViewAdapter myAdapter;
     private ArrayList<BalanceView> myCategories;
-   // private BalanceViewShowFragment teste;
+    private FragmentManager myFagmentManager;
 
 
 
-    public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context/*, int theConsult ,  BalanceViewShowFragment theFrag*/) {
+    public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag/*, int theConsult */) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
         myCategories= new ArrayList<>();
-
-        //teste = theFrag;
+        myFagmentManager = theFrag;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalViewAdapter(myCategories,context);
+        myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

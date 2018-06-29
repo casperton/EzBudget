@@ -66,7 +66,7 @@ public class DBBalanceData {
      * @param id The id of the Balance Data to retrieve its data
      * @return The Cursor wirh the required Data
      */
-    public Cursor getDataCursor(int id) {
+    public Cursor getDataCursor(Long id) {
         String theQuery = "select * from "+BalanceData.BALANCEDATA_TABLE_NAME+ " where "+BalanceData.BALANCEDATA_COLUMN_ID+"="+id+"";
         Cursor res;
         myDB.myLock.readLock().lock();
@@ -90,7 +90,7 @@ public class DBBalanceData {
         return numRows;
     }
 
-    public boolean update (Integer id, BalanceData theData) {
+    public boolean update (Long id, BalanceData theData) {
         boolean retState = false;
         myDB.myLock.writeLock().lock();
         try {
@@ -107,7 +107,7 @@ public class DBBalanceData {
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, myDB.getNow());
                 String theWhere = BalanceData.BALANCEDATA_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
-                if (db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
+                if (db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){
                     Log.e(TAG, "Update Balance Data failed");
                 }else {
                     retState = true;
@@ -272,7 +272,7 @@ where category.operation = 1
      * @param id The id of the Balance Data to delete
      * @return true if the delete was a success, false otherwise
      */
-    public boolean delete (Integer id) {
+    public boolean delete (Long id) {
 
 
         boolean result = false;
@@ -288,7 +288,7 @@ where category.operation = 1
                  */
                 int theResult =  db.delete(BalanceData.BALANCEDATA_TABLE_NAME,
                         theWhere,
-                        new String[] { Integer.toString(id) });
+                        new String[] { Long.toString(id) });
                 if (theResult == 1) {
                     db.setTransactionSuccessful();
                     result = true;

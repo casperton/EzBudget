@@ -26,6 +26,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.mFragments.DispBalViewFragment;
+import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 
 import java.util.ArrayList;
@@ -229,10 +230,16 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.interstellar) {
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterStellar.newInstance()).commit();
-            Intent intent2 = new Intent(getApplicationContext(),DispBalData.class);
+            //Intent intent2 = new Intent(getApplicationContext(),DispBalData.class);
             //intent2.putExtras(dataBundle);
 
-            startActivity(intent2);
+            //startActivity(intent2);
+            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
+            fragmentTransaction.replace(R.id.containerID, ListBalDataFragment.newInstance());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.intergalactic) {
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterGalactic.newInstance()).commit();

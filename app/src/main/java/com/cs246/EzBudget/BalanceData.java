@@ -51,7 +51,7 @@ public class BalanceData {
     private int myCategoryID;
     private boolean isRecurrent;
     private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
-    private int myID; //the ID of this cat in the database
+    private Long myID; //the ID of this cat in the database
 
     /**
 
@@ -83,11 +83,11 @@ public class BalanceData {
     //
 
 
-    public void setID(int theID) {
+    public void setID(Long theID) {
         this.myID = theID;
     }
 
-    public int getID() {
+    public Long getID() {
         return myID;
     }
 

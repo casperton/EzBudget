@@ -81,10 +81,34 @@ public class BalanceView{
         else return lastDateOfPreviousMonth;
     }
 
+    public static Date getDateFromThisMonth(int type) {
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(DBHelper.DATE_FORMAT);
+        Calendar aCalendar = Calendar.getInstance();
+        String firstDateOfPreviousMonth_str;
+        String lastDateOfPreviousMonth_str;
+        // add -1 month to current month
+        //aCalendar.add(Calendar.MONTH,1);
+        // set DATE to 1, so first date of previous month
+        aCalendar.set(Calendar.DATE, 1);
+
+        Date firstDateOfPreviousMonth = aCalendar.getTime();
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        firstDateOfPreviousMonth_str = df.format(firstDateOfPreviousMonth);
+        // set actual maximum date of previous month
+        aCalendar.set(Calendar.DATE, aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        //read it
+        Date lastDateOfPreviousMonth = aCalendar.getTime();
+        lastDateOfPreviousMonth_str = df.format(lastDateOfPreviousMonth);
+        if(type == 1) return firstDateOfPreviousMonth;
+        else return lastDateOfPreviousMonth;
+    }
+
 
     public static final String DB_BALVIEW_LAST_MONTH_TITLE = "LAST MONTH";
-    public static final String DB_BALVIEW_LAST_MONTH_DESCRIPTION = "The Balance for the Last Month.\n" +
-            "Test Data\n" ;
+    public static final String DB_BALVIEW_LAST_MONTH_DESCRIPTION = "The Balance for the Last Month.";
     public static final Date DB_BALVIEW_LAST_MONTH_INI_DATE = getDateFromLastMonth(1);
     public static final Date DB_BALVIEW_LAST_MONTH_END_DATE = getDateFromLastMonth(2);
     public static final Date DB_BALVIEW_LAST_MONTH_KEY_DATE = DB_BALVIEW_LAST_MONTH_END_DATE;
@@ -96,10 +120,9 @@ public class BalanceView{
 
     // CURRENT MONTH
     public static final String DB_BALVIEW_THIS_MONTH_TITLE = "CURRENT MONTH";
-    public static final String DB_BALVIEW_THIS_MONTH_DESCRIPTION = "The Balance for the Current Month.\n" +
-            "Test Data\n" ;
-    public static final Date DB_BALVIEW_THIS_MONTH_INI_DATE = getDateFromNextMonth(1);
-    public static final Date DB_BALVIEW_THIS_MONTH_END_DATE = getDateFromNextMonth(2);
+    public static final String DB_BALVIEW_THIS_MONTH_DESCRIPTION = "The Balance for the Current Month" ;
+    public static final Date DB_BALVIEW_THIS_MONTH_INI_DATE = getDateFromThisMonth(1);
+    public static final Date DB_BALVIEW_THIS_MONTH_END_DATE = getDateFromThisMonth(2);
     public static final Date DB_BALVIEW_THIS_MONTH_KEY_DATE = DB_BALVIEW_THIS_MONTH_END_DATE;
     public static final BalanceView DB_BALVIEW_THIS_MONTH = new BalanceView(DB_BALVIEW_THIS_MONTH_TITLE,
             DB_BALVIEW_THIS_MONTH_INI_DATE,
@@ -110,10 +133,9 @@ public class BalanceView{
 
     //NEXT MONTH
     public static final String DB_BALVIEW_NEXT_MONTH_TITLE = "NEXT MONTH";
-    public static final String DB_BALVIEW_NEXT_MONTH_DESCRIPTION = "The Balance for the Next Month.\n" +
-            "Test Data\n" ;
-    public static final Date DB_BALVIEW_NEXT_MONTH_INI_DATE = getDateFromLastMonth(1);
-    public static final Date DB_BALVIEW_NEXT_MONTH_END_DATE = getDateFromLastMonth(2);
+    public static final String DB_BALVIEW_NEXT_MONTH_DESCRIPTION = "The Balance for the Next Month.";
+    public static final Date DB_BALVIEW_NEXT_MONTH_INI_DATE = getDateFromNextMonth(1);
+    public static final Date DB_BALVIEW_NEXT_MONTH_END_DATE = getDateFromNextMonth(2);
     public static final Date DB_BALVIEW_NEXT_MONTH_KEY_DATE = DB_BALVIEW_NEXT_MONTH_END_DATE;
     public static final BalanceView DB_BALVIEW_NEXT_MONTH = new BalanceView(DB_BALVIEW_NEXT_MONTH_TITLE,
             DB_BALVIEW_NEXT_MONTH_INI_DATE,
@@ -237,24 +259,27 @@ public class BalanceView{
         return reportDate;
     }
 
-    public void setDescription(String _description){
-
+    public void setDescription(String theDescription){
+        myDescription = theDescription;
     }
 
     public String getDescription() {
-        return null;
+        return myDescription;
     }
 
-    public void setEndBalance(double _balance) {
-
+    public void setEndBalance(double theBalance) {
+        myEndBalance = theBalance;
     }
 
     public double getEndBalance() {
-        return 0;
+        return myEndBalance;
     }
 
-    private void Balance(Balance _balance) {
-
+    private void setBalance(Balance theBalance) {
+        myBalance = theBalance;
+    }
+    public Balance getBalance() {
+        return myBalance;
     }
 
     public void setFinalDate(String newVar) {

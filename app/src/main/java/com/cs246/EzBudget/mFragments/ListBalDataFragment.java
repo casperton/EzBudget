@@ -16,13 +16,15 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
-import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
-import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListBalViewFragment extends Fragment {
+public class ListBalDataFragment extends Fragment {
+
+
+
+
 
 
     private RecyclerView myRecyclerView;
@@ -32,11 +34,11 @@ public class ListBalViewFragment extends Fragment {
     private ProgressBar myProgress=null;
     private Button myAddButton;
     @NonNull
-    static public ListBalViewFragment newInstance(){
-        return new ListBalViewFragment();
+    static public ListBalDataFragment newInstance(){
+        return new ListBalDataFragment();
     }
 
-    public ListBalViewFragment() {
+    public ListBalDataFragment() {
         // Required empty public constructor
     }
 
@@ -45,29 +47,29 @@ public class ListBalViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        myView =  inflater.inflate(R.layout.fragment_list_bal_view, container, false);
+        myView =  inflater.inflate(R.layout.fragment_list_bal_data, container, false);
         super.onCreate(savedInstanceState);
 
 
-        myRecyclerView = (RecyclerView) myView.findViewById(R.id.listViewRecicler);
+        myRecyclerView = (RecyclerView) myView.findViewById(R.id.listBalDataRecicler);
         myLayoutManager = new LinearLayoutManager(getActivity());
         myRecyclerView.setLayoutManager(myLayoutManager);
         myRecyclerView.setHasFixedSize(true);
 
-        myProgress = (ProgressBar) myView.findViewById(R.id.listViewBar);
+        myProgress = (ProgressBar) myView.findViewById(R.id.listBalDataBar);
         myProgress.setVisibility(View.INVISIBLE);
         myFagmentManager = getActivity().getSupportFragmentManager();
 
-        myAddButton = (Button) myView.findViewById(R.id.listViewAddNew);
+        myAddButton = (Button) myView.findViewById(R.id.listBalDataAddNew);
 
         myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Long id_To_Search = Long.valueOf(-1);
+
                 Bundle bundle = new Bundle();
-                Long myMessage = id_To_Search;
+                Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                DispBalViewFragment fragInfo = DispBalViewFragment.newInstance();
+                DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerID, fragInfo);
@@ -77,13 +79,8 @@ public class ListBalViewFragment extends Fragment {
         });
 
 
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager ).execute();
+        //new BackGroundBalData(myRecyclerView,myProgress,getActivity(),myFagmentManager ).execute();
 
-       return myView;
+        return myView;
     }
-
-
-
-
-
 }

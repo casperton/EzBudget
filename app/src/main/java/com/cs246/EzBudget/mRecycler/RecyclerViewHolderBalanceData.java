@@ -1,5 +1,6 @@
 package com.cs246.EzBudget.mRecycler;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,13 +21,14 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
     TextView myDescription;
 
     private RecyclerClickListener myItemClickListener;
-    private int myLayOut;
-    public final static int LAYOUT_ONE = 1;
-    public final static int LAYOUT_TWO = 2;
+    private FragmentManager myFagmentManager;
+    //private int myLayOut;
+    //public final static int LAYOUT_ONE = 1;
+    //public final static int LAYOUT_TWO = 2;
 
 
 
-    public RecyclerViewHolderBalanceData(View itemView, int LayoutType) {
+    public RecyclerViewHolderBalanceData(View itemView, FragmentManager theFrag /*, int LayoutType*/) {
         super(itemView);
 
         this.myDueDate = (TextView) itemView.findViewById(R.id.textViewBDDueDate);
@@ -34,12 +36,13 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
         this.myDescription = (TextView) itemView.findViewById(R.id.textViewBDDescription);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
-        myLayOut = LayoutType;
+        myFagmentManager = theFrag;
+        //myLayOut = LayoutType;
     }
 
-    public int getLayOut(){
-        return myLayOut;
-    }
+    //public int getLayOut(){
+    //    return myLayOut;
+    //}
     public void setItemClickListener(RecyclerClickListener itemClickListener){
 
         this.myItemClickListener = itemClickListener;

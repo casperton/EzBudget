@@ -2,8 +2,8 @@ package com.cs246.EzBudget.mBackGrounds;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -11,41 +11,43 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Database.DBBalanceData;
+import com.cs246.EzBudget.mRecycler.RecyclerBalDataAdapter;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
 
-public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
+
+
+public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
     private Context context;
     private RecyclerBalanceAdapter myAdapter;
     private ArrayList<BalanceData> myBalanceData;
-    //private CategoryShowFragment teste;
     public final static int BAL_ALL = 1;
     public final static int BAL_BILLS = 2;
     public final static int BAL_INCOMES = 3;
-
-
+    private FragmentManager myFagmentManager;
     private int myConsultType;
-    private int myLayOut;
 
-    public BackGroundBalance(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut) {
+
+
+    public BackGroundBalData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult ) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
-        myConsultType = theConsult;
         myBalanceData= new ArrayList<>();
-        myLayOut = theLayOut;
-
+        myFagmentManager = theFrag;
+        myConsultType = theConsult;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,null);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -79,25 +81,25 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
             Integer size = cursor.getCount();
             Integer count = cursor.getColumnCount();
             //String index = cursor.getString(cursor.getColumnIndex("value"));
-               // Log.i("CURSOR_BAL_DATA_INDEX", index);
+            // Log.i("CURSOR_BAL_DATA_INDEX", index);
             Log.i("CURSOR_BAL_DATA_INDEX_COUNT", count.toString());
             for (Integer i =0 ; i< count; i++)
             {
                 String data = cursor.getString(i);
                 Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
             }
-                theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
-                theValue = cursor.getDouble(4);
-                theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                catID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
-                BalanceData theData = new BalanceData();
-                theData.setID(theID);
-                theData.setValue(theValue);
-                theData.setDescription(theDescription);
-                theData.setCategory(catID);
-                theData.setDate(theDueDate);
-                publishProgress(theData);
+            theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
+            theValue = cursor.getDouble(4);
+            theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+            theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+            catID = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+            BalanceData theData = new BalanceData();
+            theData.setID(theID);
+            theData.setValue(theValue);
+            theData.setDescription(theDescription);
+            theData.setCategory(catID);
+            theData.setDate(theDueDate);
+            publishProgress(theData);
 
 
         }

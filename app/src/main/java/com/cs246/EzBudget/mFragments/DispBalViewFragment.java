@@ -1,7 +1,9 @@
 package com.cs246.EzBudget.mFragments;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
@@ -37,6 +39,8 @@ import java.util.Date;
 public class DispBalViewFragment extends Fragment {
 
     private Button mySaveButton;
+    private Button myUpdateButton;
+    private Button myDeleteButton;
     private DBBalanceView myDBBalView;
     private Calendar myCalendar;
     DatePickerDialog myDateDialog;
@@ -46,23 +50,24 @@ public class DispBalViewFragment extends Fragment {
     private EditText myDescription;
     private EditText myTitle;
     private CheckBox isCurrent;
-    int id_To_Update = 0;
-
     View myView;
     int mDay;
     int mMonth;
     int mYear;
-
+    private Long myIDtoChange = Long.valueOf(-1);
 
     @NonNull
     static public DispBalViewFragment newInstance(){
-        return new DispBalViewFragment();
+        DispBalViewFragment theFrag = new DispBalViewFragment();
+
+        return theFrag;
     }
+
 
     public DispBalViewFragment() {
+
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +77,9 @@ public class DispBalViewFragment extends Fragment {
         myView = theView;
         myDBBalView = new DBBalanceView(getActivity());
         mySaveButton = theView.findViewById(R.id.dispBalViewSave);
+        myUpdateButton = theView.findViewById(R.id.dispBalViewUpdate);
+        myDeleteButton = theView.findViewById(R.id.dispBalViewDelete);
+
         myInitialDate = theView.findViewById(R.id.dispBalViewEditInitialDate);
         myFinalDate = theView.findViewById(R.id.dispBalViewEditFinalDate);
         myKeyDate = theView.findViewById(R.id.dispBalViewEditKeyDate);
@@ -79,21 +87,20 @@ public class DispBalViewFragment extends Fragment {
         myTitle = theView.findViewById(R.id.dispBalViewEditViewTitle);
         isCurrent = theView.findViewById(R.id.dispBalViewIsCurrent);
 
+        Bundle args = getArguments();
+        if (args !=null) myIDtoChange = args.getLong("id");
 
-        Bundle extras = getActivity().getIntent().getExtras();
-        if(extras !=null) {
-            int Value = extras.getInt("id");
+
             
 
-            if(Value>0){
+            if(myIDtoChange>0){
                 //means this is the view/edit part not the add  part.
-                Cursor rs = myDBBalView.getDataCursor(Value);
-                id_To_Update = Value;
+                Cursor rs = myDBBalView.getDataCursor(myIDtoChange);
                 rs.moveToFirst();
 
                 //column values
                 Long theID = rs.getLong(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_ID));
-                String theName = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
+                String theTitle = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
                 String theDescription = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION));
                 String theInitialDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_INI_DATE));
                 String theFinalDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE));
@@ -106,34 +113,40 @@ public class DispBalViewFragment extends Fragment {
                 }
 
                 mySaveButton.setVisibility(View.INVISIBLE);
+                myUpdateButton.setVisibility(View.VISIBLE);
+                myDeleteButton.setVisibility(View.VISIBLE);
 
-
-                myTitle.setText((CharSequence)theDescription);
-                myTitle.setFocusable(false);
-                myTitle.setClickable(false);
+                myTitle.setText((CharSequence)theTitle);
+                myTitle.setFocusable(true);
+                myTitle.setClickable(true);
 
                 myDescription.setText((CharSequence)theDescription);
-                myDescription.setFocusable(false);
-                myDescription.setClickable(false);
+                myDescription.setFocusable(true);
+                myDescription.setClickable(true);
 
                 myInitialDate.setText((CharSequence)theInitialDate);
-                myInitialDate.setFocusable(false);
-                myInitialDate.setClickable(false);
+                myInitialDate.setFocusable(true);
+                myInitialDate.setClickable(true);
 
                 myFinalDate.setText((CharSequence)theFinalDate);
-                myFinalDate.setFocusable(false);
-                myFinalDate.setClickable(false);
+                myFinalDate.setFocusable(true);
+                myFinalDate.setClickable(true);
 
-                myKeyDate.setText((CharSequence)theFinalDate);
-                myKeyDate.setFocusable(false);
-                myKeyDate.setClickable(false);
+                myKeyDate.setText((CharSequence)theKeyDate);
+                myKeyDate.setFocusable(true);
+                myKeyDate.setClickable(true);
 
                 if (theCurrent == 1)  isCurrent.setChecked(true);
                 else  isCurrent.setChecked(false);
 
 
+            }else{
+                mySaveButton.setVisibility(View.VISIBLE);
+                myUpdateButton.setVisibility(View.INVISIBLE);
+                myDeleteButton.setVisibility(View.INVISIBLE);
             }
-        }
+
+
         
         
 /*
@@ -150,6 +163,18 @@ public class DispBalViewFragment extends Fragment {
             @Override
             public void onClick(View theView) {
                 SaveButton(theView);
+            }
+        });
+        myUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View theView) {
+                SaveButton(theView);
+            }
+        });
+        myDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View theView) {
+                DeleteButton(theView);
             }
         });
 
@@ -291,11 +316,31 @@ public class DispBalViewFragment extends Fragment {
 
 
 
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        // do stuff with the date the user selected
-    }
+ public void DeleteButton(View view){
 
+     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+     builder.setMessage(R.string.deleteConfirmation)
+             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int id) {
+                     myDBBalView.delete(myIDtoChange);
+                     Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
+                             Toast.LENGTH_SHORT).show();
+                     Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
+                     startActivity(intent);
+                 }
+             })
+             .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int id) {
+                     // User cancelled the dialog
+                 }
+             });
+
+     AlertDialog d = builder.create();
+     d.setTitle("Are you sure");
+     d.show();
+
+
+ }
 
     /**
      * Run when the save button is clicked
@@ -311,9 +356,8 @@ public class DispBalViewFragment extends Fragment {
         String theFinalDate = myFinalDate.getText().toString();
         String theKeyDate = myKeyDate.getText().toString();
         String theTitle = myTitle.getText().toString();
-        Long theID;
+        //Long theID;
         String theDesc = myDescription.getText().toString();
-
 
         BalanceView theData = new BalanceView();
         theData.setInitialDate(theIntialDate);
@@ -323,37 +367,31 @@ public class DispBalViewFragment extends Fragment {
         theData.setTitle(theTitle);
         //theData.setID(theID);
         //fOR NOW JUST THE ADD OPERATION AVAILABLE
-        if(myDBBalView.insert(theData) > 0){
-            Toast.makeText(getActivity().getApplicationContext(), "done",
-                    Toast.LENGTH_SHORT).show();
-        } else{
-            Toast.makeText(getActivity().getApplicationContext(), "not done",
-                    Toast.LENGTH_SHORT).show();
-        }
-        if(extras !=null) {
-            int Value = extras.getInt("id");
-            if(Value>0){  //edit
 
-                if(myDBBalView.update(id_To_Update,theData)){
+
+
+            if(myIDtoChange>0){  //edit
+
+                if(myDBBalView.update(myIDtoChange,theData)){
                     Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
+                    //startActivity(intent);
                 } else{
                     Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
             } else{ //add
 
-                if(myDBBalView.insert(theData)>0){
-                    Toast.makeText(getActivity().getApplicationContext(), "saved",
+                if(myDBBalView.insert(theData) > 0){
+                    Toast.makeText(getActivity().getApplicationContext(), "Added",
                             Toast.LENGTH_SHORT).show();
                 } else{
-                    Toast.makeText(getActivity().getApplicationContext(), "not saved",
+                    Toast.makeText(getActivity().getApplicationContext(), "not Added",
                             Toast.LENGTH_SHORT).show();
                 }
                 //Intent intent = new Intent(getApplicationContext(),ListCategory.class);
                 //startActivity(intent);
             }
-        }
+
     }
 
 }

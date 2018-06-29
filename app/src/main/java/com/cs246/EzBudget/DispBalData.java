@@ -43,7 +43,7 @@ public class DispBalData extends AppCompatActivity {
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
     private ProgressBar myProgress=null;
-    int id_To_Update = 0;
+    Long id_To_Update = Long.valueOf(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +84,8 @@ public class DispBalData extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
-            int Value = extras.getInt("id");
-            myIncome = (RadioButton) findViewById(R.id.radioIncome);
-            myOutcome = (RadioButton) findViewById(R.id.radioOutcome);
-            myInformative = (RadioButton) findViewById(R.id.radioInformative);
+            Long Value = extras.getLong("id");
+
 
             if(Value>0){
                 //means this is the view/edit part not the add  part.
