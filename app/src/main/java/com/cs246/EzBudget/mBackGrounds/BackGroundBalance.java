@@ -13,6 +13,7 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
+import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
     private BalanceView myCurrentView;
     private RecyclerBalanceAdapter myAdapter;
     private ArrayList<BalanceData> myBalanceData;
-    //private DispCategoryDialogFrag teste;
+    //private ChooseCategoryDialogFrag teste;
     public final static int BAL_ALL = 1;
     public final static int BAL_BILLS = 2;
     public final static int BAL_INCOMES = 3;
@@ -50,7 +51,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,null,false);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,null,false, LIST_ACTION.ACT_LIST_ADD);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

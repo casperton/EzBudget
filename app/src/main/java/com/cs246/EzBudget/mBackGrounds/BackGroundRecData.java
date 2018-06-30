@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceDataRec;
+import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
@@ -27,23 +28,27 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
     public final static int BAL_ALL = 1;
     public final static int BAL_BILLS = 2;
     public final static int BAL_INCOMES = 3;
+
+
     private FragmentManager myFagmentManager;
     private int myConsultType;
 
+    private int myAction;
 
 
-    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult ) {
+    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction ) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
         myBalanceData= new ArrayList<>();
         myFagmentManager = theFrag;
         myConsultType = theConsult;
+        myAction = theAction;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true, myAction);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

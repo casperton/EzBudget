@@ -3,6 +3,7 @@ package com.cs246.EzBudget.mFragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,8 +23,7 @@ import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListRecBalDataFragment extends Fragment {
-
+public class ChooseRecBalDataDialogFrag extends DialogFragment {
 
 
 
@@ -35,15 +35,17 @@ public class ListRecBalDataFragment extends Fragment {
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
     private Button myAddButton;
+    private BackGroundRecData myBackGroundAction;
+
+
     @NonNull
-    static public ListRecBalDataFragment newInstance(){
-        return new ListRecBalDataFragment();
+    static public ChooseRecBalDataDialogFrag newInstance(){
+        return new ChooseRecBalDataDialogFrag();
     }
 
-    public ListRecBalDataFragment() {
+    public ChooseRecBalDataDialogFrag() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,8 +65,8 @@ public class ListRecBalDataFragment extends Fragment {
         myFagmentManager = getActivity().getSupportFragmentManager();
 
         myAddButton = (Button) myView.findViewById(R.id.listRecAddNew);
-
-        myAddButton.setOnClickListener(new View.OnClickListener() {
+        myAddButton.setVisibility(View.INVISIBLE);
+        /*myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -80,10 +82,11 @@ public class ListRecBalDataFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+*/
 
+        myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE );
 
-        new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_ADD ).execute();
-
+        myBackGroundAction.execute();
         return myView;
     }
 

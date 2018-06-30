@@ -28,7 +28,7 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
     private ArrayList<Category> myCategoryList = new ArrayList<>();
     private Context myContext;
     private int myLayout;
-    //private DispCategoryDialogFrag teste;
+    //private ChooseCategoryDialogFrag teste;
     private FragmentManager myFagmentManager;
     public RecyclerCategoryAdapter(ArrayList<Category> categoryList, Context theContext, int theLayOut, FragmentManager theFrag) {
         this.myCategoryList = categoryList;

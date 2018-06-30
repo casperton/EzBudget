@@ -30,16 +30,17 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
     private ArrayList<BalanceData> myBalanceDataList = new ArrayList<>();
     private Context myContext;
-    //private int myLayout;
+
+    private int myAction;
     private FragmentManager myFagmentManager;
     private boolean isRecurrent;
 
-    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec /*, int theLayOut*/) {
+    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction) {
         this.myBalanceDataList = BalanceDataList;
         this.myContext = theContext;
         myFagmentManager = theFrag;
         isRecurrent = theRec;
-        //myLayout = theLayOut;
+        myAction = theAction;
 
     }
 

@@ -97,6 +97,15 @@
             tools:layout_editor_absoluteY="16dp">
 
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/containerDialog"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="300dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp">
+
+        </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -185,7 +185,7 @@ public class DBCategory {
      */
     public Long getID(String theCategoryName){
         Long theID = Category.UNKNOWN;
-        String findNameSQL = "select * from category where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
+        String findNameSQL = "select * from "+Category.CATEGORY_TABLE_NAME+" where "+ Category.CATEGORY_COLUMN_NAME+" = '"+theCategoryName+"'";
 
         Cursor res;
         myDB.myLock.readLock().lock();
@@ -204,6 +204,35 @@ public class DBCategory {
         }
         res.close();
         return theID;
+    }
+
+    /**
+     *
+     * Return the categoryid name
+     * @param theCategoryID
+     * @return The Category Name
+     */
+    public String getName(Long theCategoryID){
+        String theName = "";
+        String findNameSQL = "select * from "+Category.CATEGORY_TABLE_NAME+" where "+ Category.CATEGORY_COLUMN_ID+" = '"+theCategoryID.toString()+"'";
+
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( findNameSQL , null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
+        if (res != null && res.getCount()>0) {
+            res.moveToFirst();
+            theName =  res.getString(res.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
+
+        }
+        res.close();
+        return theName;
     }
     /**
      * This method will update a row in the Category Table

@@ -4,12 +4,10 @@ package com.cs246.EzBudget;
 import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,7 +25,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
-import com.cs246.EzBudget.mFragments.DispBalViewFragment;
+import com.cs246.EzBudget.mFragments.ChooseRecBalDataDialogFrag;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListCategoryFragment;
@@ -94,10 +92,42 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                FragmentManager myFagmentManager = getSupportFragmentManager();
+                Bundle bundle = new Bundle();
+                //Long myMessage = Long.valueOf(-1);
+                //bundle.putLong("id", myMessage );
+                //bundle.putBoolean("isRec", true );
+                ChooseRecBalDataDialogFrag fragInfo = ChooseRecBalDataDialogFrag.newInstance();
+                //fragInfo.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerDialog, fragInfo,"LIST_BAL_DATA_DIALOG");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
+        /*
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                FragmentManager myFagmentManager = getSupportFragmentManager();
+                                //Bundle bundle = new Bundle();
+                                //Long myMessage = Long.valueOf(-1);
+                                //bundle.putLong("id", myMessage );
+                                //bundle.putBoolean("isRec", true );
+                                ChooseRecBalDataDialogFrag fragInfo = ChooseRecBalDataDialogFrag.newInstance();
+                                //fragInfo.setArguments(bundle);
+                                FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_DIALOG_FRAG");
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+                            }
+                        }).show();
+            }
+        });*/
 
         //REFERENCE DRAWER,TOGGLE ITS INDICATOR
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -5,7 +5,6 @@ package com.cs246.EzBudget.mFragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.GregorianCalendar;
@@ -29,7 +28,6 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBCategory;
-import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
@@ -41,7 +39,7 @@ import java.util.Calendar;
  */
 public class DispBalDataFragment extends Fragment {
 
-    private DBCategory mydb ;
+    private DBCategory myCatDB ;
     private DBBalanceData myDBBalanceData;
     private boolean myIsRecurrent = false;
     Calendar myCalendar;
@@ -107,7 +105,7 @@ public class DispBalDataFragment extends Fragment {
         myDeleteButton = (Button)myView.findViewById(R.id.dispBalDataDelete);
 
         final FragmentManager fm=getActivity().getSupportFragmentManager();
-        final DispCategoryDialogFrag tv=new DispCategoryDialogFrag();
+        final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
         if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
 
@@ -122,7 +120,7 @@ public class DispBalDataFragment extends Fragment {
             }
         });
 
-        mydb = new DBCategory(getActivity());
+        myCatDB = new DBCategory(getActivity());
         myDBBalanceData = new DBBalanceData(getActivity());
 
         if(myIDtoChange > 0) {
@@ -137,12 +135,12 @@ public class DispBalDataFragment extends Fragment {
                 String theValue = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
                 String theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
                 Integer theStatus = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
-                Integer theCategory = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                Long theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
                 String theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                 String thePaymentDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
                 String theLastModification = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
 
-
+                String myCatName=myCatDB.getName(theCategory);
 
                 if (!rs.isClosed())  {
                     rs.close();
@@ -160,9 +158,9 @@ public class DispBalDataFragment extends Fragment {
                 myDescription.setFocusable(true);
                 myDescription.setClickable(true);
 
-                //myCategory.setText(theCategory);
-                //myCategory.setFocusable(true);
-                //myCategory.setClickable(true);
+                myCategory.setText(myCatName);
+                myCategory.setFocusable(true);
+                myCategory.setClickable(true);
 
                 myDueDate.setText((CharSequence)theDueDate);
                 myDueDate.setFocusable(false);
@@ -314,14 +312,14 @@ public void setCateGoryText(String theText){
         Double theValue = Double.parseDouble(myValue.getText().toString());
         String theDueDate = myDueDate.getText().toString();
         String theCategoryNAME = myCategory.getText().toString();
-        Long theCategoryID = mydb.getID(theCategoryNAME);
+        Long theCategoryID = myCatDB.getID(theCategoryNAME);
         if (theCategoryID == Category.UNKNOWN) {
             Toast.makeText(getActivity().getApplicationContext(), "UNKNOWN CATEGORY",
                     Toast.LENGTH_SHORT).show();
             return;
         }
         String theDesc = myDescription.getText().toString();
-        Category theCategory = mydb.get(theCategoryID);
+        Category theCategory = myCatDB.get(theCategoryID);
         // STATUS Handling
         if(myStatusNotPaid.isChecked()) theStatus = PAY_STATUS.UNPAID_UNRECEIVED;
         else if(myStatusPaid.isChecked()) theStatus = PAY_STATUS.PAID_RECEIVED;

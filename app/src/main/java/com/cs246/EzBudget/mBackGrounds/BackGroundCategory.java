@@ -26,7 +26,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private Context context;
     private RecyclerCategoryAdapter myAdapter;
     private ArrayList<Category> myCategories;
-    //private DispCategoryDialogFrag teste;
+    //private ChooseCategoryDialogFrag teste;
     private FragmentManager myFragmentManager;
     public final static int CAT_ALL = 1;
     public final static int CAT_INC = 2;
