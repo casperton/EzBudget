@@ -13,7 +13,7 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
-import com.cs246.EzBudget.mRecycler.RecyclerBalDataAdapter;
+//import com.cs246.EzBudget.mRecycler.RecyclerBalDataAdapter;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,false);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

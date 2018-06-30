@@ -70,7 +70,7 @@ public class ListBalDataFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                bundle.putBoolean("isRecurrent", false );
+                bundle.putBoolean("isRec", false );
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();

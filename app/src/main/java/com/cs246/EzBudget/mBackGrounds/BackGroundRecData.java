@@ -43,7 +43,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

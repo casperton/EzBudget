@@ -2,8 +2,10 @@ package com.cs246.EzBudget.mRecycler;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,9 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
+import com.cs246.EzBudget.mFragments.DispBalDataFragment;
+import com.cs246.EzBudget.mFragments.DispBalViewFragment;
+import com.cs246.EzBudget.mFragments.DispCategoryFragment;
 
 
 import java.util.ArrayList;
@@ -27,11 +32,13 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     private Context myContext;
     //private int myLayout;
     private FragmentManager myFagmentManager;
+    private boolean isRecurrent;
 
-    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag /*, int theLayOut*/) {
+    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec /*, int theLayOut*/) {
         this.myBalanceDataList = BalanceDataList;
         this.myContext = theContext;
         myFagmentManager = theFrag;
+        isRecurrent = theRec;
         //myLayout = theLayOut;
 
     }
@@ -68,23 +75,28 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
         else
             holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
 
-            /*
-            holder.setItemClickListener(new RecyclerClickListener() {
-                @Override
-                public void OnClick(View view, int position, boolean isLongClick) {
+        holder.setItemClickListener(new RecyclerClickListener() {
+            @Override
+            public void OnClick(View view, int position, boolean isLongClick) {
 
-                    int id_To_Search = myBalanceDataList.get(position).getID();
+                Long id_To_Search = myBalanceDataList.get(position).getID();
+                Bundle bundle = new Bundle();
+                Long myMessage = id_To_Search;
+                bundle.putLong("id", myMessage );
+                if(isRecurrent) bundle.putBoolean("isRec",true);
+                else  bundle.putBoolean("isRec",false);
+                DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
+                theFrag.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerID, theFrag, "DISPLAY_BAL_DATA_FRAG");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
 
-                    Bundle dataBundle = new Bundle();
-                    dataBundle.putInt("id", id_To_Search);
 
-                    Intent intent = new Intent(myContext.getApplicationContext(), DispBalanceData.class);
-                    intent.putExtras(dataBundle);
-                    myContext.startActivity(intent);
-                }
 
-            });
-            */
+            }
+
+        });
 
 
     }

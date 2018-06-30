@@ -88,7 +88,7 @@ public class DispBalDataFragment extends Fragment {
         Bundle args = getArguments();
         if (args !=null) {
             myIDtoChange = args.getLong("id");
-            myIsRecurrent = args.getBoolean("isRecurrent");
+            myIsRecurrent = args.getBoolean("isRec");
         }
 
         myDueDate = (EditText) myView.findViewById(R.id.dispBalDataDueDate);
@@ -110,6 +110,7 @@ public class DispBalDataFragment extends Fragment {
         final DispCategoryDialogFrag tv=new DispCategoryDialogFrag();
 
         if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
+
         /**
          * Show Fragment to select the category on long click
          */
@@ -123,9 +124,6 @@ public class DispBalDataFragment extends Fragment {
 
         mydb = new DBCategory(getActivity());
         myDBBalanceData = new DBBalanceData(getActivity());
-        RadioButton myIncome,myOutcome,myInformative;
-
-
 
         if(myIDtoChange > 0) {
            Long Value = myIDtoChange;
@@ -162,9 +160,9 @@ public class DispBalDataFragment extends Fragment {
                 myDescription.setFocusable(true);
                 myDescription.setClickable(true);
 
-                myCategory.setText(theCategory);
-                myCategory.setFocusable(true);
-                myCategory.setClickable(true);
+                //myCategory.setText(theCategory);
+                //myCategory.setFocusable(true);
+                //myCategory.setClickable(true);
 
                 myDueDate.setText((CharSequence)theDueDate);
                 myDueDate.setFocusable(false);

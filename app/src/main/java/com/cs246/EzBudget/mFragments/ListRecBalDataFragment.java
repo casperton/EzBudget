@@ -70,11 +70,11 @@ public class ListRecBalDataFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                bundle.putBoolean("isRecurrent", true );
+                bundle.putBoolean("isRec", true );
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_REC_DATA_FRAG");
+                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_FRAG");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

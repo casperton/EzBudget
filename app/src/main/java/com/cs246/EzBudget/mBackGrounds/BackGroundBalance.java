@@ -17,6 +17,7 @@ import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
 import java.util.ArrayList;
 
+//used in the balanceView Test
 public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
 
     private RecyclerView mylistView;
@@ -49,7 +50,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,null);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,null,false);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 
