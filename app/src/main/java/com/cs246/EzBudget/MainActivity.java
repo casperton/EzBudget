@@ -25,6 +25,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
+import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.mFragments.ChooseRecBalDataDialogFrag;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity
             monthEnd = (monthEnd - 12);
             yearEnd++;
         }
+
+
 
         String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
                            MONTHS[monthEnd] + " " + yearEnd;
@@ -160,6 +163,27 @@ public class MainActivity extends AppCompatActivity
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bills);
 
+        DBHelper.BalanceDataChangedListener listener = new DBHelper.BalanceDataChangedListener() {
+            @Override
+            public void onChanged() {
+                DBBalanceView myCurrentView = new DBBalanceView(getApplicationContext());
+                BalanceView myBalanceView = myCurrentView.getCurrent();
+
+                DBBalanceData theBalanceData = new DBBalanceData(getApplicationContext());
+                bills.clear();
+                Cursor cursor = theBalanceData.getOutcomesCursor(myBalanceView);
+                //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
+                if (cursor.moveToFirst()) {
+                    do {
+                        String TheDescr = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                        Double value =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                        bills.add(TheDescr+ " - $ "+value.toString());
+                    } while (cursor.moveToNext());
+                }
+                arrayAdapter.notifyDataSetChanged();
+
+            }
+        };
         listView.setAdapter(arrayAdapter);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {

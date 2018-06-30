@@ -324,7 +324,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         // Notify listeners
-        if (msg.what == MSG_BALDATA) {
+        if (msg.what == MSG_CATEGORY) {
             for (CategoryChangedListener listener : myCategoryChangedListeners)
                 try {
                     listener.onChanged();
@@ -332,7 +332,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
                 }
 
-        } else if (msg.what == MSG_CATEGORY) {
+        } else if (msg.what == MSG_BALDATA) {
             for (BalanceDataChangedListener listener : myBalanceDataChangedListeners)
                 try {
                     listener.onChanged();
