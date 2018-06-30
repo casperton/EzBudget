@@ -6,6 +6,7 @@ import com.cs246.EzBudget.Database.DBHelper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -51,11 +52,11 @@ public class BalanceData {
     public static final Integer DB_REC_PAYMENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_PAYMENT_VALUE = 1500.00;
     public static final Integer DB_REC_PAYMENT_RECURRENCE = RECURRENT.BI_WEEKLI;
-    public static final String DB_REC_PAYMENT_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_PAYMENT_DUEDAY = "10";
     public static final BalanceData DB_REC_PAYMENT = new BalanceData(DB_REC_PAYMENT_DESCRIPTION,
             DB_REC_PAYMENT_VALUE,
             DB_REC_PAYMENT_STATUS,
-            DB_REC_PAYMENT_DUEDATE, DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_PAYMENT_DUEDAY),0,0,
             DB_REC_PAYMENT_RECURRENCE);
 
     /**
@@ -66,11 +67,11 @@ public class BalanceData {
     public static final Integer DB_REC_GROCERY_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_GROCERY_VALUE = 15.00;
     public static final Integer DB_REC_GROCERY_RECURRENCE = RECURRENT.WEEKLY;
-    public static final String DB_REC_GROCERY_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_GROCERY_DUEDAY = "15";
     public static final BalanceData DB_REC_GROCERY = new BalanceData(DB_REC_GROCERY_DESCRIPTION,
             DB_REC_GROCERY_VALUE,
             DB_REC_GROCERY_STATUS,
-            DB_REC_GROCERY_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_GROCERY_DUEDAY),0,0,
             DB_REC_GROCERY_RECURRENCE);
 
     /**
@@ -81,11 +82,11 @@ public class BalanceData {
     public static final Integer DB_REC_ELETRICITY_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_ELETRICITY_VALUE = 75.00;
     public static final Integer DB_REC_ELETRICITY_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_ELETRICITY_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_ELETRICITY_DUEDAY = "27";
     public static final BalanceData DB_REC_ELETRICITY = new BalanceData(DB_REC_ELETRICITY_DESCRIPTION,
             DB_REC_ELETRICITY_VALUE,
             DB_REC_ELETRICITY_STATUS,
-            DB_REC_ELETRICITY_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_ELETRICITY_DUEDAY),0,0,
             DB_REC_ELETRICITY_RECURRENCE);
 
     /**
@@ -96,11 +97,11 @@ public class BalanceData {
     public static final Integer DB_REC_WATER_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_WATER_VALUE = 105.00;
     public static final Integer DB_REC_WATER_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_WATER_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_WATER_DUEDAY = "09";
     public static final BalanceData DB_REC_WATER = new BalanceData(DB_REC_WATER_DESCRIPTION,
             DB_REC_WATER_VALUE,
             DB_REC_WATER_STATUS,
-            DB_REC_WATER_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_WATER_DUEDAY),0,0,
             DB_REC_WATER_RECURRENCE);
 
 
@@ -112,11 +113,11 @@ public class BalanceData {
     public static final Integer DB_REC_PHONE_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_PHONE_VALUE = 65.00;
     public static final Integer DB_REC_PHONE_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_PHONE_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_PHONE_DUEDAY = "16";
     public static final BalanceData DB_REC_PHONE = new BalanceData(DB_REC_PHONE_DESCRIPTION,
             DB_REC_PHONE_VALUE,
             DB_REC_PHONE_STATUS,
-            DB_REC_PHONE_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_PHONE_DUEDAY),0,0,
             DB_REC_PHONE_RECURRENCE);
 
     /**
@@ -127,11 +128,11 @@ public class BalanceData {
     public static final Integer DB_REC_CAR_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_CAR_VALUE = 330.00;
     public static final Integer DB_REC_CAR_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_CAR_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_CAR_DUEDAY = "22";
     public static final BalanceData DB_REC_CAR = new BalanceData(DB_REC_CAR_DESCRIPTION,
             DB_REC_CAR_VALUE,
             DB_REC_CAR_STATUS,
-            DB_REC_CAR_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_CAR_DUEDAY),0,0,
             DB_REC_CAR_RECURRENCE);
 
     /**
@@ -142,11 +143,11 @@ public class BalanceData {
     public static final Integer DB_REC_RENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_RENT_VALUE = 850.00;
     public static final Integer DB_REC_RENT_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_RENT_DUEDATE = DateHandler.getNowDateDatabase();
+    public static final String DB_REC_RENT_DUEDAY = "05";
     public static final BalanceData DB_REC_RENT = new BalanceData(DB_REC_RENT_DESCRIPTION,
             DB_REC_RENT_VALUE,
             DB_REC_RENT_STATUS,
-            DB_REC_RENT_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
+            Integer.parseInt(DB_REC_RENT_DUEDAY),0,0,
             DB_REC_RENT_RECURRENCE);
 
     //
@@ -180,12 +181,21 @@ public class BalanceData {
 
         this.myStatus = PAY_STATUS.UNKNOWN;
         this.myRecPeriod = RECURRENT.NO_PERIODIC;
+        this.isRecurrent = false;
     }
-    public BalanceData (String theDescr, Double theValue, Integer theStatus, String theDueDate,String theDateFromat, Integer theRecurrence) {
+
+
+    public BalanceData (String theDescr, Double theValue, Integer theStatus, Integer theDueDay,Integer theMonth, Integer theYear, Integer theRecurrence) {
 
         this.myStatus = theStatus;
         this.myRecPeriod = theRecurrence;
-        setDueDateWithFormat(theDueDate, theDateFromat);
+        if(myRecPeriod == RECURRENT.NO_PERIODIC || myRecPeriod == RECURRENT.UNKNOWN) isRecurrent=false;
+        else isRecurrent = true;
+        if(!isRecurrent && theMonth == 0) theMonth=Integer.parseInt(DateHandler.getActualMonth());
+        if(!isRecurrent && theYear == 0) theYear = Integer.parseInt(DateHandler.getActualYear());
+        if(theDueDay == 0 ) theDueDay =  Integer.parseInt(DateHandler.getActualDay());
+        //setDueDateWithFormat(theDueDate, theDateFormat);
+        setDueDate(theDueDay, theMonth,theYear);
         myValue = theValue;
         myDescription = theDescr;
     }
@@ -319,6 +329,19 @@ public class BalanceData {
             myDate = date;
         }
     }
+
+
+    public void setDueDate (Integer theDay, Integer theMonth, Integer theYear) {
+
+        java.util.Calendar aCalendar = java.util.Calendar.getInstance();
+        // set DATE to 1, so first date of previous month
+        aCalendar.set(java.util.Calendar.DATE, theDay);
+        aCalendar.set(Calendar.MONTH, theMonth);
+        aCalendar.set(Calendar.YEAR, theYear);
+        myDate  = aCalendar.getTime();
+
+    }
+
      /** Set the value of myDate
      * @param theDate the new value of myDate in the human readebleFormat
      */
@@ -391,6 +414,23 @@ public class BalanceData {
     }
 
     /**
+     * Get the value of Due Date in the String whithout the year in the Human readable format
+     * @return the value of myDate
+     */
+    public String getDueDateRecurrentHuman () {
+        String reportDate = "";
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(DateHandler.RECURRENT_DATE_FORMAT);
+
+        if(myDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(myDate);
+        }
+        return reportDate;
+    }
+    /**
      * Set the value of myDescription
      * @param newVar the new value of myDescription
      */
@@ -439,12 +479,13 @@ public class BalanceData {
         return myCategoryID;
     }
 
-    /**
-     * Set the value of isRecurrent
-     * @param newVar the new value of isRecurrent
-     */
-    public void setRecurrent (boolean newVar) {
-        isRecurrent = newVar;
+
+    public void setRecurrent () {
+        isRecurrent = true;
+    }
+    public void resetRecurrent () {
+        isRecurrent = true;
+        myRecPeriod = RECURRENT.NO_PERIODIC;
     }
 
     /**

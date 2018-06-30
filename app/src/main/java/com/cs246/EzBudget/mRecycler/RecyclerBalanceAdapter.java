@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
@@ -56,8 +58,10 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     //Bind Data
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolderBalanceData holder, int position) {
-
-        holder.myDueDate.setText(myBalanceDataList.get(position).getDueDateHuman());
+        if(isRecurrent)
+            holder.myDueDate.setText(myBalanceDataList.get(position).getDueDateRecurrentHuman());
+        else
+            holder.myDueDate.setText(myBalanceDataList.get(position).getDueDateHuman());
         holder.myValue.setText(Double.toString(myBalanceDataList.get(position).getValue()));
         holder.myDescription.setText(myBalanceDataList.get(position).getDescription());
         int oper = myBalanceDataList.get(position).getStatus();
@@ -75,30 +79,48 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
             holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
         else
             holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
+        if(myAction == LIST_ACTION.ACT_LIST_ADD) {
+            holder.setItemClickListener(new RecyclerClickListener() {
+                @Override
+                public void OnClick(View view, int position, boolean isLongClick) {
 
-        holder.setItemClickListener(new RecyclerClickListener() {
-            @Override
-            public void OnClick(View view, int position, boolean isLongClick) {
-
-                Long id_To_Search = myBalanceDataList.get(position).getID();
-                Bundle bundle = new Bundle();
-                Long myMessage = id_To_Search;
-                bundle.putLong("id", myMessage );
-                if(isRecurrent) bundle.putBoolean("isRec",true);
-                else  bundle.putBoolean("isRec",false);
-                DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
-                theFrag.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerID, theFrag, "DISPLAY_BAL_DATA_FRAG");
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                    Long id_To_Search = myBalanceDataList.get(position).getID();
+                    Bundle bundle = new Bundle();
+                    Long myMessage = id_To_Search;
+                    bundle.putLong("id", myMessage);
+                    if (isRecurrent) bundle.putBoolean("isRec", true);
+                    else bundle.putBoolean("isRec", false);
+                    DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
+                    theFrag.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerID, theFrag, "DISPLAY_BAL_DATA_FRAG");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
 
 
+                }
 
-            }
+            });
+        }else if(myAction == LIST_ACTION.ACT_LIST_CHOOSE){
+            //Todo:  add click listener to add the chosen Recurrent data into de DalanceData
+            holder.setItemClickListener(new RecyclerClickListener() {
+                @Override
+                public void OnClick(View view, int position, boolean isLongClick) {
+                    //Long id_To_Search = myBalanceDataList.get(position).getID();
+                    BalanceData theRecord = myBalanceDataList.get(position);
+                    DBBalanceData theBalDataDatabase = new DBBalanceData(myContext);
+                    if(theBalDataDatabase.insert(theRecord,true)>0){
+                        Toast.makeText(myContext.getApplicationContext(), "Added Successfully",
+                                Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(myContext.getApplicationContext(), "Not Added",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    //todo: notify the change and reload the array Adapter in the main activity
+                }
 
-        });
-
+            });
+        }
 
     }
 

@@ -12,6 +12,7 @@ import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
+import com.cs246.EzBudget.RECURRENT;
 
 /**
  * Class to Handle the Table BalanceData of the Database
@@ -24,13 +25,25 @@ public class DBBalanceData {
         myDB = DBHelper.getInstance(context);
 
     }
-    static public boolean insertBalData (SQLiteDatabase db , BalanceData theCat, Long theCatID) {
-        //todo: falta adicionar categoria
+    static public boolean insertBalData (SQLiteDatabase db , BalanceData theData, Long theCatID) {
+        boolean isFromRecurrent = theData.IsRecurrent();
+        String theDate;
+        /**
+         * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
+         */
+        if(isFromRecurrent) {
+            String theDay = theData.getDueDateRecurrentHuman();
+            String theMonth = DateHandler.getActualMonth();
+            String theYear = DateHandler.getActualYear();
+            theDate = theYear + "-" + theMonth + "-" + theDay; //database format
+            theData.resetRecurrent();
+        }else theDate = theData.getDueDateDatabase();
+
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theCat.getDescription());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theCat.getDueDateDatabase());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theCat.getStatus());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theCat.getValue());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theDate);
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theCatID);
         db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
@@ -44,8 +57,20 @@ public class DBBalanceData {
      * @param theData
      * @return the number of the row inserted or -1 if failed
      */
-    public Long insert (BalanceData theData) {
+    public Long insert (BalanceData theData, boolean isFromRec) {
         Long result;
+        boolean isFromRecurrent = theData.IsRecurrent();
+        String theDate;
+        /**
+         * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
+         */
+        if(isFromRecurrent || isFromRec) {
+            String theDay = theData.getDueDateRecurrentHuman();
+            String theMonth = DateHandler.getActualMonth();
+            String theYear = DateHandler.getActualYear();
+            theDate = theYear + "-" + theMonth + "-" + theDay; //database format
+            theData.resetRecurrent();
+        }else theDate = theData.getDueDateDatabase();
 
         myDB.myLock.writeLock().lock();
         try {
@@ -55,7 +80,7 @@ public class DBBalanceData {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDueDateDatabase());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theDate);
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());

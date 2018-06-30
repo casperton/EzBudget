@@ -15,7 +15,10 @@ public class DateHandler {
     public static final String DATABASE_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT = "dd/MM/YYYY";
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
+    public static final String RECURRENT_DATE_FORMAT = "dd";
+    private static final String YEAR_FORMAT = "yyyy";
+    private static final String MONTH_FORMAT = "MM";
+    private static final String DAY_FORMAT = "dd";
     //public static final String DATE_FORMAT = "MM-dd-yyyy";
     //public static final String TIMESTAMP_FORMAT = "MM-dd-yyyy HH:mm:ss";
 
@@ -57,6 +60,42 @@ public class DateHandler {
 
         return reportDate;
 
+    }
+    public static String getActualMonth(){
+       String theMonth="";
+
+        DateFormat df = new SimpleDateFormat(MONTH_FORMAT);
+
+        // Get the date today using Calendar object.
+        Date today = Calendar.getInstance().getTime();
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        theMonth = df.format(today);
+       return theMonth;
+    }
+    public static String getActualYear(){
+        String theYear="";
+
+        DateFormat df = new SimpleDateFormat(YEAR_FORMAT);
+
+        // Get the date today using Calendar object.
+        Date today = Calendar.getInstance().getTime();
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        theYear = df.format(today);
+        return theYear;
+    }
+    public static String getActualDay(){
+        String theDay="";
+
+        DateFormat df = new SimpleDateFormat(DAY_FORMAT);
+
+        // Get the date today using Calendar object.
+        Date today = Calendar.getInstance().getTime();
+        // Using DateFormat format method we can create a string
+        // representation of a date with the defined format.
+        theDay = df.format(today);
+        return theDay;
     }
 
     /**

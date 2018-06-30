@@ -31,8 +31,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * This class will comunicate with the SQLite Database and perform all kinds of database operations
- * Todo: Maybe it is better to create an Interface and a subClass for each Database Table. We have to see the pros and cons and if it is possible or not,
- * remembering that this class extends SQLiteOpenHelper
  */
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -184,9 +182,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //* Table Balance Data*/
         db.execSQL(CREATE_TABLE_BALANCEDATA);
         DBBalanceData.insertBalData(db,BalanceData.DB_REC_PAYMENT, CatSalary);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_GROCERY ,CatFood);
         DBBalanceData.insertBalData(db,BalanceData.DB_REC_ELETRICITY, CatUtilities);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_WATER, CatUtilities);
         DBBalanceData.insertBalData(db,BalanceData.DB_REC_PHONE, CatUtilities);
         DBBalanceData.insertBalData(db,BalanceData.DB_REC_CAR, CatTranport);
         DBBalanceData.insertBalData(db,BalanceData.DB_REC_RENT,CatHousing);

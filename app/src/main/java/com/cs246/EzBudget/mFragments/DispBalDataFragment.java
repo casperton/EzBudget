@@ -351,7 +351,7 @@ public void setCateGoryText(String theText){
             }
         } else{ //add
 
-            if(myDBBalanceData.insert(theData) > 0){
+            if(myDBBalanceData.insert(theData,false) > 0){
                 Toast.makeText(getActivity().getApplicationContext(), "Added",
                         Toast.LENGTH_SHORT).show();
             } else{
