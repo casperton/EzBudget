@@ -74,9 +74,9 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
                 theView.setID(theID);
                 theView.setTitle(theName);
                 theView.setDescription(theDescription);
-                theView.setInitialDate(theInitialDate);
-                theView.setFinalDate(theFinalDate);
-                theView.setKeyDate(theKeyDate);
+                theView.setInitialDateFromDatabase(theInitialDate);
+                theView.setFinalDateFromDatabase(theFinalDate);
+                theView.setKeyDateFromDatabse(theKeyDate);
                 publishProgress(theView);
                 if (theCurrent == 1) theView.setCurrent();
                 else theView.resetCurrent();

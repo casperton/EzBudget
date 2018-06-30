@@ -338,8 +338,8 @@ public void setCateGoryText(String theText){
         theData.setValue(theValue);
         theData.setDescription(theDesc);
         theData.setCategory(theCategoryID);
-        theData.setDate(theDueDate);
-        theData.setPaymentDate(thePaymentDate);
+        theData.setDueDateFromHuman(theDueDate);
+        theData.setPaymentDateFromHuman(thePaymentDate);
         theData.setStatus(theStatus);
 
 

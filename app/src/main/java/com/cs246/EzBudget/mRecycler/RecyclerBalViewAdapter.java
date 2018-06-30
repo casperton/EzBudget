@@ -57,8 +57,8 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
     public void onBindViewHolder(@NonNull RecyclerViewHolderBalView holder, int position) {
 
         holder.myTitle.setText(myBalanceViewList.get(position).getTitle());
-        holder.myIniDate.setText(myBalanceViewList.get(position).getInitialDate());
-        holder.myEndDate.setText(myBalanceViewList.get(position).getFinalDate());
+        holder.myIniDate.setText(myBalanceViewList.get(position).getInitialDateToHuman());
+        holder.myEndDate.setText(myBalanceViewList.get(position).getFinalDateToHuman());
         //set background color
 
         if (position % 2 == 0)

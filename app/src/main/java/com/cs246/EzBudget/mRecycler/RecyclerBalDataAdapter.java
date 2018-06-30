@@ -49,7 +49,7 @@ public class RecyclerBalDataAdapter extends RecyclerView.Adapter<RecyclerViewHol
     //Bind Data
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolderBalanceData holder, int position) {
-        holder.myDueDate.setText(myBalanceDataList.get(position).getDate());
+        holder.myDueDate.setText(myBalanceDataList.get(position).getDueDateHuman());
         holder.myValue.setText(Double.toString(myBalanceDataList.get(position).getValue()));
         holder.myDescription.setText(myBalanceDataList.get(position).getDescription());
         int oper = myBalanceDataList.get(position).getStatus();

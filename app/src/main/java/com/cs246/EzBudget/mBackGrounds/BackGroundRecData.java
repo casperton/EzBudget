@@ -99,7 +99,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
             theData.setValue(theValue);
             theData.setDescription(theDescription);
             theData.setCategory(catID);
-            theData.setDate(theDueDate);
+            theData.setDueDateFromDatabase(theDueDate);
             theData.setRecPeriod(thePeriod);
             publishProgress(theData);
 

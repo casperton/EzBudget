@@ -28,7 +28,7 @@ public class DBBalanceDataRec{
         Long id;
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theCat.getDescription());
-        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theCat.getDate());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theCat.getDueDateDatabase());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theCat.getRecPeriod());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theCat.getValue());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theCatID);
@@ -55,7 +55,7 @@ public class DBBalanceDataRec{
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theData.getCategory());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theData.getDate());
+                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theData.getDueDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getValue());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theData.getStatus());
                 ;
@@ -123,7 +123,7 @@ public class DBBalanceDataRec{
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getValue());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,theData.getDate());
+                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,theData.getDueDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD,theData.getRecPeriod());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY,theData.getCategory());
                 //contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP, DateHandler.getNow());

@@ -357,10 +357,10 @@ public class DispBalViewFragment extends Fragment {
         String theDesc = myDescription.getText().toString();
 
         BalanceView theData = new BalanceView();
-        theData.setInitialDate(theIntialDate);
+        theData.setInitialDateFromHuman(theIntialDate);
         theData.setDescription(theDesc);
-        theData.setFinalDate(theFinalDate);
-        theData.setKeyDate(theKeyDate);
+        theData.setFinalDateFromHuman(theFinalDate);
+        theData.setKeyDateFromHuman(theKeyDate);
         theData.setTitle(theTitle);
         //theData.setID(theID);
         //fOR NOW JUST THE ADD OPERATION AVAILABLE

@@ -28,10 +28,10 @@ public class DBBalanceData {
         //todo: falta adicionar categoria
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theCat.getDescription());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theCat.getDate());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theCat.getDueDateDatabase());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theCat.getStatus());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theCat.getValue());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theCatID);
         db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
 
@@ -55,10 +55,10 @@ public class DBBalanceData {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDate());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDate());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDueDateDatabase());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
                 result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
                 if (result < 0){
@@ -116,11 +116,11 @@ public class DBBalanceData {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDate());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDate());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDateDatabase());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDueDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS,theData.getStatus());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY,theData.getCategory());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNow());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
                 String theWhere = BalanceData.BALANCEDATA_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
                 if (db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){
@@ -147,8 +147,8 @@ public class DBBalanceData {
     public Cursor getAllCursor(BalanceView theView){
         Cursor cursor;
         //return cursor;
-        String theInitialDate = theView.getInitialDate();
-        String theFinalDate = theView.getFinalDate();
+        String theInitialDate = theView.getInitialDateToDatabase();
+        String theFinalDate = theView.getFinalDateToDatabase();
 
         myDB.myLock.readLock().lock();
         try {
@@ -186,8 +186,8 @@ public class DBBalanceData {
     public Cursor getIncomesCursor(BalanceView theView){
 
         Cursor cursor;
-        String theInitialDate = theView.getInitialDate();
-        String theFinalDate = theView.getFinalDate();
+        String theInitialDate = theView.getInitialDateToDatabase();
+        String theFinalDate = theView.getFinalDateToDatabase();
         myDB.myLock.readLock().lock();
         try {
             SQLiteDatabase db = myDB.getReadableDatabase();
@@ -226,8 +226,8 @@ where category.operation = 1
     public Cursor getOutcomesCursor(BalanceView theView){
 
         Cursor cursor;
-        String theInitialDate = theView.getInitialDate();
-        String theFinalDate = theView.getFinalDate();
+        String theInitialDate = theView.getInitialDateToDatabase();
+        String theFinalDate = theView.getFinalDateToDatabase();
         myDB.myLock.readLock().lock();
         try {
             SQLiteDatabase db = myDB.getReadableDatabase();

@@ -34,9 +34,9 @@ public class DBBalanceView  {
     static public Long insertBalView (SQLiteDatabase db , BalanceView theData) {
         Long status;
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDate());
-        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDate());
-        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDate());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDateToDatabase());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDateToDatabase());
+        contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDateToDatabase());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_TITLE, theData.getTitle());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT, theData.isCurrent());
@@ -60,10 +60,10 @@ public class DBBalanceView  {
             db.beginTransactionNonExclusive();
             try {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDate());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDateToDatabase());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDate());
-                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDate());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE, theData.getFinalDateToDatabase());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE, theData.getKeyDateToDatabase());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_END_BALANCE, theData.getEndBalance());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_TITLE,theData.getTitle());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT,theData.isCurrent());
@@ -124,10 +124,10 @@ public class DBBalanceView  {
             db.beginTransactionNonExclusive();
             try {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDate());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDateToDatabase());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE,theData.getFinalDate());
-                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE,theData.getKeyDate());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE,theData.getFinalDateToDatabase());
+                contentValues.put(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE,theData.getKeyDateToDatabase());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_END_BALANCE,theData.getEndBalance());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_TITLE,theData.getTitle());
                 contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT,theData.isCurrent());
@@ -187,6 +187,10 @@ public class DBBalanceView  {
         return result;
     }
 
+    /**
+     * Get Current View
+     * @return The View in the Cursor format
+     */
     public Cursor getCurrentCursor() {
         String theQuery = "select * from "+BalanceView.BALANCEVIEW_TABLE_NAME+" where "+BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT+" = 1";
 
@@ -219,9 +223,9 @@ public class DBBalanceView  {
         theView.setID(theID);
         theView.setTitle(theName);
         theView.setDescription(theDescription);
-        theView.setInitialDate(theInitialDate);
-        theView.setFinalDate(theFinalDate);
-        theView.setKeyDate(theKeyDate);
+        theView.setInitialDateFromDatabase(theInitialDate);
+        theView.setFinalDateFromDatabase(theFinalDate);
+        theView.setKeyDateFromDatabse(theKeyDate);
         theView.setCurrent();
         return theView;
     }
@@ -239,8 +243,8 @@ public class DBBalanceView  {
         return Projections;
     }
     /**
-     * Return a Cursor with all Categories in the database
-     * @return
+     * Return a Cursor with all Balance Views in the database
+     * @return All Data in The Database in the Cursor Format
      */
     public Cursor getAllCursor(){
         Cursor cursor;

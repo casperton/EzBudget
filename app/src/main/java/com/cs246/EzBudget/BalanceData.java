@@ -51,11 +51,11 @@ public class BalanceData {
     public static final Integer DB_REC_PAYMENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_PAYMENT_VALUE = 1500.00;
     public static final Integer DB_REC_PAYMENT_RECURRENCE = RECURRENT.BI_WEEKLI;
-    public static final String DB_REC_PAYMENT_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_PAYMENT_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_PAYMENT = new BalanceData(DB_REC_PAYMENT_DESCRIPTION,
             DB_REC_PAYMENT_VALUE,
             DB_REC_PAYMENT_STATUS,
-            DB_REC_PAYMENT_DUEDATE,
+            DB_REC_PAYMENT_DUEDATE, DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_PAYMENT_RECURRENCE);
 
     /**
@@ -66,11 +66,11 @@ public class BalanceData {
     public static final Integer DB_REC_GROCERY_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_GROCERY_VALUE = 15.00;
     public static final Integer DB_REC_GROCERY_RECURRENCE = RECURRENT.WEEKLY;
-    public static final String DB_REC_GROCERY_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_GROCERY_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_GROCERY = new BalanceData(DB_REC_GROCERY_DESCRIPTION,
             DB_REC_GROCERY_VALUE,
             DB_REC_GROCERY_STATUS,
-            DB_REC_GROCERY_DUEDATE,
+            DB_REC_GROCERY_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_GROCERY_RECURRENCE);
 
     /**
@@ -81,11 +81,11 @@ public class BalanceData {
     public static final Integer DB_REC_ELETRICITY_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_ELETRICITY_VALUE = 75.00;
     public static final Integer DB_REC_ELETRICITY_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_ELETRICITY_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_ELETRICITY_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_ELETRICITY = new BalanceData(DB_REC_ELETRICITY_DESCRIPTION,
             DB_REC_ELETRICITY_VALUE,
             DB_REC_ELETRICITY_STATUS,
-            DB_REC_ELETRICITY_DUEDATE,
+            DB_REC_ELETRICITY_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_ELETRICITY_RECURRENCE);
 
     /**
@@ -96,11 +96,11 @@ public class BalanceData {
     public static final Integer DB_REC_WATER_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_WATER_VALUE = 105.00;
     public static final Integer DB_REC_WATER_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_WATER_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_WATER_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_WATER = new BalanceData(DB_REC_WATER_DESCRIPTION,
             DB_REC_WATER_VALUE,
             DB_REC_WATER_STATUS,
-            DB_REC_WATER_DUEDATE,
+            DB_REC_WATER_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_WATER_RECURRENCE);
 
 
@@ -112,11 +112,11 @@ public class BalanceData {
     public static final Integer DB_REC_PHONE_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_PHONE_VALUE = 65.00;
     public static final Integer DB_REC_PHONE_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_PHONE_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_PHONE_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_PHONE = new BalanceData(DB_REC_PHONE_DESCRIPTION,
             DB_REC_PHONE_VALUE,
             DB_REC_PHONE_STATUS,
-            DB_REC_PHONE_DUEDATE,
+            DB_REC_PHONE_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_PHONE_RECURRENCE);
 
     /**
@@ -127,11 +127,11 @@ public class BalanceData {
     public static final Integer DB_REC_CAR_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_CAR_VALUE = 330.00;
     public static final Integer DB_REC_CAR_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_CAR_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_CAR_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_CAR = new BalanceData(DB_REC_CAR_DESCRIPTION,
             DB_REC_CAR_VALUE,
             DB_REC_CAR_STATUS,
-            DB_REC_CAR_DUEDATE,
+            DB_REC_CAR_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_CAR_RECURRENCE);
 
     /**
@@ -142,11 +142,11 @@ public class BalanceData {
     public static final Integer DB_REC_RENT_STATUS = PAY_STATUS.UNPAID_UNRECEIVED;
     public static final Double DB_REC_RENT_VALUE = 850.00;
     public static final Integer DB_REC_RENT_RECURRENCE = RECURRENT.MONTHLY;
-    public static final String DB_REC_RENT_DUEDATE = DateHandler.getNowDate();
+    public static final String DB_REC_RENT_DUEDATE = DateHandler.getNowDateDatabase();
     public static final BalanceData DB_REC_RENT = new BalanceData(DB_REC_RENT_DESCRIPTION,
             DB_REC_RENT_VALUE,
             DB_REC_RENT_STATUS,
-            DB_REC_RENT_DUEDATE,
+            DB_REC_RENT_DUEDATE,DateHandler.DATABASE_DATE_FORMAT,
             DB_REC_RENT_RECURRENCE);
 
     //
@@ -181,11 +181,11 @@ public class BalanceData {
         this.myStatus = PAY_STATUS.UNKNOWN;
         this.myRecPeriod = RECURRENT.NO_PERIODIC;
     }
-    public BalanceData (String theDescr, Double theValue, Integer theStatus, String theDueDate, Integer theRecurrence) {
+    public BalanceData (String theDescr, Double theValue, Integer theStatus, String theDueDate,String theDateFromat, Integer theRecurrence) {
 
         this.myStatus = theStatus;
         this.myRecPeriod = theRecurrence;
-        setDate(theDueDate);
+        setDueDateWithFormat(theDueDate, theDateFromat);
         myValue = theValue;
         myDescription = theDescr;
     }
@@ -225,9 +225,9 @@ public class BalanceData {
 
     /**
      * Set the value of the payment date
-     * @param newVar the new value of payment date
+     * @param newVar the new value of payment date in the Human readable Format
      */
-    public void setPaymentDate (String newVar) {
+    public void setPaymentDateFromHuman (String newVar) {
 
         if (! newVar.isEmpty()) {
             DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
@@ -243,11 +243,31 @@ public class BalanceData {
 
     }
 
+    /**
+     * Set the value of the payment date
+     * @param newVar the new value of payment date in Database Format
+     */
+    public void setPaymentDateFromDatabase (String newVar) {
+
+        if (! newVar.isEmpty()) {
+            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+            Date date = null;
+            try {
+                date = format.parse(newVar);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            myPaymentDate = date;
+        }
+
+    }
+
      /**
-     * Get the value of payment date in the format "dd/MM/yyyy
+     * Get the value of payment date in the human readeble format
      * @return the value of payment date
      */
-    public String getPaymentDate () {
+    public String getPaymentDateHuman () {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -263,16 +283,52 @@ public class BalanceData {
 
     }
 
-     /** Set the value of myDate
-     * @param newVar the new value of myDate
+    /**
+     * Get the value of payment date in the database format
+     * @return the value of payment date
      */
-    public void setDate (String newVar) {
+    public String getPaymentDateDatabase() {
+        String reportDate = "";
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
 
-       if (! newVar.isEmpty()) {
+        if(myPaymentDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(this.myPaymentDate);
+        }
+        return reportDate;
+
+
+    }
+    /** Set the value of myDate
+     * @param theDate the new value of myDate in the human readebleFormat
+     */
+    public void setDueDateWithFormat (String theDate, String theFormat) {
+
+        if (! theDate.isEmpty()) {
+            DateFormat format = new SimpleDateFormat(theFormat);
+            Date date = null;
+            try {
+                date = format.parse(theDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            myDate = date;
+        }
+    }
+     /** Set the value of myDate
+     * @param theDate the new value of myDate in the human readebleFormat
+     */
+    public void setDueDateFromHuman (String theDate) {
+
+       if (! theDate.isEmpty()) {
            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
            Date date = null;
            try {
-               date = format.parse(newVar);
+               date = format.parse(theDate);
            } catch (ParseException e) {
                e.printStackTrace();
            }
@@ -281,15 +337,50 @@ public class BalanceData {
        }
     }
 
+    /** Set the value of myDate
+     * @param theDate the new value of myDate in the Database Format
+     */
+    public void setDueDateFromDatabase (String theDate) {
+
+        if (! theDate.isEmpty()) {
+            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+            Date date = null;
+            try {
+                date = format.parse(theDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            myDate = date;
+        }
+    }
+
     /**
-     * Get the value of myDate in the String format dd/MM/yyyy
+     * Get the value of myDate in the String fin the Human readeble format
      * @return the value of myDate
      */
-    public String getDate () {
+    public String getDueDateHuman () {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
         DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+
+        if(myDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(myDate);
+        }
+        return reportDate;
+    }
+    /**
+     * Get the value of myDate in the String in the Database format
+     * @return the value of myDate
+     */
+    public String getDueDateDatabase () {
+        String reportDate = "";
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (year-month-day)
+        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
 
         if(myDate != null) {
             // Using DateFormat format method we can create a string
