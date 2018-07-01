@@ -1,14 +1,12 @@
 package com.cs246.EzBudget;
 
 
-import android.content.ClipData;
 import android.database.Cursor;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,13 +22,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.animation.BounceInterpolator;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
-import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.mFragments.ChooseRecBalDataDialogFrag;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
@@ -52,8 +47,8 @@ public class MainActivity extends AppCompatActivity
     public String date_pref;
 
     private RecyclerView recyclerView;
-    private List<BillItem> bills;
-    private BillListAdapter adapter;
+    private List<SummaryItem> bills;
+    private SummaryListAdapter adapter;
     private ConstraintLayout rootLayout;
 
     @Override
@@ -157,23 +152,29 @@ public class MainActivity extends AppCompatActivity
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
 
+        // TODO : Add code to load income items - Set type = 1 for income
+        SummaryItem payItem = new SummaryItem("Paycheck", 1200, false, 1);
+        bills.add(payItem);
+
+
         if (cursor.moveToFirst()) {
             do {
                 String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
                 Double amount =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
                 // TODO : Add boolean for marked as paid from database
                 boolean paid = false;
-                BillItem billItem = new BillItem(description, amount, paid);
-                bills.add(billItem);
+                // Set type = 0 for expenses. This allows them to be swiped for marking as paid on summary screen
+                int type = 0;
+                SummaryItem summaryItem = new SummaryItem(description, amount, paid, type);
+                bills.add(summaryItem);
             } while (cursor.moveToNext());
         }
 
-//
-//        //  SWIPE MENU FOR BILL ITEMS
+        //  SWIPE MENU FOR BILL ITEMS
 
         recyclerView = findViewById(R.id.recycler_view);
         rootLayout  = findViewById(R.id.rootLayout);
-        adapter = new BillListAdapter(this, bills);
+        adapter = new SummaryListAdapter(this, bills);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -270,10 +271,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof BillListAdapter.MyViewHolder) {
+        if (viewHolder instanceof SummaryListAdapter.MyViewHolder) {
             String name = bills.get(viewHolder.getAdapterPosition()).getName();
 
-            final BillItem deletedItem = bills.get(viewHolder.getAdapterPosition());
+            final SummaryItem deletedItem = bills.get(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
             adapter.removeItem(deleteIndex);

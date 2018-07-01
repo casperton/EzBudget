@@ -1,15 +1,17 @@
 package com.cs246.EzBudget;
 
-public class BillItem {
+public class SummaryItem {
     private String name;
     private boolean paid;
     private double amount;
+    private int type;
 
 
-    public BillItem(String name, double amount, boolean paid) {
+    public SummaryItem(String name, double amount, boolean paid, int type) {
         this.name = name;
         this.paid = paid;
         this.amount = amount;
+        this.type = type;
     }
 
 
@@ -23,5 +25,9 @@ public class BillItem {
 
     public double getAmount() {
         return amount;
+    }
+
+    public int getType() {
+        return type;
     }
 }
