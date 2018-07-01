@@ -267,11 +267,11 @@
 
 
                     <RadioButton
-                        android:id="@+id/dispBalDataRadioPayd"
+                        android:id="@+id/dispBalDataRadioPaid"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:layout_weight="1"
-                        android:text="Payd" />
+                        android:text="Paid" />
 
                     <RadioButton
                         android:id="@+id/dispBalDataRadioUnPaid"

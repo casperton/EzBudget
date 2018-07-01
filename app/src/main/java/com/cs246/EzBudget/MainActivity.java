@@ -31,6 +31,11 @@ import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListCategoryFragment;
 import com.cs246.EzBudget.mFragments.ListRecBalDataFragment;
+import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
+import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
+import com.cs246.EzBudget.SummaryView.SummaryItem;
+import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
+import com.cs246.EzBudget.SummaryView.SummaryType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -152,29 +157,35 @@ public class MainActivity extends AppCompatActivity
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
 
-        // TODO : Add code to load income items - Set type = 1 for income
-        SummaryItem payItem = new SummaryItem("Paycheck", 1200, false, 1);
-        bills.add(payItem);
-
+        // TODO : Replace with actual expense total code
+        double total = 0;
 
         if (cursor.moveToFirst()) {
             do {
                 String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                 Double amount =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
                 // TODO : Add boolean for marked as paid from database
                 boolean paid = false;
-                // Set type = 0 for expenses. This allows them to be swiped for marking as paid on summary screen
-                int type = 0;
-                SummaryItem summaryItem = new SummaryItem(description, amount, paid, type);
+                // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+                SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, SummaryType.Expense);
                 bills.add(summaryItem);
+                // TODO : Replace total with correct values for amount needed during this period
+                total += amount;
             } while (cursor.moveToNext());
         }
+
+        // TODO : Add code to load income items - Set SummaryType.Income for income
+
+        // Add a test paycheck
+        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, SummaryType.Income);
+        bills.add(0, payItem);
 
         //  SWIPE MENU FOR BILL ITEMS
 
         recyclerView = findViewById(R.id.recycler_view);
         rootLayout  = findViewById(R.id.rootLayout);
-        adapter = new SummaryListAdapter(this, bills);
+        adapter = new SummaryListAdapter(this, bills, total);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -279,7 +290,7 @@ public class MainActivity extends AppCompatActivity
 
             adapter.removeItem(deleteIndex);
 
-            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("UNDO", new View.OnClickListener(){
 
                 @Override

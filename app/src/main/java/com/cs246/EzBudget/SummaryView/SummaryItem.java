@@ -1,17 +1,19 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.SummaryView;
 
 public class SummaryItem {
     private String name;
     private boolean paid;
     private double amount;
-    private int type;
+    private SummaryType type;
+    private String date; // Due date of bill, or date income is received
 
 
-    public SummaryItem(String name, double amount, boolean paid, int type) {
+    public SummaryItem(String name, String date, double amount, boolean paid, SummaryType type) {
         this.name = name;
         this.paid = paid;
         this.amount = amount;
         this.type = type;
+        this.date = date;
     }
 
 
@@ -27,7 +29,11 @@ public class SummaryItem {
         return amount;
     }
 
-    public int getType() {
+    public SummaryType getType() {
         return type;
+    }
+
+    public String getDate() {
+        return date;
     }
 }
