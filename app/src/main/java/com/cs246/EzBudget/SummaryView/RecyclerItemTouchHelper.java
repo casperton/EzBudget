@@ -1,4 +1,4 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.SummaryView;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +28,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        View foregroundView = ((BillListAdapter.MyViewHolder)viewHolder).viewForeground;
+        View foregroundView = ((SummaryListAdapter.MyViewHolder)viewHolder).viewForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
@@ -40,20 +40,26 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            View foregroundView = ((BillListAdapter.MyViewHolder)viewHolder).viewForeground;
+            View foregroundView = ((SummaryListAdapter.MyViewHolder)viewHolder).viewForeground;
             getDefaultUIUtil().onSelected(foregroundView);
         }
     }
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        View foregroundView = ((BillListAdapter.MyViewHolder)viewHolder).viewForeground;
+        View foregroundView = ((SummaryListAdapter.MyViewHolder)viewHolder).viewForeground;
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }
 
     @Override
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        View foregroundView = ((BillListAdapter.MyViewHolder)viewHolder).viewForeground;
+        View foregroundView = ((SummaryListAdapter.MyViewHolder)viewHolder).viewForeground;
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
+    }
+
+    @Override
+    public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder.itemView.getTag().toString().equalsIgnoreCase("income")) return 0;
+        return super.getSwipeDirs(recyclerView, viewHolder);
     }
 }

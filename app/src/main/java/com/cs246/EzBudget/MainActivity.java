@@ -1,14 +1,12 @@
 package com.cs246.EzBudget;
 
 
-import android.content.ClipData;
 import android.database.Cursor;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,18 +22,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.animation.BounceInterpolator;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
-import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.mFragments.ChooseRecBalDataDialogFrag;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListCategoryFragment;
 import com.cs246.EzBudget.mFragments.ListRecBalDataFragment;
+import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
+import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
+import com.cs246.EzBudget.SummaryView.SummaryItem;
+import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
+import com.cs246.EzBudget.SummaryView.SummaryType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity
     public String date_pref;
 
     private RecyclerView recyclerView;
-    private List<BillItem> bills;
-    private BillListAdapter adapter;
+    private List<SummaryItem> bills;
+    private SummaryListAdapter adapter;
     private ConstraintLayout rootLayout;
 
     @Override
@@ -157,23 +157,35 @@ public class MainActivity extends AppCompatActivity
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
 
+        // TODO : Replace with actual expense total code
+        double total = 0;
+
         if (cursor.moveToFirst()) {
             do {
                 String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                 Double amount =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
                 // TODO : Add boolean for marked as paid from database
                 boolean paid = false;
-                BillItem billItem = new BillItem(description, amount, paid);
-                bills.add(billItem);
+                // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+                SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, SummaryType.Expense);
+                bills.add(summaryItem);
+                // TODO : Replace total with correct values for amount needed during this period
+                total += amount;
             } while (cursor.moveToNext());
         }
 
-//
-//        //  SWIPE MENU FOR BILL ITEMS
+        // TODO : Add code to load income items - Set SummaryType.Income for income
+
+        // Add a test paycheck
+        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, SummaryType.Income);
+        bills.add(0, payItem);
+
+        //  SWIPE MENU FOR BILL ITEMS
 
         recyclerView = findViewById(R.id.recycler_view);
         rootLayout  = findViewById(R.id.rootLayout);
-        adapter = new BillListAdapter(this, bills);
+        adapter = new SummaryListAdapter(this, bills, total);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -270,15 +282,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof BillListAdapter.MyViewHolder) {
+        if (viewHolder instanceof SummaryListAdapter.MyViewHolder) {
             String name = bills.get(viewHolder.getAdapterPosition()).getName();
 
-            final BillItem deletedItem = bills.get(viewHolder.getAdapterPosition());
+            final SummaryItem deletedItem = bills.get(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
             adapter.removeItem(deleteIndex);
 
-            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("UNDO", new View.OnClickListener(){
 
                 @Override
