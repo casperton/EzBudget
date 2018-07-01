@@ -59,7 +59,7 @@ public class ListRecBalDataFragment extends Fragment {
         myRecyclerView.setHasFixedSize(true);
 
         myProgress = (ProgressBar) myView.findViewById(R.id.listRecBar);
-        myProgress.setVisibility(View.INVISIBLE);
+        //myProgress.setVisibility(View.INVISIBLE);
         myFagmentManager = getActivity().getSupportFragmentManager();
 
         myAddButton = (Button) myView.findViewById(R.id.listRecAddNew);
@@ -72,6 +72,7 @@ public class ListRecBalDataFragment extends Fragment {
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
                 bundle.putBoolean("isRec", true );
+                bundle.putBoolean("showRec", true);
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();

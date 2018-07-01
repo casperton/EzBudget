@@ -42,6 +42,7 @@ public class DispBalDataFragment extends Fragment {
     private DBCategory myCatDB ;
     private DBBalanceData myDBBalanceData;
     private boolean myIsRecurrent = false;
+    private boolean myShowRecurrent = true;
     Calendar myCalendar;
     DatePickerDialog myDateDialog;
 
@@ -62,6 +63,7 @@ public class DispBalDataFragment extends Fragment {
     private ProgressBar myProgress=null;
     private Long myIDtoChange = Long.valueOf(-1);
     private LinearLayout myStatusLayOut;
+    private LinearLayout myRecurrenceLayOut;
 
 
 
@@ -87,6 +89,7 @@ public class DispBalDataFragment extends Fragment {
         if (args !=null) {
             myIDtoChange = args.getLong("id");
             myIsRecurrent = args.getBoolean("isRec");
+            myShowRecurrent = args.getBoolean("showRec");
         }
 
         myDueDate = (EditText) myView.findViewById(R.id.dispBalDataDueDate);
@@ -100,6 +103,7 @@ public class DispBalDataFragment extends Fragment {
         myProgress = (ProgressBar) myView.findViewById(R.id.dispBalDataBar);
         myProgress.setVisibility(View.INVISIBLE);
         myStatusLayOut = (LinearLayout) myView.findViewById(R.id.dispBalDataLayoutStatus);
+        myRecurrenceLayOut = (LinearLayout) myView.findViewById(R.id.dispBalDataLayoutRecurrence);
         mySaveButton = (Button)myView.findViewById(R.id.dispBalDataSave);
         myUpdateButton = (Button)myView.findViewById(R.id.dispBalDataUpdate);
         myDeleteButton = (Button)myView.findViewById(R.id.dispBalDataDelete);
@@ -108,6 +112,8 @@ public class DispBalDataFragment extends Fragment {
         final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
         if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
+        if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.INVISIBLE);
+
 
         /**
          * Show Fragment to select the category on long click

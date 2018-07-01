@@ -65,15 +65,16 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         myFagmentManager = getActivity().getSupportFragmentManager();
 
         myAddButton = (Button) myView.findViewById(R.id.listRecAddNew);
-        myAddButton.setVisibility(View.INVISIBLE);
-        /*myAddButton.setOnClickListener(new View.OnClickListener() {
+
+        myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Bundle bundle = new Bundle();
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                bundle.putBoolean("isRec", true );
+                bundle.putBoolean("isRec", false );
+                bundle.putBoolean("showRec", false);
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
@@ -82,7 +83,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
                 fragmentTransaction.commit();
             }
         });
-*/
+
 
         myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE );
 

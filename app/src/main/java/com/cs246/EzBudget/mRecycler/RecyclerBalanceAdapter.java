@@ -90,6 +90,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                     bundle.putLong("id", myMessage);
                     if (isRecurrent) bundle.putBoolean("isRec", true);
                     else bundle.putBoolean("isRec", false);
+                    bundle.putBoolean("showRec", true);
                     DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
                     theFrag.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
@@ -116,7 +117,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                         Toast.makeText(myContext.getApplicationContext(), "Not Added",
                                 Toast.LENGTH_SHORT).show();
                     }
-                    //todo: notify the change and reload the array Adapter in the main activity
+
                 }
 
             });

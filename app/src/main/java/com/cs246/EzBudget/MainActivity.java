@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                 ChooseRecBalDataDialogFrag fragInfo = ChooseRecBalDataDialogFrag.newInstance();
                 //fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerDialog, fragInfo,"LIST_BAL_DATA_DIALOG");
+                fragmentTransaction.replace(R.id.containerID, fragInfo,"LIST_BAL_DATA_DIALOG");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

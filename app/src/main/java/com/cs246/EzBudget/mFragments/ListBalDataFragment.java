@@ -71,6 +71,7 @@ public class ListBalDataFragment extends Fragment {
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
                 bundle.putBoolean("isRec", false );
+                bundle.putBoolean("showRec", true);
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
