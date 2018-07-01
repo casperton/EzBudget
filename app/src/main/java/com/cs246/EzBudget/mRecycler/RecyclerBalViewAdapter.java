@@ -30,6 +30,8 @@ import java.util.ArrayList;
  */
 public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHolderBalView> {
 
+    private static final int TYPE_HEAD=0;
+    private static final int TYPE_LIST=1;
 
     private ArrayList<BalanceView> myBalanceViewList = new ArrayList<>();
     private Context myContext;
@@ -47,32 +49,46 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
     @NonNull
     @Override
     public RecyclerViewHolderBalView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_bal_view_item, parent, false);
+        View view = null;
+        RecyclerViewHolderBalView theViewHolder;
 
-        return new RecyclerViewHolderBalView(view/*,myLayout*/);
+        if (viewType == TYPE_HEAD){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_bal_view_header, parent, false);
+
+        }
+        else if (viewType == TYPE_LIST){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_bal_view_item, parent, false);
+
+        }
+        theViewHolder = new RecyclerViewHolderBalView(view, viewType/*,myLayout*/);
+
+
+        return theViewHolder;
     }
 
     //Bind Data
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolderBalView holder, int position) {
 
-        holder.myTitle.setText(myBalanceViewList.get(position).getTitle());
-        holder.myIniDate.setText(myBalanceViewList.get(position).getInitialDateToHuman());
-        holder.myEndDate.setText(myBalanceViewList.get(position).getFinalDateToHuman());
-        //set background color
+        if (holder.myViewType == TYPE_LIST) {
+            int theNewPosition = position - 1;
+            holder.myTitle.setText(myBalanceViewList.get(theNewPosition).getTitle());
+            holder.myIniDate.setText(myBalanceViewList.get(theNewPosition).getInitialDateToHuman());
+            holder.myEndDate.setText(myBalanceViewList.get(theNewPosition).getFinalDateToHuman());
+            //set background color
 
-        if (position % 2 == 0)
-            holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
-        else
-            holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
+            if (theNewPosition % 2 == 0)
+                holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
+            else
+                holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
 
             holder.setItemClickListener(new RecyclerClickListener() {
                 @Override
                 public void OnClick(View view, int position, boolean isLongClick) {
-
-                    Long id_To_Search = myBalanceViewList.get(position).getID();
+                    int theNewPosition = position - 1;
+                    Long id_To_Search = myBalanceViewList.get(theNewPosition).getID();
                     Bundle bundle = new Bundle();
-                    bundle.putLong("id", id_To_Search );
+                    bundle.putLong("id", id_To_Search);
                     DispBalViewFragment fragInfo = DispBalViewFragment.newInstance();
                     fragInfo.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
@@ -84,14 +100,22 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
                 }
 
             });
+        }else{ //header initialization here if needed
+
         }
 
-
+    }
 
     @Override
     public int getItemCount() {
-        return myBalanceViewList.size();
+        return myBalanceViewList.size()+1;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if(position==0) return TYPE_HEAD;
+
+        return TYPE_LIST;
+    }
 }
 

@@ -28,6 +28,6 @@
             android:layout_weight="1"
             android:text="T"
             android:paddingLeft="10dp"
-            app:fontFamily="casual" />
+             />
     </LinearLayout>
 </android.support.v7.widget.CardView>

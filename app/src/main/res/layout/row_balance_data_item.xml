@@ -21,8 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingLeft="10dp"
-            android:text="T"
-            app:fontFamily="casual" />
+            android:text="T"/>
 
         <TextView
             android:id="@+id/textViewBDValue"
@@ -30,16 +29,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingLeft="10dp"
-            android:text="T"
-            app:fontFamily="casual" />
+            android:text="T"/>
 
         <TextView
             android:id="@+id/textViewBDDescription"
             android:layout_width="281dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="T"
             android:paddingLeft="10dp"
-            app:fontFamily="casual" />
+            android:text="T"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

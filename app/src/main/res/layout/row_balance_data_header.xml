@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:background="#000000"
+    android:orientation="horizontal"
+    android:padding="3dp">
+
+    <TextView
+        android:id="@+id/rowBalDataHeaderDate"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textColor="#ffffff"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/rowBalDataHeaderValue"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:text="Value"
+        android:textAlignment="textStart"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toStartOf="@+id/rowBalDataHeaderDescription"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rowBalDataHeaderDate"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/rowBalDataHeaderDescription"
+        android:layout_width="177dp"
+        android:layout_height="20dp"
+        android:text="Description"
+        android:textColor="#ffffff"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toEndOf="@+id/rowBalDataHeaderValue"
+        tools:layout_editor_absoluteY="0dp" />
+
+</android.support.constraint.ConstraintLayout>

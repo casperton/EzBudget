@@ -15,9 +15,15 @@ import com.cs246.EzBudget.R;
  */
 public class RecyclerViewHolderBalView extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
+    private static final int TYPE_HEAD=0;
+    private static final int TYPE_LIST=1;
+
+    int myViewType;
+
     TextView myTitle;
     TextView myIniDate;
     TextView myEndDate;
+    TextView myTitleIniDate, myTitleEndDate,myTitleTitle;
 
     private RecyclerClickListener myItemClickListener;
     //private int myLayOut;
@@ -26,13 +32,23 @@ public class RecyclerViewHolderBalView extends RecyclerView.ViewHolder implement
 
 
 
-    public RecyclerViewHolderBalView(View itemView/*, int LayoutType*/) {
+    public RecyclerViewHolderBalView(View itemView, int theViewType/*, int LayoutType*/) {
         super(itemView);
         //id = (TextView)itemView.findViewById(R.id.textViewCatID);
-        myTitle = (TextView) itemView.findViewById(R.id.balViewTitle);
-        myIniDate = (TextView) itemView.findViewById(R.id.balViewIniDate);
-        myEndDate = (TextView) itemView.findViewById(R.id.balViewEndDate);
 
+        if (theViewType == TYPE_LIST) {
+            myTitle = (TextView) itemView.findViewById(R.id.balViewTitle);
+            myIniDate = (TextView) itemView.findViewById(R.id.balViewIniDate);
+            myEndDate = (TextView) itemView.findViewById(R.id.balViewEndDate);
+            myViewType = 1;
+        }
+        else if (theViewType == TYPE_HEAD) {
+            //variables for header
+            this.myTitleIniDate = (TextView) itemView.findViewById(R.id.rowBalViewHeaderIniDate);
+            this.myTitleEndDate = (TextView) itemView.findViewById(R.id.rowBalViewHeaderEndDate);
+            this.myTitleTitle = (TextView) itemView.findViewById(R.id.rowBalViewHeaderTitle);
+            myViewType = 0;
+        }
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
         //myLayOut = LayoutType;
