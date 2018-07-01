@@ -1,13 +1,21 @@
 package com.cs246.EzBudget;
 
 
+import android.content.ClipData;
 import android.database.Cursor;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,13 +24,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.animation.BounceInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-// Swipe menu libraries
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
+
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
@@ -32,22 +37,24 @@ import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListCategoryFragment;
 import com.cs246.EzBudget.mFragments.ListRecBalDataFragment;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, RecyclerItemTouchHelperListener {
 
     public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
     public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May",
                             "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     public String date_pref;
-    private List<String> bills; // Temporary for testing the list view - Replace later with actual object for bills/income items
-    private ArrayAdapter<String> arrayAdapter;
-    //ListView listView;
-    SwipeMenuListView listView;
+
+    private RecyclerView recyclerView;
+    private List<BillItem> bills;
+    private BillListAdapter adapter;
+    private ConstraintLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,111 +153,37 @@ public class MainActivity extends AppCompatActivity
         bills = new ArrayList<>();
         Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+
         if (cursor.moveToFirst()) {
             do {
-                String TheDescr = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                Double value =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                bills.add(TheDescr+ " - $ "+value.toString());
+                String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                Double amount =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                // TODO : Add boolean for marked as paid from database
+                boolean paid = false;
+                BillItem billItem = new BillItem(description, amount, paid);
+                bills.add(billItem);
             } while (cursor.moveToNext());
         }
 
+//
+//        //  SWIPE MENU FOR BILL ITEMS
 
-        //  SWIPE MENU FOR BILL ITEMS
-        listView = findViewById(R.id.listview_summary);
+        recyclerView = findViewById(R.id.recycler_view);
+        rootLayout  = findViewById(R.id.rootLayout);
+        adapter = new BillListAdapter(this, bills);
 
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator((new DefaultItemAnimator()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(adapter);
 
-
-
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bills);
-
-        DBHelper.BalanceDataChangedListener listener = new DBHelper.BalanceDataChangedListener() {
-            @Override
-            public void onChanged() {
-                DBBalanceView myCurrentView = new DBBalanceView(getApplicationContext());
-                BalanceView myBalanceView = myCurrentView.getCurrent();
-
-                DBBalanceData theBalanceData = new DBBalanceData(getApplicationContext());
-                bills.clear();
-                Cursor cursor = theBalanceData.getOutcomesCursor(myBalanceView);
-                //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
-                if (cursor.moveToFirst()) {
-                    do {
-                        String TheDescr = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                        Double value =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                        bills.add(TheDescr+ " - $ "+value.toString());
-                    } while (cursor.moveToNext());
-                }
-                arrayAdapter.notifyDataSetChanged();
-
-            }
-        };
-        listView.setAdapter(arrayAdapter);
-
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-            @Override
-            public void create(SwipeMenu menu) {
-                // create "done" item
-                SwipeMenuItem paidItem = new SwipeMenuItem(
-                        getApplicationContext());
-                // set item background
-                paidItem.setBackground(new ColorDrawable(Color.rgb(0x2e,
-                        0x75, 0x25)));
-                // set item width
-                paidItem.setWidth(180);
-                paidItem.setTitle("Paid");
-                paidItem.setTitleSize(18);
-                paidItem.setTitleColor(Color.WHITE);
-                // set a icon
-                //paidItem.setIcon(R.drawable.ic_done);
-                // add to menu
-                menu.addMenuItem(paidItem);
-            }
-        };
-
-        // set creator
-        listView.setMenuCreator(creator);
-
-        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        // Mark item as paid
-                        bills.remove(index);
-                        arrayAdapter.notifyDataSetChanged();
-                        break;
-                }
-                // false : close the menu; true : not close the menu
-                return false;
-            }
-        });
-
-        // set SwipeListener
-        listView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
-
-            @Override
-            public void onSwipeStart(int position) {
-                // swipe start
-            }
-
-            @Override
-            public void onSwipeEnd(int position) {
-                // swipe end
-            }
-        });
-
-        // set MenuStateChangeListener
-        listView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-            @Override
-            public void onMenuOpen(int position) {
-            }
-
-            @Override
-            public void onMenuClose(int position) {
-            }
-        });
-
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
+                = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
     }
 
     //CLOSE DRAWER WHEN BACK BTN IS CLICKED,IF OPEN
@@ -335,4 +268,26 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof BillListAdapter.MyViewHolder) {
+            String name = bills.get(viewHolder.getAdapterPosition()).getName();
+
+            final BillItem deletedItem = bills.get(viewHolder.getAdapterPosition());
+            final int deleteIndex = viewHolder.getAdapterPosition();
+
+            adapter.removeItem(deleteIndex);
+
+            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    adapter.restoreItem(deletedItem, deleteIndex);
+                }
+            });
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+    }
 }
