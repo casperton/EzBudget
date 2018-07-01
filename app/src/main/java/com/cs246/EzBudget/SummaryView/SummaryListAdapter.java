@@ -1,4 +1,4 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.SummaryView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cs246.EzBudget.R;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -15,10 +17,13 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
 
     private Context context;
     private List<SummaryItem> list;
+    private double expenseTotal;
 
-    public SummaryListAdapter(Context context, List<SummaryItem> list) {
+    public SummaryListAdapter(Context context, List<SummaryItem> list, double expenseTotal) {
         this.context = context;
         this.list = list;
+        // TODO : Replace with calculated total for this period
+        this.expenseTotal = expenseTotal;
     }
 
     @Override
@@ -41,8 +46,16 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         SummaryItem bill = list.get(position);
         holder.name.setText(bill.getName());
         DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(2);
+        df.setMinimumFractionDigits(0);
         holder.amount.setText("$" + df.format(bill.getAmount()).toString());
+        // TODO : Format date for locale
+        String date = bill.getDate();
+        if (bill.getType() == SummaryType.Income) {
+            holder.date.setText("Date: " + date);
+            holder.total_needed.setText("Needed: $" + String.valueOf(df.format(expenseTotal)));
+        } else {
+            holder.date.setText("Due: " + date);
+        }
     }
 
     @Override
@@ -53,12 +66,16 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     @Override
     public int getItemViewType(int position) {
         int viewType = 0;
-        if (list.get(position).getType() == 1) viewType = 1;
+        if (list.get(position).getType() == SummaryType.Income) {
+            viewType = 1;
+        }
         return viewType;
     }
 
     public void removeItem(int position) {
         list.remove(position);
+        // TODO : Recalculate total needed for this period once item is paid
+
         notifyItemRemoved(position);
     }
 
@@ -68,14 +85,19 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, amount;
+        public TextView name, amount, date, total_needed;
         public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View itemView, int viewType) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             amount = itemView.findViewById(R.id.amount);
-            if (viewType != 1) viewBackground = itemView.findViewById(R.id.view_background);
+            date = itemView.findViewById(R.id.date);
+            if (viewType != 1) {
+                viewBackground = itemView.findViewById(R.id.view_background);
+            } else {
+                total_needed = itemView.findViewById(R.id.total_needed);
+            }
             viewForeground = itemView.findViewById(R.id.view_foreground);
         }
     }

@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/amount"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="15sp"
@@ -22,15 +22,39 @@
 
         <TextView
             android:id="@+id/name"
+            android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/amount"
-            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:maxLines="1"
             android:textColor="@android:color/white"
             android:textSize="15sp"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/date"
+            android:ellipsize="end"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_toRightOf="@id/amount"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/total_needed"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+        />
 
      </RelativeLayout>
 

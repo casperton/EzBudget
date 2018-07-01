@@ -97,7 +97,7 @@ public class DispBalDataFragment extends Fragment {
         myCategory = (EditText) myView.findViewById(R.id.dispBalDataCategory);
         myDescription = (EditText) myView.findViewById(R.id.dispBalDataDescription);
         myPaymentDate = (EditText) myView.findViewById(R.id.dispBalDataPaymentDate);
-        myStatusPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioPayd);
+        myStatusPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioPaid);
         myStatusNotPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioUnPaid);
         myRecurrent = (CheckBox) myView.findViewById(R.id.dispBalDataCheckBoxRecurrent);
         myProgress = (ProgressBar) myView.findViewById(R.id.dispBalDataBar);

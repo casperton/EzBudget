@@ -1,4 +1,4 @@
-package com.cs246.EzBudget;
+package com.cs246.EzBudget.SummaryView;
 
 import android.support.v7.widget.RecyclerView;
 
