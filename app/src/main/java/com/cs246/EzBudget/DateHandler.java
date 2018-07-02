@@ -19,6 +19,8 @@ public class DateHandler {
     private static final String YEAR_FORMAT = "yyyy";
     private static final String MONTH_FORMAT = "MM";
     private static final String DAY_FORMAT = "dd";
+    private static final String SHORT_MONTH_NAME = "MMM";
+    private static final String LONG_MONTH_NAME = "MMMM";
     //public static final String DATE_FORMAT = "MM-dd-yyyy";
     //public static final String TIMESTAMP_FORMAT = "MM-dd-yyyy HH:mm:ss";
 
@@ -118,6 +120,12 @@ public class DateHandler {
 
     }
 
+    /**
+     * Get the first or last day of the previous (the current - 1) month
+     * @param type: 1 get the first day
+     *              2 get the last day
+     * @return the first or last day of the previous (current-1) month
+     */
     public static Date getDateFromLastMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -143,6 +151,12 @@ public class DateHandler {
         else return lastDateOfPreviousMonth;
     }
 
+    /**
+     * Get the first or last day of the next (the current + 1) month
+     * @param type: 1 get the first day
+     *              2 get the last day
+     * @return the first or last day of the next (current+1) month
+     */
     public static Date getDateFromNextMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -168,6 +182,12 @@ public class DateHandler {
         else return lastDateOfPreviousMonth;
     }
 
+    /**
+     * Get the first or last day of this (the current) month
+     * @param type: 1 get the first day
+     *              2 get the last day
+     * @return the first or last day of the current month
+     */
     public static Date getDateFromThisMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -180,17 +200,43 @@ public class DateHandler {
         // set DATE to 1, so first date of previous month
         aCalendar.set(java.util.Calendar.DATE, 1);
 
-        Date firstDateOfPreviousMonth = aCalendar.getTime();
+        Date firstDateOfTheMonth = aCalendar.getTime();
         // Using DateFormat format method we can create a string
         // representation of a date with the defined format.
-        firstDateOfPreviousMonth_str = df.format(firstDateOfPreviousMonth);
+        firstDateOfPreviousMonth_str = df.format(firstDateOfTheMonth);
         // set actual maximum date of previous month
         aCalendar.set(java.util.Calendar.DATE, aCalendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
         //read it
-        Date lastDateOfPreviousMonth = aCalendar.getTime();
-        lastDateOfPreviousMonth_str = df.format(lastDateOfPreviousMonth);
-        if(type == 1) return firstDateOfPreviousMonth;
-        else return lastDateOfPreviousMonth;
+        Date lastDateOfTheMonth = aCalendar.getTime();
+        lastDateOfPreviousMonth_str = df.format(lastDateOfTheMonth);
+        if(type == 1) return firstDateOfTheMonth;
+        else return lastDateOfTheMonth;
     }
 
+    /**
+     * Convert a Date into a String in the Format (Short_Month_name Year)
+     * @param theDate The date to be formated
+     * @return the formatet date
+     */
+    public static String getShortName(Date theDate){
+        //Month name will contain the full month name,,if you want short month name use this
+
+        SimpleDateFormat month_date = new SimpleDateFormat(SHORT_MONTH_NAME+" "+"dd");
+        String month_name = month_date.format(theDate);
+        return month_name;
+    }
+
+    /**
+     * Convert a Date into a String in the Format (Long_Month_name Year)
+     * @param theDate The date to be formated
+     * @return the formatet date
+     */
+    public static String getLongName(Date theDate){
+
+        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat month_date = new SimpleDateFormat(LONG_MONTH_NAME+" "+"dd");
+        String month_name = month_date.format(theDate);
+        return month_name;
+        //Month name will contain the full month name,
+    }
 }

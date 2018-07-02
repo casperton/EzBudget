@@ -163,6 +163,21 @@ public class BalanceView{
     }
 
     /**
+     * Return the Initial Date without any specific formating
+     * @return the Initial Date
+     */
+    public Date getInitialDate(){
+        return myInitialDate;
+    }
+
+    /**
+     * Return the Final Date without any specific formating
+     * @return the Initial Date
+     */
+    public Date getFinalDate(){
+        return myFinalDate;
+    }
+    /**
      * Get the Initial date from Period in the Human Readable Format
      * @return the date formated as String
      */

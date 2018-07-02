@@ -89,12 +89,14 @@ public class MainActivity extends AppCompatActivity
             yearEnd++;
         }
 
+        //get the dates from the current view
+        String dateRange2 = DateHandler.getShortName(myBalanceView.getInitialDate())+" - "+
+        DateHandler.getShortName(myBalanceView.getFinalDate());
 
+        //String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
+          //                 MONTHS[monthEnd] + " " + yearEnd;
 
-        String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
-                           MONTHS[monthEnd] + " " + yearEnd;
-
-        textView.setText(myBalanceView.getTitle() + " - "+dateRange);
+        textView.setText(myBalanceView.getTitle() + " - "+dateRange2);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
