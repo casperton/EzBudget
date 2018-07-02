@@ -4,11 +4,11 @@ public class SummaryItem {
     private String name;
     private boolean paid;
     private double amount;
-    private SummaryType type;
+    private int type;
     private String date; // Due date of bill, or date income is received
+    private double total_needed;
 
-
-    public SummaryItem(String name, String date, double amount, boolean paid, SummaryType type) {
+    public SummaryItem(String name, String date, double amount, boolean paid, int type) {
         this.name = name;
         this.paid = paid;
         this.amount = amount;
@@ -29,11 +29,12 @@ public class SummaryItem {
         return amount;
     }
 
-    public SummaryType getType() {
+    public int getType() {
         return type;
     }
 
     public String getDate() {
         return date;
     }
+
 }
