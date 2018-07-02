@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cs246.EzBudget.BALANCE_ITEM;
+import com.cs246.EzBudget.Calculations;
 import com.cs246.EzBudget.R;
 
 import java.text.DecimalFormat;
@@ -17,19 +19,17 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
 
     private Context context;
     private List<SummaryItem> list;
-    private double expenseTotal;
+    private double total = 0;
 
-    public SummaryListAdapter(Context context, List<SummaryItem> list, double expenseTotal) {
+    public SummaryListAdapter(Context context, List<SummaryItem> list) {
         this.context = context;
         this.list = list;
-        // TODO : Replace with calculated total for this period
-        this.expenseTotal = expenseTotal;
     }
 
     @Override
     public SummaryListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MyViewHolder holder;
-        if (viewType == 1) {
+        if (viewType == BALANCE_ITEM.INCOME) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.income_list_item, parent, false);
             holder = new MyViewHolder(itemView, viewType);
             holder.itemView.setTag("income");
@@ -50,9 +50,11 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         holder.amount.setText("$" + df.format(bill.getAmount()).toString());
         // TODO : Format date for locale
         String date = bill.getDate();
-        if (bill.getType() == SummaryType.Income) {
+        if (bill.getType() == BALANCE_ITEM.INCOME) {
             holder.date.setText("Date: " + date);
-            holder.total_needed.setText("Needed: $" + String.valueOf(df.format(expenseTotal)));
+            // TODO : Replace with calculated total for only this period
+            total = new Calculations(list).getPeriodTotal();
+            holder.total_needed.setText("Needed: $" + String.valueOf(df.format(total)));
         } else {
             holder.date.setText("Due: " + date);
         }
@@ -65,23 +67,22 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        int viewType = 0;
-        if (list.get(position).getType() == SummaryType.Income) {
-            viewType = 1;
-        }
-        return viewType;
+        return list.get(position).getType();
     }
 
     public void removeItem(int position) {
         list.remove(position);
         // TODO : Recalculate total needed for this period once item is paid
-
+        total = new Calculations(list).getPeriodTotal();
         notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     public void restoreItem(SummaryItem item, int position) {
         list.add(position, item);
+        total = new Calculations(list).getPeriodTotal();
         notifyItemInserted(position);
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -93,7 +94,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
             name = itemView.findViewById(R.id.name);
             amount = itemView.findViewById(R.id.amount);
             date = itemView.findViewById(R.id.date);
-            if (viewType != 1) {
+            if (viewType != BALANCE_ITEM.INCOME) {
                 viewBackground = itemView.findViewById(R.id.view_background);
             } else {
                 total_needed = itemView.findViewById(R.id.total_needed);

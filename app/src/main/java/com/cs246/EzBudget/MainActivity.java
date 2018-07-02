@@ -35,7 +35,6 @@ import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
 import com.cs246.EzBudget.SummaryView.SummaryItem;
 import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
-import com.cs246.EzBudget.SummaryView.SummaryType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                 // TODO : Add boolean for marked as paid from database
                 boolean paid = false;
                 // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, SummaryType.Expense);
+                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, BALANCE_ITEM.EXPENSE);
                 bills.add(summaryItem);
                 // TODO : Replace total with correct values for amount needed during this period
                 total += amount;
@@ -178,14 +177,14 @@ public class MainActivity extends AppCompatActivity
         // TODO : Add code to load income items - Set SummaryType.Income for income
 
         // Add a test paycheck
-        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, SummaryType.Income);
+        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, BALANCE_ITEM.INCOME);
         bills.add(0, payItem);
 
         //  SWIPE MENU FOR BILL ITEMS
 
         recyclerView = findViewById(R.id.recycler_view);
         rootLayout  = findViewById(R.id.rootLayout);
-        adapter = new SummaryListAdapter(this, bills, total);
+        adapter = new SummaryListAdapter(this, bills);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
