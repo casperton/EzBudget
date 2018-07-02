@@ -13,42 +13,50 @@
     tools:context="com.cs246.EzBudget.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <LinearLayout
+        android:id="@+id/swipeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="274dp"
+        app:layout_constraintBottom_toTopOf="@+id/rootLayout"
+        tools:layout_editor_absoluteX="16dp">
+
+        <Button
+            android:id="@+id/testButton"
+            android:layout_width="123dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/balViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp">
+
         <TextView
             android:id="@+id/text_monthly_summary"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_marginBottom="12dp"
-            android:layout_marginEnd="2dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/summary"
             android:textAlignment="viewStart"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
-            app:layout_constraintEnd_toStartOf="@+id/textViewMonthRange"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.64" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textViewMonthRange"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="190dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="8dp"
+            android:text="TESTE"
             android:textAlignment="viewStart"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/text_monthly_summary"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="18sp" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guidelineLeft"
@@ -67,15 +75,13 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintGuide_end="8dp" />
-
+    </LinearLayout>
         <android.support.design.widget.AppBarLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:theme="@style/AppTheme.AppBarOverlay"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMonthRange"
-                >
+                app:layout_constraintHorizontal_bias="0.5">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:background="@android:color/white"
@@ -86,25 +92,35 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_bill_items" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_bill_items"
+        android:layout_width="352dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/balViewTitle" />
 
-        <RelativeLayout
-            android:id="@+id/containerID"
-            android:layout_width="match_parent"
-            android:layout_height="431dp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp">
+    <RelativeLayout
+        android:id="@+id/containerID"
+        android:layout_width="354dp"
+        android:layout_height="345dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipeLinearLayout"
+        tools:layout_editor_absoluteX="382dp">
 
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/containerDialog"
-            android:layout_width="match_parent"
-            android:layout_margin="20dp"
-            android:layout_height="400dp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp">
+    </RelativeLayout>
 
-        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/containerDialog"
+        android:layout_width="match_parent"
+        android:layout_height="336dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipeLinearLayout">
 
-
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
