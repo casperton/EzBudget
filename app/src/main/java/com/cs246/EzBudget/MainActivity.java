@@ -280,7 +280,17 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
+    /**
+     * This class is used by the summary view to present a snackbar item at the
+     * bottom of the screen whenever an item is marked as paid with an "Undo"
+     * button that will restor the item.
+     * Note: Snackbar.LENGTH_INDEFINITE controls how long the Undo item will be
+     * shown and can be changed to LENGTH_LONG or LENGTH_SHORT if desired
+     *
+     * @param viewHolder    The viewHolder for the item that was marked as paid
+     * @param direction     The direction that the snackbar notification will appear
+     * @param position      The position for the snackbar notification
+     */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof SummaryListAdapter.MyViewHolder) {
