@@ -5,6 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
+/**
+ * This class enables the swipeable items for thesummary view.
+ *
+ * This class was largely based off the demo from:
+ * https://www.androidhive.info/2017/09/android-recyclerview-swipe-delete-undo-using-itemtouchhelper/
+ * https://www.youtube.com/watch?v=bWyQlZGMrXM
+ */
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private RecyclerItemTouchHelperListener listener;
@@ -57,9 +64,16 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }
 
+    /**
+     * This class disables the swiping ability for Income viewHolder items
+     * @param recyclerView  The view containing all the items
+     * @param viewHolder    The viewHolder with the individual items
+     * @return              Returns 0 to disable swiping, otherwise it gets the swipe direction
+     */
+
     @Override
     public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        if (viewHolder.itemView.getTag().toString().equalsIgnoreCase("income")) return 0;
+        if (viewHolder instanceof SummaryListAdapter.IncomeViewHolder) return 0;
         return super.getSwipeDirs(recyclerView, viewHolder);
     }
 }
