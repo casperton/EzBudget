@@ -42,6 +42,10 @@ import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
 
+
+//http://semycolon.blogspot.com/2014/11/first-android-app-step-5-homescreen.html
+//https://www.youtube.com/watch?time_continue=2&v=VI4fgsDolAQ
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RecyclerItemTouchHelperListener {
 
