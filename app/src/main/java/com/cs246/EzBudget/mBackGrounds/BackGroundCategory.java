@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBCategory;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.mRecycler.RecyclerCategoryAdapter;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
  *
  */
 public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
+    private static final String TAG = BackGroundCategory.class.getName();
+
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
@@ -37,6 +40,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private int myLayOut;
 
     public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, FragmentManager theFrag) {
+        if(MainActivity.DEBUG) Log.i(TAG, "BackGroundCategory()  // Constructor");
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -48,6 +52,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
 
     @Override
     protected void onPreExecute() {
+        if(MainActivity.DEBUG) Log.i(TAG, "onPreExecute()");
         myAdapter = new RecyclerCategoryAdapter(myCategories,context,myLayOut,myFragmentManager);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
@@ -56,6 +61,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
 
     @Override
     protected Void doInBackground(Void... voids) {
+        if(MainActivity.DEBUG) Log.i(TAG, "doInBackground()");
         DBCategory mydb = new DBCategory(context);
 
         Long id;
@@ -76,8 +82,6 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
             default:cursor =  mydb.getAllCursor();
                 break;
         }
-
-
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

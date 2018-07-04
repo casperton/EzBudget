@@ -12,11 +12,14 @@ import android.widget.ProgressBar;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceView;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.mRecycler.RecyclerBalViewAdapter;
 
 import java.util.ArrayList;
 
 public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
+    private static final String TAG = BackGroundBalView.class.getName();
+
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
@@ -28,6 +31,7 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
 
 
     public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag/*, int theConsult */) {
+        if(MainActivity.DEBUG) Log.i(TAG, "BackGroundBalView()  // Constructor");
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -37,6 +41,7 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
 
     @Override
     protected void onPreExecute() {
+        if(MainActivity.DEBUG) Log.i(TAG, "onPreExecute()");
         myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
@@ -45,6 +50,7 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        if(MainActivity.DEBUG) Log.i(TAG, "doInBackground()");
         DBBalanceView mydb = new DBBalanceView(context);
 
         Integer id;
@@ -54,9 +60,6 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
         Cursor cursor;
 
         cursor =  mydb.getAllCursor();
-
-
-
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

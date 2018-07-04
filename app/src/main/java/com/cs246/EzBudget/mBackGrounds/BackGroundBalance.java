@@ -13,6 +13,7 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 //used in the balanceView Test
 public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
+    private static final String TAG = BackGroundBalance.class.getName();
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
@@ -37,6 +39,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
     private int myLayOut;
 
     public BackGroundBalance(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut) {
+        if(MainActivity.DEBUG) Log.i(TAG, "BackGroundBalance()  // Constructor");
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -46,11 +49,11 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
         DBBalanceView myCurrentViewDB = new DBBalanceView(context);
         myCurrentView = myCurrentViewDB.getCurrent();
 
-
     }
 
     @Override
     protected void onPreExecute() {
+        if(MainActivity.DEBUG) Log.i(TAG, "onPreExecute()");
         myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,null,false, LIST_ACTION.ACT_LIST_ADD);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
@@ -59,6 +62,7 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        if(MainActivity.DEBUG) Log.i(TAG, "doInBackground()");
         DBBalanceData theBalanceData= new DBBalanceData(context);
 
         Long theID;
@@ -79,8 +83,6 @@ public class BackGroundBalance extends AsyncTask<Void,BalanceData,Void> {
             default:cursor =  theBalanceData.getAllCursor(myCurrentView);
                 break;
         }
-
-
 
         // looping through all rows and adding to list
         while (cursor.moveToNext()) {

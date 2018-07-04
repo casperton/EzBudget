@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceDataRec;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 
 public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
+    private static final String TAG = BackGroundRecData.class.getName();
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
@@ -29,7 +31,6 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
     public final static int BAL_BILLS = 2;
     public final static int BAL_INCOMES = 3;
 
-
     private FragmentManager myFagmentManager;
     private int myConsultType;
 
@@ -37,6 +38,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
 
 
     public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction ) {
+        if(MainActivity.DEBUG) Log.i(TAG, "BackGroundRecData()  // Constructor");
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -48,6 +50,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected void onPreExecute() {
+        if(MainActivity.DEBUG) Log.i(TAG, "onPreExecute()");
         myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true, myAction);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
@@ -57,6 +60,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        if(MainActivity.DEBUG) Log.i(TAG, "doInBackground()");
         DBBalanceDataRec theBalanceData= new DBBalanceDataRec(context);
 
         Long theID;
@@ -73,12 +77,10 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
                 break;
             case BAL_BILLS: cursor =  theBalanceData.getOutcomesCursor();
                 break;
-
-
+                
             default:cursor =  theBalanceData.getAllCursor();
                 break;
         }
-
 
 
         // looping through all rows and adding to list

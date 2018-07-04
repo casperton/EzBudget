@@ -14,6 +14,7 @@ import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
 //import com.cs246.EzBudget.mRecycler.RecyclerBalDataAdapter;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 
 public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
+    private static final String TAG = BackGroundBalData.class.getName();
 
     private RecyclerView mylistView;
     private ProgressBar myProgressBar;
@@ -37,6 +39,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
 
     public BackGroundBalData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult ) {
+        if(MainActivity.DEBUG) Log.i(TAG, "BackGroundBalData()  // Constructor");
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -49,6 +52,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected void onPreExecute() {
+        if(MainActivity.DEBUG) Log.i(TAG, "onPreExecute()");
         myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,false, LIST_ACTION.ACT_LIST_ADD);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
@@ -58,6 +62,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        if(MainActivity.DEBUG) Log.i(TAG, "doInBackground()");
         DBBalanceData theBalanceData= new DBBalanceData(context);
 
         Long theID;
