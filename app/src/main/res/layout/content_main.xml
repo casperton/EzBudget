@@ -13,69 +13,7 @@
     tools:context="com.cs246.EzBudget.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
-        android:id="@+id/swipeLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="274dp"
-        app:layout_constraintBottom_toTopOf="@+id/rootLayout"
-        tools:layout_editor_absoluteX="16dp">
 
-        <Button
-            android:id="@+id/testButton"
-            android:layout_width="123dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/balViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp">
-
-        <TextView
-            android:id="@+id/text_monthly_summary"
-            android:layout_width="wrap_content"
-            android:layout_height="28dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/summary"
-            android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewMonthRange"
-            android:layout_width="190dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginStart="8dp"
-            android:text="TESTE"
-            android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guidelineLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="8dp"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guidelineRight"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_end="8dp" />
-    </LinearLayout>
         <android.support.design.widget.AppBarLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -92,35 +30,25 @@
 
         </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_bill_items"
-        android:layout_width="352dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/balViewTitle" />
-
+<android.support.design.widget.TabLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:tabGravity="fill"
+    app:tabMode="fixed"
+    android:id="@+id/tablayout_id"></android.support.design.widget.TabLayout>
+<android.support.v4.view.ViewPager
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/viewPager"></android.support.v4.view.ViewPager>
     <RelativeLayout
         android:id="@+id/containerID"
         android:layout_width="354dp"
         android:layout_height="345dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swipeLinearLayout"
         tools:layout_editor_absoluteX="382dp">
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/containerDialog"
-        android:layout_width="match_parent"
-        android:layout_height="336dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swipeLinearLayout">
 
-    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

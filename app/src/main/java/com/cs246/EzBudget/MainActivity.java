@@ -4,11 +4,13 @@ package com.cs246.EzBudget;
 import android.database.Cursor;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +37,7 @@ import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
 import com.cs246.EzBudget.SummaryView.SummaryItem;
 import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
+import com.cs246.EzBudget.mFragments.SelectViewFragment;
 import com.cs246.EzBudget.mFragments.SummaryFragment;
 
 import java.text.DecimalFormat;
@@ -48,17 +51,12 @@ import java.util.Date;
 //https://www.youtube.com/watch?time_continue=2&v=VI4fgsDolAQ
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, RecyclerItemTouchHelperListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
-    public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May",
-                            "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    public String date_pref;
 
-    private RecyclerView recyclerView;
-    private List<SummaryItem> bills;
-    private SummaryListAdapter adapter;
-    private ConstraintLayout rootLayout;
+    private TabLayout myTabLayout;
+    private ViewPager myViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,35 +71,25 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DBBalanceView myCurrentView = new DBBalanceView(this);
-        DBBalanceData myBalanceData = new DBBalanceData(this);
-        BalanceView myBalanceView = myCurrentView.getCurrent();
+
+        myTabLayout = (TabLayout) findViewById(R.id.tablayout_id);
+        myViewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        MainViewPagerAdapter viewAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+        // Adding Fragments
+        viewAdapter.addFragment(new SelectViewFragment(), "Select View");
+        viewAdapter.addFragment(new SummaryFragment(),"Summary");
+        //Adapter Setup
+        myViewPager.setAdapter(viewAdapter);
+        myTabLayout.setupWithViewPager(myViewPager);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Print 3 month range title
-        TextView textView = findViewById(R.id.textViewMonthRange);
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int monthBegin = calendar.get(Calendar.MONTH);
-        int yearBegin = calendar.get(Calendar.YEAR);
-        int monthEnd = (monthBegin + 2);
-        int yearEnd = yearBegin;
-        if (monthEnd > 11) {
-            monthEnd = (monthEnd - 12);
-            yearEnd++;
-        }
 
-        //get the dates from the current view
-        String dateRange2 = DateHandler.getShortName(myBalanceView.getInitialDate())+" - "+
-        DateHandler.getShortName(myBalanceView.getFinalDate());
 
-        //String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
-          //                 MONTHS[monthEnd] + " " + yearEnd;
 
-        textView.setText(myBalanceView.getTitle() + " - "+dateRange2);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -156,52 +144,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        bills = new ArrayList<>();
-        Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
-        //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
 
-        DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(2);
-
-        // TODO : Replace with actual expense total code
-        double total = 0;
-
-        if (cursor.moveToFirst()) {
-            do {
-                String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                Double amount =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                // TODO : Add boolean for marked as paid from database
-                boolean paid = false;
-                // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, BALANCE_ITEM.EXPENSE);
-                bills.add(summaryItem);
-                // TODO : Replace total with correct values for amount needed during this period
-                total += amount;
-            } while (cursor.moveToNext());
-        }
-
-        // TODO : Add code to load income items - Set SummaryType.Income for income
-
-        // Add a test paycheck
-        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, BALANCE_ITEM.INCOME);
-        bills.add(0, payItem);
-
-        //  SWIPE MENU FOR BILL ITEMS
-
-        recyclerView = findViewById(R.id.recycler_view);
-        rootLayout  = findViewById(R.id.rootLayout);
-        adapter = new SummaryListAdapter(this, bills);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator((new DefaultItemAnimator()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(adapter);
-
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
-                = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
     }
 
     //CLOSE DRAWER WHEN BACK BTN IS CLICKED,IF OPEN
@@ -292,26 +235,5 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof SummaryListAdapter.MyViewHolder) {
-            String name = bills.get(viewHolder.getAdapterPosition()).getName();
 
-            final SummaryItem deletedItem = bills.get(viewHolder.getAdapterPosition());
-            final int deleteIndex = viewHolder.getAdapterPosition();
-
-            adapter.removeItem(deleteIndex);
-
-            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction("UNDO", new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    adapter.restoreItem(deletedItem, deleteIndex);
-                }
-            });
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();
-        }
-    }
 }
