@@ -2,10 +2,12 @@ package com.cs246.EzBudget.mRecycler;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.R;
 
 
@@ -15,6 +17,8 @@ import com.cs246.EzBudget.R;
  * Defined how the line will be
  */
 public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+
+    private static final String TAG = RecyclerViewHolderBalanceData.class.getName();
 
     private static final int TYPE_HEAD=0;
     private static final int TYPE_LIST=1;
@@ -34,6 +38,7 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
 
     public RecyclerViewHolderBalanceData(View itemView, FragmentManager theFrag, int theViewType /*, int LayoutType*/) {
         super(itemView);
+        if(MainActivity.DEBUG) Log.i(TAG, "RecyclerViewHolderBalanceData()  // Constructor");
         if (theViewType == TYPE_LIST) {
             this.myDueDate = (TextView) itemView.findViewById(R.id.textViewBDDueDate);
             this.myValue = (TextView) itemView.findViewById(R.id.textViewBDValue);

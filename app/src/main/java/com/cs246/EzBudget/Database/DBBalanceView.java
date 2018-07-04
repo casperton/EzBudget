@@ -10,20 +10,21 @@ import android.util.Log;
 
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.MainActivity;
 
 /**
  * Class to Handle the BalanceView Table of the database
  */
 public class DBBalanceView  {
 
-    private static final String TAG = "DB_BALANCE_VIEW";
+    private static final String TAG = DBBalanceView.class.getName();
+
     private DBHelper myDB;
 
     public DBBalanceView(Context context) {
         myDB = DBHelper.getInstance(context);
 
     }
-
 
     /**
      *  Insert Test Data in the Database
@@ -32,6 +33,8 @@ public class DBBalanceView  {
      * @return the number of the inserted row or -1 on error
      */
     static public Long insertBalView (SQLiteDatabase db , BalanceView theData) {
+        if(MainActivity.DEBUG) Log.i(TAG, "insertBalView()  // Inserting test data into database");
+
         Long status;
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_INI_DATE, theData.getInitialDateToDatabase());
@@ -41,10 +44,13 @@ public class DBBalanceView  {
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION, theData.getDescription());
         contentValues.put(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT, theData.isCurrent());
         status = db.insert(BalanceView.BALANCEVIEW_TABLE_NAME, null, contentValues);
-        Log.i(DBBalanceView.TAG,"Data Inserted: "+ theData.getTitle());
+
+        if(MainActivity.DEBUG && status < 0) Log.e(TAG, "Error inserting test data into database");
+        if(MainActivity.DEBUG && status > -1) Log.i(TAG, "Inserted test data into database.");
+        if(MainActivity.DEBUG && status > -1) Log.d(TAG,"Test data Inserted: "+ theData.getTitle());
+
         return status;
     }
-
 
         /**
          * Insert data into the Balance View Database
@@ -70,9 +76,12 @@ public class DBBalanceView  {
 
                 result = db.insert(BalanceView.BALANCEVIEW_TABLE_NAME, null, contentValues);
                 if (result < 0){
-                    Log.e(TAG, "Insert forward failed");
-                }else
+                    if (MainActivity.DEBUG) Log.e(TAG, "Insert forward failed");
+                } else {
                     db.setTransactionSuccessful();
+                    if (MainActivity.DEBUG) Log.i(TAG, "Insert successful");
+                    if (MainActivity.DEBUG) Log.d(TAG,"Data Inserted: "+ theData.getTitle());
+                }
             } finally {
                 db.endTransaction();
             }
@@ -83,7 +92,6 @@ public class DBBalanceView  {
         myDB.notifyBalanceViewChanged();
         return result;
     }
-
 
     /**
      * This method will return the data corresponding to the selected id
@@ -105,6 +113,8 @@ public class DBBalanceView  {
 
         return res;
     }
+
+
     /**
      * Return the number of Rows of the Balance Data table
      * @return the number of rows in the Balance Data table
@@ -134,9 +144,12 @@ public class DBBalanceView  {
                 String theWhere = BalanceView.BALANCEVIEW_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
                 if (db.update(BalanceView.BALANCEVIEW_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){
-                    Log.e(TAG, "Update Balance View failed");
-                }else retState = true;
-
+                    if (MainActivity.DEBUG) Log.e(TAG, "Error updating data in database");
+                }else {
+                    retState = true;
+                    if (MainActivity.DEBUG) Log.i(TAG, "Updated data in database.");
+                    if (MainActivity.DEBUG) Log.d(TAG,"Data updated: "+ theData.getTitle());
+                }
 
                 db.setTransactionSuccessful();
             } finally {
@@ -156,7 +169,7 @@ public class DBBalanceView  {
      * @return true if the delete was a success, false otherwise
      */
     public boolean delete (Long id) {
-
+        if (MainActivity.DEBUG) Log.i(TAG, "Deleting Balance View from database");
 
         boolean result = false;
         myDB.myLock.writeLock().lock();
@@ -175,7 +188,11 @@ public class DBBalanceView  {
                 if (theResult == 1) {
                     db.setTransactionSuccessful();
                     result = true;
-                }else result =false;
+                    if (MainActivity.DEBUG) Log.i(TAG, "Successfully deleted Balance View from database");
+                }else {
+                    result =false;
+                    if (MainActivity.DEBUG) Log.e(TAG, "Error deleting Balance View from database");
+                }
             } finally {
                 db.endTransaction();
             }
@@ -247,6 +264,8 @@ public class DBBalanceView  {
      * @return All Data in The Database in the Cursor Format
      */
     public Cursor getAllCursor(){
+        if (MainActivity.DEBUG) Log.i(TAG, "getAllCursor()  // Get Cursor with all Balance Views in database");
+
         Cursor cursor;
         myDB.myLock.readLock().lock();
         try {

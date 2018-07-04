@@ -10,6 +10,7 @@ import java.util.Date;
  * Handles Dates in the correct Format
  */
 public class DateHandler {
+    private static final String TAG = DateHandler.class.getName();
 
     public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATABASE_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";

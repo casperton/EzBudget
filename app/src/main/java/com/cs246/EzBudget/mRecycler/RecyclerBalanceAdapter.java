@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Database.DBBalanceData;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
@@ -29,9 +31,10 @@ import java.util.ArrayList;
  */
 public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHolderBalanceData> {
 
+    private static final String TAG = RecyclerBalanceAdapter.class.getName();
+
     private static final int TYPE_HEAD=0;
     private static final int TYPE_LIST=1;
-
 
     private ArrayList<BalanceData> myBalanceDataList = new ArrayList<>();
     private Context myContext;
@@ -53,6 +56,8 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     @NonNull
     @Override
     public RecyclerViewHolderBalanceData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateViewHolder()");
+
         RecyclerViewHolderBalanceData theViewHolder;
         View view = null;
 

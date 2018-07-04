@@ -1,9 +1,12 @@
 package com.cs246.EzBudget;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Balance {
+    private static final String TAG = Balance.class.getName();
 
     /**
      * FIELDS FOR DATABASE DESCRIPTION
@@ -47,6 +50,7 @@ public class Balance {
      * @return
      */
     public ArrayList<BalanceData> getBills(){
+        if(MainActivity.DEBUG) Log.i(TAG, "getBills()");
         ArrayList<BalanceData> theList= new ArrayList<>();
 
         return theList;
@@ -57,6 +61,7 @@ public class Balance {
      * @return
      */
     public ArrayList<BalanceData> getIncomes(){
+        if(MainActivity.DEBUG) Log.i(TAG, "getIncomes()");
         ArrayList<BalanceData> theList= new ArrayList<>();
 
         return theList;

@@ -7,11 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mFragments.DispBalDataFragment;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
  * This class is the list View to show the categories in the screen
  */
 public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+    private static final String TAG = RecyclerCategoryAdapter.class.getName();
 
 
     private ArrayList<Category> myCategoryList = new ArrayList<>();
@@ -41,6 +44,8 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateViewHolder() // Initialize View");
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_category_item, parent, false);
 
         return new RecyclerViewHolder(view,myLayout);
@@ -49,6 +54,7 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
     //Bind Data
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onBindViewHolder() // Bind Data");
 
         holder.name.setText(myCategoryList.get(position).getName());
         //holder.id.setText(Integer.toString(myCategoryList.get(position).getID()));

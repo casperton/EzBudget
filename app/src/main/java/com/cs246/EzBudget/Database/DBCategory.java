@@ -8,13 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.cs246.EzBudget.Category;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 
 import java.util.ArrayList;
 
 public class DBCategory {
 
-    private final String TAG = "DB_CATEGORY";
+    private static final String TAG = DBCategory.class.getName();
     private DBHelper myDB;
     public DBCategory(Context context) {
         myDB = DBHelper.getInstance(context);
@@ -44,9 +45,11 @@ public class DBCategory {
                 contentValues.put( Category.CATEGORY_COLUMN_OPERATION, operation);
                 result = db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
                 if (result < 0){
-                    Log.e(TAG, "Insert forward failed");
+                    if(MainActivity.DEBUG) Log.e(TAG, "Insert forward failed");
                 }else
-                db.setTransactionSuccessful();
+                    db.setTransactionSuccessful();
+                    if (MainActivity.DEBUG) Log.i(TAG, "Inserted Category data into database.");
+                    if (MainActivity.DEBUG) Log.d(TAG,"Category data inserted: "+ name);
             } finally {
                 db.endTransaction();
             }
@@ -77,9 +80,11 @@ public class DBCategory {
                 contentValues.put( Category.CATEGORY_COLUMN_OPERATION, theCat.getOperation());
                 result = db.insert(Category.CATEGORY_TABLE_NAME, null, contentValues);
                 if (result < 0){
-                    Log.e(TAG, "Insert forward failed");
+                    if (MainActivity.DEBUG) Log.e(TAG, "Insert forward failed");
                 }else
                     db.setTransactionSuccessful();
+                    if (MainActivity.DEBUG) Log.i(TAG, "Inserted Category data into database.");
+                    if (MainActivity.DEBUG) Log.d(TAG,"Category data inserted: "+ theCat.getName());
             } finally {
                 db.endTransaction();
             }
@@ -120,6 +125,8 @@ public class DBCategory {
         insertCategory(theDataBase,Category.DB_CAT_TAX_REFUNDS);
         insertCategory(theDataBase,Category.DB_CAT_INVESTMENTS);
 
+        if (MainActivity.DEBUG) Log.i(TAG, "Default Categories inserted into database");
+
         return true;
     }
 
@@ -141,6 +148,7 @@ public class DBCategory {
             myDB.myLock.readLock().unlock();
         }
 
+        if (MainActivity.DEBUG) Log.i(TAG, "getDataCursor()");
         return res;
     }
 
@@ -279,7 +287,6 @@ public class DBCategory {
      */
     public boolean delete (Long id) {
 
-
         boolean result = false;
         myDB.myLock.writeLock().lock();
         try {
@@ -297,8 +304,10 @@ public class DBCategory {
                 if(theResult == 1) {
                     db.setTransactionSuccessful();
                     result= true;
+                    if (MainActivity.DEBUG) Log.i(TAG, "Successfully deleted Category from database");
                 }else {
                     result = false;
+                    if (MainActivity.DEBUG) Log.e(TAG, "Error deleting Category from database");
                 }
             } finally {
                 db.endTransaction();
@@ -393,6 +402,7 @@ public class DBCategory {
      * @return
      */
     public Cursor getAllCursor(){
+        if (MainActivity.DEBUG) Log.i(TAG, "getAllCursor()  // Get list of all Categories");
         Cursor cursor;
         myDB.myLock.readLock().lock();
         try {
@@ -414,6 +424,7 @@ public class DBCategory {
      * @return
      */
     public Cursor getIncomesCursor(){
+        if (MainActivity.DEBUG) Log.i(TAG, "getIncomesCursor()");
 
         Cursor cursor;
         myDB.myLock.readLock().lock();
@@ -436,8 +447,9 @@ public class DBCategory {
      * @return
      */
     public Cursor getOutcomesCursor(){
-        Cursor cursor;
+        if (MainActivity.DEBUG) Log.i(TAG, "getOutcomesCursor()");
 
+        Cursor cursor;
         myDB.myLock.readLock().lock();
         try {
             SQLiteDatabase db = myDB.getReadableDatabase();
@@ -458,6 +470,8 @@ public class DBCategory {
      * @return
      */
     public Cursor getInformativesCursor(){
+        if (MainActivity.DEBUG) Log.i(TAG, "getInformativesCursor()");
+
         Cursor cursor;
         myDB.myLock.readLock().lock();
         try {

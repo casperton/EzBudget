@@ -2,6 +2,8 @@ package com.cs246.EzBudget;
 
 
 
+import android.util.Log;
+
 import com.cs246.EzBudget.Database.DBHelper;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class BalanceView{
+    private static final String TAG = BalanceView.class.getName();
 
     /**
      * FIELDS FOR DATABASE DESCRIPTION
@@ -25,11 +28,6 @@ public class BalanceView{
     public static final String BALANCEVIEW_COLUMN_IS_CURRENT = "isCurrent";
 
     //LAST MONTH
-
-
-
-
-
 
 
 
@@ -148,6 +146,8 @@ public class BalanceView{
      * @param newVar the Date
      */
     public void setInitialDateFromDatabase(String newVar) {
+        if(MainActivity.DEBUG) Log.i(TAG, "setInitialDateFromDatabase()");
+
         if (! newVar.isEmpty()) {
             DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
             Date date = null;
@@ -279,6 +279,7 @@ public class BalanceView{
      * @return the date formated as String
      */
     public String getKeyDateToDatabase() {
+        if(MainActivity.DEBUG) Log.i(TAG, "getKeyDateToDatabase()");
 
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting

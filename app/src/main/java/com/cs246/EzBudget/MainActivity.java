@@ -14,6 +14,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -45,6 +46,10 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RecyclerItemTouchHelperListener {
 
+    // Turn logging on/off
+    public static final boolean DEBUG = true;
+    private static final String TAG = MainActivity.class.getName();
+
     public static final String DATE_PREF = "com.cs246.EzBudget.DATE_PREF";
     public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May",
                             "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         // Load date format
        // date_pref = sp.getString("date_pref", "");
 
+        if(DEBUG) Log.i(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DBBalanceView myCurrentView = new DBBalanceView(this);

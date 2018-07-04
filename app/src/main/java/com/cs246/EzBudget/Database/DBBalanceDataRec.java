@@ -10,15 +10,16 @@ import android.util.Log;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.DateHandler;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 
 /**
  * Class to Handle the Table BalanceDataRec (The Recurrent Data) of the Database
  */
 public class DBBalanceDataRec{
-    
+    private static final String TAG = DBBalanceDataRec.class.getName();
+
     private DBHelper myDB;
-    private final String TAG = "DB_BALANCE_DATA_REC";
     public DBBalanceDataRec(Context context) {
         myDB = DBHelper.getInstance(context);
 
@@ -45,6 +46,8 @@ public class DBBalanceDataRec{
      */
     private Long insert(BalanceData theData) {
 
+        if(MainActivity.DEBUG) Log.i(TAG, "insert()");
+
         Long result;
 
         myDB.myLock.writeLock().lock();
@@ -61,9 +64,11 @@ public class DBBalanceDataRec{
                 ;
                 result = db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
                 if (result < 0) {
-                    Log.e(TAG, "Insert forward failed");
-                } else
+                    if (MainActivity.DEBUG) Log.e(TAG, "Insert forward failed");
+                } else {
                     db.setTransactionSuccessful();
+                    if(MainActivity.DEBUG) Log.i(TAG, "Insert successful");
+                }
             } finally {
                 db.endTransaction();
             }

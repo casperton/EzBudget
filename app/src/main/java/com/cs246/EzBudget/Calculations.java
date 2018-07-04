@@ -1,5 +1,7 @@
 package com.cs246.EzBudget;
 
+import android.util.Log;
+
 import com.cs246.EzBudget.SummaryView.SummaryItem;
 
 import java.util.List;
@@ -10,6 +12,8 @@ public class Calculations {
     // A list containing the items for a given period should be passed to this class and
     // the resulting total will be calculated.
 
+    private static final String TAG = Calculations.class.getName();
+
     private double periodTotal = 0;
     private List<SummaryItem> list;
 
@@ -18,6 +22,8 @@ public class Calculations {
     }
 
     public double getPeriodTotal() {
+        if(MainActivity.DEBUG) Log.i(TAG, "getPeriodTotal()");
+
         periodTotal = 0;
         for (SummaryItem listItem : list) {
             ////////////////////////////////////////////////////////////////////////

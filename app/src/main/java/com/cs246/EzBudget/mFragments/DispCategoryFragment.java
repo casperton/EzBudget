@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBCategory;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 
@@ -28,6 +30,7 @@ import com.cs246.EzBudget.R;
 public class DispCategoryFragment extends Fragment {
 
     private DBCategory mydb ;
+    private static final String TAG = DispCategoryFragment.class.getName();
 
     TextView myName ;
     TextView myDescription;
@@ -49,6 +52,8 @@ public class DispCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateView()");
+
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_disp_category, container, false);
 

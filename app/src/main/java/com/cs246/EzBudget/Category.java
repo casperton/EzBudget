@@ -1,6 +1,10 @@
 package com.cs246.EzBudget;
 
+import android.util.Log;
+
 public class Category {
+
+    private static final String TAG = Category.class.getName();
 
     static public final Long UNKNOWN = Long.valueOf(-1);
     //
@@ -240,6 +244,8 @@ public class Category {
     };
 
     public Category(String theName, String theDesc,Integer theOper){
+        if(MainActivity.DEBUG) Log.i(TAG, "Category()  // Constructor");
+
         this.myName = theName;
         this.myDescription = theDesc;
         this.myOperation = theOper;
@@ -323,7 +329,6 @@ public class Category {
     public boolean isCredit()
     {
         return myOperation == OPERATION.CREDIT;
-
     }
 
 

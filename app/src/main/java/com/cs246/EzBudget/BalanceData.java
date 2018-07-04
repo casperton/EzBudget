@@ -1,5 +1,7 @@
 package com.cs246.EzBudget;
 
+import android.util.Log;
+
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 
@@ -12,6 +14,7 @@ import java.util.Locale;
 
 public class BalanceData {
 
+    private static final String TAG = BalanceData.class.getName();
 
 
     /**
@@ -186,6 +189,7 @@ public class BalanceData {
 
 
     public BalanceData (String theDescr, Double theValue, Integer theStatus, Integer theDueDay,Integer theMonth, Integer theYear, Integer theRecurrence) {
+        if(MainActivity.DEBUG) Log.i(TAG, "BalanceData()  // Constructor");
 
         this.myStatus = theStatus;
         this.myRecPeriod = theRecurrence;

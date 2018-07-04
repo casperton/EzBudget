@@ -8,12 +8,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
 import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
@@ -24,6 +26,7 @@ import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
  */
 public class ListBalViewFragment extends Fragment {
 
+    private static final String TAG = ListBalViewFragment.class.getName();
 
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
@@ -45,6 +48,8 @@ public class ListBalViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateView()");
+        
         // Inflate the layout for this fragment
         myView =  inflater.inflate(R.layout.fragment_list_bal_view, container, false);
         super.onCreate(savedInstanceState);

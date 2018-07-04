@@ -1,10 +1,12 @@
 package com.cs246.EzBudget.mRecycler;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mRecycler.RecyclerClickListener;
 
@@ -14,6 +16,7 @@ import com.cs246.EzBudget.mRecycler.RecyclerClickListener;
  * Defined how the line will be
  */
 public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    private static final String TAG = RecyclerViewHolder.class.getName();
 
     TextView name;
     //TextView id;
@@ -27,6 +30,8 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
 
     public RecyclerViewHolder(View itemView, int LayoutType) {
         super(itemView);
+        if(MainActivity.DEBUG) Log.i(TAG, "RecyclerViewHolder()  // Constructor");
+
         //id = (TextView)itemView.findViewById(R.id.textViewCatID);
         name = (TextView) itemView.findViewById(R.id.textViewCatName);
         icon = (ImageView) itemView.findViewById(R.id.imgOper);

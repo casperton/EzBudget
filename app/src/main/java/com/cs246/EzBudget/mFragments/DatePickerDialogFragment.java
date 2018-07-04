@@ -7,10 +7,14 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+
+import com.cs246.EzBudget.MainActivity;
 
 //https://www.youtube.com/watch?v=DSqGU0wbZuI
 public class DatePickerDialogFragment extends DialogFragment {
 
+    private static final String TAG = DatePickerDialogFragment.class.getName();
     private OnDateSetListener mDateSetListener;
 
     public DatePickerDialogFragment() {
@@ -23,6 +27,7 @@ public class DatePickerDialogFragment extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar cal = Calendar.getInstance();
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateDialog()");
 
         return new DatePickerDialog(getActivity(),
                 mDateSetListener, cal.get(Calendar.YEAR),

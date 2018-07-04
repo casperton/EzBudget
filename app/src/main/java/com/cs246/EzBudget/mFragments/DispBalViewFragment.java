@@ -11,6 +11,7 @@ import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 
@@ -34,6 +36,8 @@ import java.util.Date;
  * A simple {@link Fragment} subclass.
  */
 public class DispBalViewFragment extends Fragment {
+
+    private static final String TAG = DispBalViewFragment.class.getName();
 
     private Button mySaveButton;
     private Button myUpdateButton;
@@ -69,6 +73,8 @@ public class DispBalViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateView()");
+
         // Inflate the layout for this fragment
         View theView= inflater.inflate(R.layout.fragment_disp_bal_view, container, false);
         myView = theView;

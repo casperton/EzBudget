@@ -9,12 +9,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalData;
 import com.cs246.EzBudget.mBackGrounds.BackGroundRecData;
@@ -25,9 +27,7 @@ import com.cs246.EzBudget.mRecycler.LIST_ACTION;
  */
 public class ChooseRecBalDataDialogFrag extends DialogFragment {
 
-
-
-
+    private static final String TAG = ChooseRecBalDataDialogFrag.class.getName();
 
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
@@ -50,6 +50,8 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateView()");
+
         // Inflate the layout for this fragment
         myView =  inflater.inflate(R.layout.fragment_list_rec_bal_data, container, false);
         super.onCreate(savedInstanceState);

@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -13,6 +14,9 @@ import com.cs246.EzBudget.mBackGrounds.BackGroundBalance;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 public class BalanceViewTest extends AppCompatActivity {
+
+    private static final String TAG = BalanceViewTest.class.getName();
+
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
 
@@ -21,8 +25,11 @@ public class BalanceViewTest extends AppCompatActivity {
     DBHelper mydb;
     private ProgressBar myProgress=null;
     private BackGroundBalance myBackground;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreate()");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance_view_test);
 

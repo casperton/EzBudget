@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.ProgressBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.R;
@@ -23,6 +26,7 @@ import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 public class ChooseCategoryDialogFrag extends DialogFragment {
 
+    private static final String TAG = ChooseCategoryDialogFrag.class.getName();
     private RecyclerView myRecyclerView;
     RecyclerView.LayoutManager myLayoutManager;
     BackGroundCategory myBackGroundCat;
@@ -37,6 +41,8 @@ public class ChooseCategoryDialogFrag extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fraglayout,container);
+
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateView()");
 
         myGetIncome = (Button) rootView.findViewById(R.id.buttonIncomes);
         myGetOutcome = (Button) rootView.findViewById(R.id.buttonOutcomes);

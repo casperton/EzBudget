@@ -11,6 +11,7 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.DateHandler;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.RECURRENT;
 
@@ -19,7 +20,8 @@ import com.cs246.EzBudget.RECURRENT;
  */
 public class DBBalanceData {
 
-    private final String TAG = "DB_BALANCE_DATA";
+    private static final String TAG = DBBalanceData.class.getName();
+
     private DBHelper myDB;
     public DBBalanceData(Context context) {
         myDB = DBHelper.getInstance(context);
@@ -149,10 +151,11 @@ public class DBBalanceData {
                 String theWhere = BalanceData.BALANCEDATA_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
                 if (db.update(BalanceData.BALANCEDATA_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){
-                    Log.e(TAG, "Update Balance Data failed");
+                    if (MainActivity.DEBUG) Log.e(TAG, "Update Balance Data failed");
                 }else {
                     retState = true;
                     db.setTransactionSuccessful();
+                    if (MainActivity.DEBUG) Log.i(TAG, "Update Balance Data successful");
                 }
             } finally {
                 db.endTransaction();

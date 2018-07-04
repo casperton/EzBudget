@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.DateHandler;
+import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 
@@ -64,6 +66,7 @@ public class DispBalDataFragment extends Fragment {
     private Long myIDtoChange = Long.valueOf(-1);
     private LinearLayout myStatusLayOut;
     private LinearLayout myRecurrenceLayOut;
+    private static final String TAG = DispBalDataFragment.class.getName();
 
 
 
@@ -82,6 +85,8 @@ public class DispBalDataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateView()");
+
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_disp_bal_data, container, false);
 

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
  * This class is the list View to show the categories in the screen
  */
 public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHolderBalView> {
+    private static final String TAG = RecyclerBalViewAdapter.class.getName();
 
     private static final int TYPE_HEAD=0;
     private static final int TYPE_LIST=1;
@@ -49,6 +51,8 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
     @NonNull
     @Override
     public RecyclerViewHolderBalView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(MainActivity.DEBUG) Log.i(TAG, "onCreateViewHolder()");
+
         View view = null;
         RecyclerViewHolderBalView theViewHolder;
 
