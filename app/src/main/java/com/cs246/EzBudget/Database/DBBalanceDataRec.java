@@ -229,7 +229,7 @@ public class DBBalanceDataRec{
             SQLiteDatabase db = myDB.getReadableDatabase();
             String[] Projections = getProjections();
 
-            /* “inner” join.
+            /* “inner" join.
         select *
 from category
 join balanceData
@@ -265,7 +265,7 @@ where category.operation = 1
             SQLiteDatabase db = myDB.getReadableDatabase();
             String[] Projections = getProjections();
 
-            /* “inner” join.
+            /* "inner" join.
         select *
 from category
 join balanceData
@@ -301,7 +301,7 @@ where category.operation = 1
             SQLiteDatabase db = myDB.getReadableDatabase();
             String[] Projections = getProjections();
 
-            /* “inner” join.
+            /* "inner" join.
         select *
 from category
 join balanceData

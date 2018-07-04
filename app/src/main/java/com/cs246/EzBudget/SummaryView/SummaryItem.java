@@ -1,6 +1,7 @@
 package com.cs246.EzBudget.SummaryView;
 
 /**
+ * <p>
  * This class is a temporary modal class created to store expense and income items
  * that are stored in the database. These are all added as objects in the list sent
  * to the summary view to be displayed

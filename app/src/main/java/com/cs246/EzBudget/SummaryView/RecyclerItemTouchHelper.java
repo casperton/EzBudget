@@ -7,7 +7,7 @@ import android.view.View;
 
 /**
  * This class enables the swipeable items for thesummary view.
- *
+ * <p>
  * This class was largely based off the demo from:
  * https://www.androidhive.info/2017/09/android-recyclerview-swipe-delete-undo-using-itemtouchhelper/
  * https://www.youtube.com/watch?v=bWyQlZGMrXM

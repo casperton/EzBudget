@@ -5,6 +5,7 @@ import com.cs246.EzBudget.SummaryView.SummaryItem;
 import java.util.List;
 
 /**
+ * <p>
  * This class will be used to calculate expenses and allocate income
  * for given time periods.
  * A list containing the items for a given period should be passed to this class and

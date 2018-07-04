@@ -18,12 +18,14 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 /**
+ * <p>
  * This is the adapter class for the summary list
  * that is displayed on the main activity view.
  * It contains all the expense and income items
  * to be shown for the RecyclerView with the
  * swipeable items.
  *
+ * <p>
  * This class was largely based off the demo from:
  * https://www.androidhive.info/2017/09/android-recyclerview-swipe-delete-undo-using-itemtouchhelper/
  * https://www.youtube.com/watch?v=bWyQlZGMrXM
