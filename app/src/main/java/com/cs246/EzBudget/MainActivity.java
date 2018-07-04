@@ -35,6 +35,7 @@ import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
 import com.cs246.EzBudget.SummaryView.SummaryItem;
 import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
+import com.cs246.EzBudget.mFragments.SummaryFragment;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -273,6 +274,12 @@ public class MainActivity extends AppCompatActivity
 
             //startActivity(intent4);
         } else if (id == R.id.nav_share) {
+            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
+            fragmentTransaction.replace(R.id.containerID, SummaryFragment.newInstance());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_send) {
 
