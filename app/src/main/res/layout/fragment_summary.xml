@@ -17,12 +17,13 @@
         android:id="@+id/sumTextViewMonthRange"
         android:layout_width="190dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
         android:text="TESTE"
         android:textAlignment="viewStart"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guidelineLeft"
@@ -46,9 +47,10 @@
         android:id="@+id/include"
         layout="@layout/content_bill_items"
         android:layout_width="352dp"
-        android:layout_height="300dp"
+        android:layout_height="273dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/sumTextViewMonthRange" />
 
     </android.support.constraint.ConstraintLayout>
