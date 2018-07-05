@@ -73,9 +73,6 @@ public class SummaryFragment extends Fragment
     @Override
     public void onResume() {
 
-        Toast.makeText(getActivity(), "OnRESUMED: ",
-                Toast.LENGTH_SHORT).show();
-
         setup();
 
         super.onResume();

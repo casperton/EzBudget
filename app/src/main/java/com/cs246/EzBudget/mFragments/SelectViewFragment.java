@@ -61,7 +61,7 @@ public class SelectViewFragment extends Fragment {
 
 
 
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE ).execute();
+        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE,null).execute();
 
         return myView;
     }

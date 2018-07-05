@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.BalanceView;
@@ -26,19 +27,21 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
     private FragmentManager myFagmentManager;
     private int myActionType;
 
+    private Button myUpdateButton;
 
-    public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theActionType) {
+    public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theActionType, Button theUpdateButton) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
         myCategories= new ArrayList<>();
         myFagmentManager = theFrag;
         myActionType = theActionType;
+        myUpdateButton = theUpdateButton;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager,myActionType);
+        myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager,myActionType,myUpdateButton);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

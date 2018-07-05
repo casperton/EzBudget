@@ -13,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
 import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
+import com.cs246.EzBudget.mRecycler.CommonBalView;
 import com.cs246.EzBudget.mRecycler.RecyclerBalViewAdapter;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
@@ -32,6 +35,7 @@ public class ListBalViewFragment extends Fragment {
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
     private Button myAddButton;
+    private Button myUpdateButton;
 
     @NonNull
     static public ListBalViewFragment newInstance(){
@@ -62,6 +66,8 @@ public class ListBalViewFragment extends Fragment {
 
         myAddButton = (Button) myView.findViewById(R.id.listViewAddNew);
 
+        myUpdateButton = (Button) myView.findViewById(R.id.listViewUpdate);
+
         myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,8 +84,32 @@ public class ListBalViewFragment extends Fragment {
             }
         });
 
+        myUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager , RecyclerBalViewAdapter.ACTION_ADD).execute();
+                BalanceView myBalView = CommonBalView.currentItem;
+                Toast.makeText(getActivity(), "Clicked: ",
+                        Toast.LENGTH_SHORT).show();
+                if (myBalView != null) {
+                    Long id_To_Search =myBalView.getID();
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("id", id_To_Search);
+                    DispBalViewFragment fragInfo = DispBalViewFragment.newInstance();
+                    fragInfo.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerID, fragInfo);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+
+            }
+        });
+
+        myUpdateButton.setVisibility(View.INVISIBLE);
+
+
+        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager , RecyclerBalViewAdapter.ACTION_ADD,myUpdateButton).execute();
 
        return myView;
     }

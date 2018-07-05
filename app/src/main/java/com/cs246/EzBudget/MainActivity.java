@@ -51,8 +51,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-//http://semycolon.blogspot.com/2014/11/first-android-app-step-5-homescreen.html
-//https://www.youtube.com/watch?time_continue=2&v=VI4fgsDolAQ
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,6 +92,10 @@ public class MainActivity extends AppCompatActivity
 
             }
 
+            /**
+             * Update the Summary fragment whenever it is selected
+             * @param position
+             */
             @Override
             public void onPageSelected(int position) {
 
@@ -133,29 +135,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-        /*
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                FragmentManager myFagmentManager = getSupportFragmentManager();
-                                //Bundle bundle = new Bundle();
-                                //Long myMessage = Long.valueOf(-1);
-                                //bundle.putLong("id", myMessage );
-                                //bundle.putBoolean("isRec", true );
-                                ChooseRecBalDataDialogFrag fragInfo = ChooseRecBalDataDialogFrag.newInstance();
-                                //fragInfo.setArguments(bundle);
-                                FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_DIALOG_FRAG");
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
-                            }
-                        }).show();
-            }
-        });*/
+
 
         //REFERENCE DRAWER,TOGGLE ITS INDICATOR
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -241,12 +221,7 @@ public class MainActivity extends AppCompatActivity
 
             //startActivity(intent4);
         } else if (id == R.id.nav_share) {
-            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
-            fragmentTransaction.replace(R.id.containerID, SummaryFragment.newInstance());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+
 
         } else if (id == R.id.nav_send) {
 

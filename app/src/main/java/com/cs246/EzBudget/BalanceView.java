@@ -27,9 +27,12 @@ public class BalanceView{
     //LAST MONTH
 
 
+    /**
+     * To use in the ReciclerView
+     * to indicate if it is selected, or not
+     */
 
-
-
+    private boolean isChecked;
 
 
 
@@ -83,7 +86,7 @@ public class BalanceView{
     private boolean isCurrent;
 
     public BalanceView() {
-
+        isChecked = false;
     }
 
     //Date in the Database Format
@@ -94,6 +97,16 @@ public class BalanceView{
     this.myKeyDate = theKeyDate;
     this.myDescription = theDescr;
     this.isCurrent = theCurrent;
+    this.isChecked = false;
+    }
+
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public Long getID() {

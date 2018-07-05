@@ -6,4 +6,7 @@
     <color name="bgRowBackground">#1E9913</color>
     <color name="itemName">#535353</color>
     <color name="Description">#A9A9A9</color>
+    <color name="Red">#FF0000</color>
+    <color name="Black">#000000</color>
+
 </resources>

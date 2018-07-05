@@ -11,17 +11,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Adapter used in the ViewPager of the main Winfdow
+ */
 public class MainViewPagerAdapter extends FragmentPagerAdapter{
 
+    /**
+     * List of Fragments used with this adapter
+     */
     private final List<Fragment> fragmentList = new ArrayList<>();
+    /**
+     * List of titles used in the Tab
+     */
     private final List<String> FragmentListTtitles = new ArrayList<>();
-
-
-    private Map<Integer,String> myFragmentTAGS;
 
     public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        myFragmentTAGS = new HashMap<Integer,String>();
+
     }
 
     @Override
