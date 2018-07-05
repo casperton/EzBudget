@@ -15,8 +15,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.R;
+import com.cs246.EzBudget.RECURRENT;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalData;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
+import com.cs246.EzBudget.mRecycler.CommonBalData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +36,7 @@ public class ListBalDataFragment extends Fragment {
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
     private Button myAddButton;
+    private Button myUpdateButton;
     @NonNull
     static public ListBalDataFragment newInstance(){
         return new ListBalDataFragment();
@@ -62,6 +65,7 @@ public class ListBalDataFragment extends Fragment {
         myFagmentManager = getActivity().getSupportFragmentManager();
 
         myAddButton = (Button) myView.findViewById(R.id.listBalDataAddNew);
+        myUpdateButton = (Button) myView.findViewById(R.id.listBalDataUpdate);
 
         myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +85,28 @@ public class ListBalDataFragment extends Fragment {
             }
         });
 
+        myUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        new BackGroundBalData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundBalData.BAL_ALL ).execute();
+                Long id_To_Search = CommonBalData.currentItem.getID();
+                Bundle bundle = new Bundle();
+                Long myMessage = id_To_Search;
+                bundle.putLong("id", myMessage);
+                if (CommonBalData.currentItem.getRecPeriod()== RECURRENT.NO_PERIODIC) bundle.putBoolean("isRec", true);
+                else bundle.putBoolean("isRec", false);
+                bundle.putBoolean("showRec", true);
+                DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
+                theFrag.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerID, theFrag, "DISPLAY_BAL_DATA_FRAG");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+
+        new BackGroundBalData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundBalData.BAL_ALL ,myUpdateButton).execute();
 
         return myView;
     }

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.Category;
@@ -35,8 +36,9 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
 
     private int myConsultType;
     private int myLayOut;
+    private Button myUpdateButton;
 
-    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, FragmentManager theFrag) {
+    public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, FragmentManager theFrag, Button theUpdateButton) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -44,11 +46,12 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
         myCategories= new ArrayList<>();
         myLayOut = theLayOut;
         myFragmentManager = theFrag;
+        myUpdateButton = theUpdateButton;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerCategoryAdapter(myCategories,context,myLayOut,myFragmentManager);
+        myAdapter = new RecyclerCategoryAdapter(myCategories,context,myLayOut,myFragmentManager, myUpdateButton);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

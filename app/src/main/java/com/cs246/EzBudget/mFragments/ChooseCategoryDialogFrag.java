@@ -55,7 +55,7 @@ public class ChooseCategoryDialogFrag extends DialogFragment {
         myProgress = (ProgressBar) rootView.findViewById(R.id.myBar2);
         myProgress.setVisibility(View.INVISIBLE);
         mydb = DBHelper.getInstance(this.getActivity());
-        myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,this.getActivity(),  BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_TWO,myFragmentManager);
+        myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,this.getActivity(),  BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_TWO,myFragmentManager,null);
 
 
         myBackGroundCat.execute();

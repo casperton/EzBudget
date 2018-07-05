@@ -85,7 +85,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         });
 
 
-        myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE );
+        myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, null );
 
         myBackGroundAction.execute();
         return myView;

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.BalanceData;
@@ -34,9 +35,9 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
     private int myConsultType;
 
     private int myAction;
+    private Button myUpgradeButton;
 
-
-    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction ) {
+    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction, Button theUpgradeButton ) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -44,11 +45,12 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
         myFagmentManager = theFrag;
         myConsultType = theConsult;
         myAction = theAction;
+        myUpgradeButton = theUpgradeButton;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true, myAction);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true, myAction, myUpgradeButton);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

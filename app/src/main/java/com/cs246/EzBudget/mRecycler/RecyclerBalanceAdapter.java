@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
@@ -17,6 +18,7 @@ import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
+import com.cs246.EzBudget.RECURRENT;
 import com.cs246.EzBudget.mFragments.DispBalDataFragment;
 import com.cs246.EzBudget.mFragments.DispBalViewFragment;
 import com.cs246.EzBudget.mFragments.DispCategoryFragment;
@@ -39,13 +41,17 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     private int myAction;
     private FragmentManager myFagmentManager;
     private boolean isRecurrent;
+    //indicate the selected row
+    private int myRowIndex = -1;
+    private Button myUpdateButton;
 
-    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction) {
+    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction,Button theUpdateButton) {
         this.myBalanceDataList = BalanceDataList;
         this.myContext = theContext;
         myFagmentManager = theFrag;
         isRecurrent = theRec;
         myAction = theAction;
+        myUpdateButton = theUpdateButton;
 
     }
 
@@ -76,13 +82,26 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
         if(holder.myViewType==TYPE_LIST) {
                 int theNewPosition = position-1;
+            //set background color
+            //set highlight color
+            if((myRowIndex==position)){
+                holder.itemView.setBackgroundColor(Color.parseColor("#CACACA"));
+            }else{
+                if (theNewPosition % 2 == 0)
+                    holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
+                else
+                    holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
+            }
+
             if (isRecurrent)
                 holder.myDueDate.setText(myBalanceDataList.get(theNewPosition).getDueDateRecurrentHuman());
             else
                 holder.myDueDate.setText(myBalanceDataList.get(theNewPosition).getDueDateHuman());
+
             holder.myValue.setText(Double.toString(myBalanceDataList.get(theNewPosition).getValue()));
             holder.myDescription.setText(myBalanceDataList.get(theNewPosition).getDescription());
             int oper = myBalanceDataList.get(theNewPosition).getStatus();
+
             if (oper == PAY_STATUS.PAID_RECEIVED) {
                 //todo: change color depending of the status payd or not
                 //holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_add_circle_green_24dp,myContext.getTheme()));
@@ -91,31 +110,20 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
             } else {
                 //holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_warning_black_24dp, myContext.getTheme()));
             }
-            //set background color
 
-            if (theNewPosition % 2 == 0)
-                holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
-            else
-                holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
             if (myAction == LIST_ACTION.ACT_LIST_ADD) {
                 holder.setItemClickListener(new RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
                         int theNewPosition = position-1;
-                        Long id_To_Search = myBalanceDataList.get(theNewPosition).getID();
-                        Bundle bundle = new Bundle();
-                        Long myMessage = id_To_Search;
-                        bundle.putLong("id", myMessage);
-                        if (isRecurrent) bundle.putBoolean("isRec", true);
-                        else bundle.putBoolean("isRec", false);
-                        bundle.putBoolean("showRec", true);
-                        DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
-                        theFrag.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.containerID, theFrag, "DISPLAY_BAL_DATA_FRAG");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        myRowIndex = position;
+                        CommonBalData.currentItem = myBalanceDataList.get(theNewPosition);
+                        notifyDataSetChanged();
+                        if(myUpdateButton !=null) {
+                            myUpdateButton.setVisibility(View.VISIBLE);
 
+                        }
+                        if(!isRecurrent) CommonBalData.currentItem.setRecPeriod(RECURRENT.NO_PERIODIC);
 
                     }
 
@@ -126,7 +134,8 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
                         int theNewPosition = position-1;
-                        //Long id_To_Search = myBalanceDataList.get(theNewPosition).getID();
+                        myRowIndex = position;
+                        CommonBalData.currentItem = myBalanceDataList.get(theNewPosition);
                         BalanceData theRecord = myBalanceDataList.get(theNewPosition);
                         DBBalanceData theBalDataDatabase = new DBBalanceData(myContext);
                         if (theBalDataDatabase.insert(theRecord, true) > 0) {

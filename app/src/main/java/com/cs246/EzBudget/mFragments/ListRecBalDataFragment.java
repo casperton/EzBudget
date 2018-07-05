@@ -35,6 +35,7 @@ public class ListRecBalDataFragment extends Fragment {
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
     private Button myAddButton;
+    private Button myUpgradeButton;
     @NonNull
     static public ListRecBalDataFragment newInstance(){
         return new ListRecBalDataFragment();
@@ -63,6 +64,7 @@ public class ListRecBalDataFragment extends Fragment {
         myFagmentManager = getActivity().getSupportFragmentManager();
 
         myAddButton = (Button) myView.findViewById(R.id.listRecAddNew);
+        myUpgradeButton = (Button) myView.findViewById(R.id.listRecUpdate);
 
         myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +85,7 @@ public class ListRecBalDataFragment extends Fragment {
         });
 
 
-        new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_ADD ).execute();
+        new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_ADD , myUpgradeButton).execute();
 
         return myView;
     }

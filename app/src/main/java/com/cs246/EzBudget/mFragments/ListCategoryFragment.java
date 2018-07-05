@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Used by the menu to on the mainActivity to list the Categories
  */
 public class ListCategoryFragment extends Fragment {
 
@@ -26,6 +27,8 @@ public class ListCategoryFragment extends Fragment {
     private ProgressBar myProgress=null;
     private View myView;
 
+    private Button myAddButton;
+    private Button myUpdateButton;
     @NonNull
     static public ListCategoryFragment newInstance(){
         ListCategoryFragment theFrag = new ListCategoryFragment();
@@ -52,7 +55,10 @@ public class ListCategoryFragment extends Fragment {
         myProgress = (ProgressBar)  myView.findViewById(R.id.listCategoryBar);
         myProgress.setVisibility(View.INVISIBLE);
 
-        new BackGroundCategory(myRecyclerView,myProgress,getActivity(),BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_ONE,null).execute();
+        myAddButton = (Button)  myView.findViewById(R.id.listCategoryAddNew);
+        myUpdateButton = (Button)  myView.findViewById(R.id.listCategoryUpdate);
+
+        new BackGroundCategory(myRecyclerView,myProgress,getActivity(),BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_ONE,null,myUpdateButton).execute();
 
 
         return myView;

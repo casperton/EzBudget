@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.BalanceData;
@@ -34,9 +35,18 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
     private FragmentManager myFagmentManager;
     private int myConsultType;
     private BalanceView myCurrentView;
+    private Button myUpdateButton;
 
-
-    public BackGroundBalData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult ) {
+    /**
+     * Used by the ListBalDataFragment to fill the Balance Data RecyclerView
+     * @param theView The RecyclerView to fill with data
+     * @param theBar The progress bar toupdatewhen progress occur
+     * @param context the context
+     * @param theFrag The Fragment Manager
+     * @param theConsult The type of consult (ALL DATA. ONLY INCOMES, ONLY OUTCOMES)
+     * @param theUpdateButton
+     */
+    public BackGroundBalData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult , Button theUpdateButton) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -45,11 +55,12 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
         myConsultType = theConsult;
         DBBalanceView myCurrentViewDB = new DBBalanceView(context);
         myCurrentView = myCurrentViewDB.getCurrent();
+        myUpdateButton = theUpdateButton;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,false, LIST_ACTION.ACT_LIST_ADD);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,false, LIST_ACTION.ACT_LIST_ADD,myUpdateButton);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 
