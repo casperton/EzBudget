@@ -4,9 +4,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainViewPagerAdapter extends FragmentPagerAdapter{
 
@@ -14,9 +17,11 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter{
     private final List<String> FragmentListTtitles = new ArrayList<>();
 
 
+    private Map<Integer,String> myFragmentTAGS;
+
     public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);
-
+        myFragmentTAGS = new HashMap<Integer,String>();
     }
 
     @Override
@@ -40,4 +45,8 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter{
         FragmentListTtitles.add(theTitle);
 
     }
+
+
+
+
 }

@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cs246.EzBudget.BALANCE_ITEM;
 import com.cs246.EzBudget.BalanceData;
@@ -55,6 +56,9 @@ public class SummaryFragment extends Fragment
     private SummaryListAdapter adapter;
     private ConstraintLayout rootLayout;
     private View myView;
+    private DBBalanceView myCurrentView;
+    private DBBalanceData myBalanceData;
+    private TextView myTextView;
 
     public static SummaryFragment newInstance() {
         return new SummaryFragment();
@@ -66,6 +70,17 @@ public class SummaryFragment extends Fragment
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+
+        Toast.makeText(getActivity(), "OnRESUMED: ",
+                Toast.LENGTH_SHORT).show();
+
+        setup();
+
+        super.onResume();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,13 +89,12 @@ public class SummaryFragment extends Fragment
         myView =inflater.inflate(R.layout.fragment_summary, container, false);
 
 
-        DBBalanceView myCurrentView = new DBBalanceView(getActivity());
-        DBBalanceData myBalanceData = new DBBalanceData(getActivity());
-        BalanceView myBalanceView = myCurrentView.getCurrent();
+        myCurrentView = new DBBalanceView(getActivity());
+        myBalanceData = new DBBalanceData(getActivity());
 
 
         // Print 3 month range title
-        TextView textView = myView.findViewById(R.id.sumTextViewMonthRange);
+        myTextView = myView.findViewById(R.id.sumTextViewMonthRange);
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -93,45 +107,8 @@ public class SummaryFragment extends Fragment
             yearEnd++;
         }
 
-        //get the dates from the current view
-        String dateRange2 = DateHandler.getShortName(myBalanceView.getInitialDate())+" - "+
-                DateHandler.getShortName(myBalanceView.getFinalDate());
-
-        //String dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
-        //                 MONTHS[monthEnd] + " " + yearEnd;
-
-        textView.setText(myBalanceView.getTitle() + " - "+dateRange2);
 
         bills = new ArrayList<>();
-        Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
-        //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
-
-        DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(2);
-
-        // TODO : Replace with actual expense total code
-        double total = 0;
-
-        if (cursor.moveToFirst()) {
-            do {
-                String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                Double amount =  cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                // TODO : Add boolean for marked as paid from database
-                boolean paid = false;
-                // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, BALANCE_ITEM.EXPENSE);
-                bills.add(summaryItem);
-                // TODO : Replace total with correct values for amount needed during this period
-                total += amount;
-            } while (cursor.moveToNext());
-        }
-
-        // TODO : Add code to load income items - Set SummaryType.Income for income
-
-        // Add a test paycheck
-        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, BALANCE_ITEM.INCOME);
-        bills.add(0, payItem);
 
         //  SWIPE MENU FOR BILL ITEMS
 
@@ -152,9 +129,63 @@ public class SummaryFragment extends Fragment
 
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
+        setup();
         return myView;
     }
 
+    private void setup(){
+        bills.clear();
+        BalanceView myBalanceView = myCurrentView.getCurrent();
+        String dateRange = "";
+        String theTitle = "";
+        //todo: what to do when there is no cuurent
+        if (myBalanceView == null){
+            //if there are any data in table set the first as current
+            //otherwiseinsertthecurrent monht and set it as current
+
+        }else{
+            //get the dates from the current view
+            theTitle = myBalanceView.getTitle();
+            dateRange = DateHandler.getShortName(myBalanceView.getInitialDate())+" - "+
+                    DateHandler.getShortName(myBalanceView.getFinalDate());
+        }
+
+        myTextView.setText(theTitle + " - "+dateRange);
+
+        Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
+        //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+
+        // TODO : Replace with actual expense total code
+        double total = 0;
+
+        if (cursor !=null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                    String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                    Double amount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    // TODO : Add boolean for marked as paid from database
+                    boolean paid = false;
+                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, BALANCE_ITEM.EXPENSE);
+                    bills.add(summaryItem);
+                    // TODO : Replace total with correct values for amount needed during this period
+                    total += amount;
+                } while (cursor.moveToNext());
+            }
+        }
+        // TODO : Add code to load income items - Set SummaryType.Income for income
+
+        // Add a test paycheck
+        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, BALANCE_ITEM.INCOME);
+        bills.add(0, payItem);
+
+        adapter.notifyDataSetChanged();
+
+    }
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof SummaryListAdapter.MyViewHolder) {

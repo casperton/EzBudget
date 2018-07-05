@@ -250,6 +250,7 @@ where category.operation = 1
      */
     public Cursor getOutcomesCursor(BalanceView theView){
 
+        if (theView == null) return null;
         Cursor cursor;
         String theInitialDate = theView.getInitialDateToDatabase();
         String theFinalDate = theView.getFinalDateToDatabase();

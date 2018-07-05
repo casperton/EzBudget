@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceView;
+import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.MainActivity;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
@@ -33,15 +35,19 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
     private static final int TYPE_HEAD=0;
     private static final int TYPE_LIST=1;
 
+    public static final int ACTION_CHOOSE=0;
+    public static final int ACTION_ADD=1;
+
+    private int myActionType;
     private ArrayList<BalanceView> myBalanceViewList = new ArrayList<>();
     private Context myContext;
     private int myLayout;
    // private BalanceViewShowFragment teste;
     private FragmentManager myFagmentManager;
-    public RecyclerBalViewAdapter(ArrayList<BalanceView> categoryList, Context theContext, FragmentManager theFrag/*, int theLayOut */) {
+    public RecyclerBalViewAdapter(ArrayList<BalanceView> categoryList, Context theContext, FragmentManager theFrag, int theActionType) {
         this.myBalanceViewList = categoryList;
         this.myContext = theContext;
-        //myLayout = theLayOut;
+        myActionType = theActionType;
         myFagmentManager = theFrag;
     }
 
@@ -82,24 +88,42 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
             else
                 holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
 
-            holder.setItemClickListener(new RecyclerClickListener() {
-                @Override
-                public void OnClick(View view, int position, boolean isLongClick) {
-                    int theNewPosition = position - 1;
-                    Long id_To_Search = myBalanceViewList.get(theNewPosition).getID();
-                    Bundle bundle = new Bundle();
-                    bundle.putLong("id", id_To_Search);
-                    DispBalViewFragment fragInfo = DispBalViewFragment.newInstance();
-                    fragInfo.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.containerID, fragInfo);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+            if (myActionType == ACTION_ADD) {
+                holder.setItemClickListener(new RecyclerClickListener() {
+                    @Override
+                    public void OnClick(View view, int position, boolean isLongClick) {
+                        int theNewPosition = position - 1;
+                        Long id_To_Search = myBalanceViewList.get(theNewPosition).getID();
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("id", id_To_Search);
+                        DispBalViewFragment fragInfo = DispBalViewFragment.newInstance();
+                        fragInfo.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.containerID, fragInfo);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
 
 
-                }
+                    }
 
-            });
+                });
+            }
+            if (myActionType == ACTION_CHOOSE) {
+                holder.setItemClickListener(new RecyclerClickListener() {
+                    @Override
+                    public void OnClick(View view, int position, boolean isLongClick) {
+                        int theNewPosition = position - 1;
+                        Long BalViewID = myBalanceViewList.get(theNewPosition).getID();
+                        DBBalanceView theBalView = new DBBalanceView(myContext);
+                        theBalView.setCurrent(Long.valueOf(position));
+                        //Toast.makeText(myContext.getApplicationContext(), "Current Changed: "+Long.valueOf(position).toString(),
+                        //        Toast.LENGTH_SHORT).show();
+
+                    }
+
+                });
+            }
+
         }else{ //header initialization here if needed
 
         }

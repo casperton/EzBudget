@@ -24,20 +24,21 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
     private RecyclerBalViewAdapter myAdapter;
     private ArrayList<BalanceView> myCategories;
     private FragmentManager myFagmentManager;
+    private int myActionType;
 
 
-
-    public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag/*, int theConsult */) {
+    public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theActionType) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
         myCategories= new ArrayList<>();
         myFagmentManager = theFrag;
+        myActionType = theActionType;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager);
+        myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager,myActionType);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

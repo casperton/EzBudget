@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
 import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
+import com.cs246.EzBudget.mRecycler.RecyclerBalViewAdapter;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 /**
@@ -78,7 +79,7 @@ public class ListBalViewFragment extends Fragment {
         });
 
 
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager ).execute();
+        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager , RecyclerBalViewAdapter.ACTION_ADD).execute();
 
        return myView;
     }

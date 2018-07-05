@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import com.cs246.EzBudget.Balance;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 
@@ -105,6 +106,36 @@ public class DBBalanceView  {
 
         return res;
     }
+
+    /**
+     * Return a BalanceView from the passed id
+     * @param id The id of the BalanceView to retrieve its data
+     * @return The BalanceView with the required Data
+     */
+    public BalanceView get(Long id) {
+        SQLiteDatabase db = myDB.getReadableDatabase();
+        Cursor rs =  getDataCursor(id);
+        rs.moveToFirst();
+        //column values
+        //column values
+        Long theID = rs.getLong(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_ID));
+        String theName = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
+        String theDescription = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION));
+        String theInitialDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_INI_DATE));
+        String theFinalDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE));
+        String theKeyDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE));
+
+        BalanceView theView = new BalanceView();
+        theView.setID(theID);
+        theView.setTitle(theName);
+        theView.setDescription(theDescription);
+        theView.setInitialDateFromDatabase(theInitialDate);
+        theView.setFinalDateFromDatabase(theFinalDate);
+        theView.setKeyDateFromDatabse(theKeyDate);
+        theView.setCurrent();
+        return theView;
+    }
+
     /**
      * Return the number of Rows of the Balance Data table
      * @return the number of rows in the Balance Data table
@@ -189,7 +220,8 @@ public class DBBalanceView  {
 
     /**
      * Get Current View
-     * @return The View in the Cursor format
+     * @return The View in the Cursor format.
+     * if there is no current return null
      */
     public Cursor getCurrentCursor() {
         String theQuery = "select * from "+BalanceView.BALANCEVIEW_TABLE_NAME+" where "+BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT+" = 1";
@@ -211,23 +243,28 @@ public class DBBalanceView  {
     public BalanceView getCurrent(){
         BalanceView theView = new BalanceView();
         Cursor rs =  getCurrentCursor();
-        rs.moveToFirst();
-        //column values
-        Long theID = rs.getLong(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_ID));
-        String theName = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
-        String theDescription = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION));
-        String theInitialDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_INI_DATE));
-        String theFinalDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE));
-        String theKeyDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE));
+        if(rs.getCount()>0) {
+            rs.moveToFirst();
+            //column values
+            Long theID = rs.getLong(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_ID));
+            String theName = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_TITLE));
+            String theDescription = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_DESCRIPTION));
+            String theInitialDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_INI_DATE));
+            String theFinalDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_FINAL_DATE));
+            String theKeyDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE));
+            theView.setID(theID);
+            theView.setTitle(theName);
+            theView.setDescription(theDescription);
+            theView.setInitialDateFromDatabase(theInitialDate);
+            theView.setFinalDateFromDatabase(theFinalDate);
+            theView.setKeyDateFromDatabse(theKeyDate);
+            theView.setCurrent();
+            return theView;
+        }else{
+            return null;
 
-        theView.setID(theID);
-        theView.setTitle(theName);
-        theView.setDescription(theDescription);
-        theView.setInitialDateFromDatabase(theInitialDate);
-        theView.setFinalDateFromDatabase(theFinalDate);
-        theView.setKeyDateFromDatabse(theKeyDate);
-        theView.setCurrent();
-        return theView;
+        }
+
     }
 
     String[] getProjections(){
@@ -261,6 +298,56 @@ public class DBBalanceView  {
             myDB.myLock.readLock().unlock();
         }
         return cursor;
+    }
+
+    /**
+     * Set the id as the current one;
+     * @param theCurrent The id od BalanceView to set as the current one
+     */
+    public void setCurrent(Long theCurrent){
+
+        String firstQuery = "Update "+BalanceView.BALANCEVIEW_TABLE_NAME+
+                " set "+ BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT+" = 0";
+
+        String secondQuery = "Update "+BalanceView.BALANCEVIEW_TABLE_NAME+
+                " set "+ BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT+" = 1 where "+
+                BalanceView.BALANCEVIEW_COLUMN_ID +" = "+theCurrent.toString();
+Log.i("SALVATORE",firstQuery);
+Log.i("SALVATORE",secondQuery);
+        Cursor res;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( firstQuery , null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
+        if (res != null && res.getCount()>0) {
+            res.moveToFirst();
+
+
+        }
+        res.close();
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            res =  db.rawQuery( secondQuery , null );
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
+        if (res != null && res.getCount()>0) {
+            res.moveToFirst();
+
+
+        }
+        res.close();
+
+
     }
 }
 

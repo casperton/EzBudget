@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
+import com.cs246.EzBudget.mRecycler.RecyclerBalViewAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +61,7 @@ public class SelectViewFragment extends Fragment {
 
 
 
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager ).execute();
+        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE ).execute();
 
         return myView;
     }
