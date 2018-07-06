@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.mFragments.ChooseRecBalDataDialogFrag;
+import com.cs246.EzBudget.mFragments.DispCategoryFragment;
 import com.cs246.EzBudget.mFragments.ListBalDataFragment;
 import com.cs246.EzBudget.mFragments.ListBalViewFragment;
 import com.cs246.EzBudget.mFragments.ListCategoryFragment;
@@ -43,6 +44,7 @@ import com.cs246.EzBudget.SummaryView.SummaryItem;
 import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
 import com.cs246.EzBudget.mFragments.SelectViewFragment;
 import com.cs246.EzBudget.mFragments.SummaryFragment;
+import com.cs246.EzBudget.mRecycler.CommonCategory;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -221,7 +223,16 @@ public class MainActivity extends AppCompatActivity
 
             //startActivity(intent4);
         } else if (id == R.id.nav_share) {
-
+            Long id_To_Search = Long.valueOf(-1);
+            Bundle bundle = new Bundle();
+            bundle.putLong("id", id_To_Search );
+            DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
+            fragInfo.setArguments(bundle);
+            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.containerID, fragInfo,"CATEGORY_SHOW_FRAGMENT");
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_send) {
 

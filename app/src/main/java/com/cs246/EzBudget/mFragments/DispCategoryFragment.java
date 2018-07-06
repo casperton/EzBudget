@@ -53,37 +53,42 @@ public class DispCategoryFragment extends Fragment {
         myView = inflater.inflate(R.layout.fragment_disp_category, container, false);
 
 
-        myName = (TextView) myView.findViewById(R.id.editTextName);
-        myDescription = (TextView) myView.findViewById(R.id.editTextDescription);
-        myOperation = (RadioGroup) myView.findViewById(R.id.radioGroupOperation);
+        myName = (TextView) myView.findViewById(R.id.dispCatTextName);
+        myDescription = (TextView) myView.findViewById(R.id.dispCatDescription);
+        myOperation = (RadioGroup) myView.findViewById(R.id.dispCatRadioGroupOperation);
 
 
         mydb = new DBCategory(getActivity());
         RadioButton myIncome,myOutcome,myInformative;
 
         Bundle args = getArguments();
-        if (args !=null) myIDtoChange = args.getLong("id");
+
 
         if(args !=null) {
-            Long Value = myIDtoChange;
+            myIDtoChange = args.getLong("id");
             myIncome = (RadioButton) myView.findViewById(R.id.dispCatRadioIncome);
             myOutcome = (RadioButton) myView.findViewById(R.id.dispCatRadioOutcome);
             myInformative = (RadioButton) myView.findViewById(R.id.dispCatRadioInformative);
 
-            if(Value>0){
+            if(myIDtoChange>0){
                 //means this is the view/edit part not the add category part.
-                Cursor rs = mydb.getDataCursor(Value);
-                myIDtoChange = Value;
-                rs.moveToFirst();
+                Cursor rs = mydb.getDataCursor(myIDtoChange);
+                String thisName = "";
+                String thisDescription = "";
+                Integer thisOperation = OPERATION.UNKNOWN;
 
-                //column values
-                String thisName = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
-                String thisDescription = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
-                Integer thisOperation = rs.getInt(rs.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));
+                if (rs !=null) {
+                    rs.moveToFirst();
+
+                    //column values
+                    thisName = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
+                    thisDescription = rs.getString(rs.getColumnIndex(Category.CATEGORY_COLUMN_DESCRIPTION));
+                    thisOperation = rs.getInt(rs.getColumnIndex(Category.CATEGORY_COLUMN_OPERATION));
 
 
-                if (!rs.isClosed())  {
-                    rs.close();
+                    if (!rs.isClosed()) {
+                        rs.close();
+                    }
                 }
                 Button b = (Button)myView.findViewById(R.id.dispCatButtonSave);
                 b.setVisibility(View.INVISIBLE);

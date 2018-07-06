@@ -87,17 +87,15 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
                 @Override
                 public void OnClick(View view, int position, boolean isLongClick) {
 
-                    Long id_To_Search = myCategoryList.get(position).getID();
+                    int theNewPosition = position;
+
                     myRowIndex = position;
                     CommonCategory.currentItem = myCategoryList.get(position);
-                    Bundle bundle = new Bundle();
-                    bundle.putLong("id", id_To_Search );
-                    DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
-                    fragInfo.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.containerID, fragInfo,"CATEGORY_SHOW_FRAGMENT");
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    notifyDataSetChanged();
+                    if(myUpdateButton !=null) {
+                        myUpdateButton.setVisibility(View.VISIBLE);
+
+                    }
 
 
                 }

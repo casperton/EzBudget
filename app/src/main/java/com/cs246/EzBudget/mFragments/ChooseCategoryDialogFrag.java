@@ -46,7 +46,7 @@ public class ChooseCategoryDialogFrag extends DialogFragment {
 
         this.getDialog().setTitle("Categories");
 
-        //myRecyclerView = (RecyclerView) rootView.findViewById(R.id.ReciclerViewCategory);
+
         myRecyclerView= (RecyclerView) rootView.findViewById(R.id.mRecyerID);
         myLayoutManager = new LinearLayoutManager(this.getActivity());
         myRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));

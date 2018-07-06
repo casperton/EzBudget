@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <EditText
         android:id="@+id/dispCatTextName"
@@ -18,19 +19,18 @@
         android:ems="10"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView1"
         app:layout_constraintTop_toTopOf="parent"></EditText>
 
     <TextView
         android:id="@+id/dispCatTextView1"
         android:layout_width="49dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editTextName"
+        android:layout_alignBottom="@+id/dispCatTextName"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="@string/name"
+        android:text= "@string/name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,14 +47,14 @@
         android:text="@string/catSave"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupOperation" />
+        app:layout_constraintTop_toBottomOf="@+id/dispCatRadioGroupOperation" />
 
 
     <TextView
         android:id="@+id/dispCatTextView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editTextDescription"
+        android:layout_alignBottom="@+id/dispCatDescription"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="20dp"
@@ -63,13 +63,13 @@
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+        app:layout_constraintTop_toBottomOf="@+id/dispCatTextName" />
 
     <TextView
         android:id="@+id/dispCatTextView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editTextDescription"
+        android:layout_alignBottom="@+id/dispCatDescription"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
@@ -78,13 +78,13 @@
         android:text="@string/operation"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/dispCatDescription" />
 
     <EditText
         android:id="@+id/dispCatDescription"
         android:layout_width="212dp"
         android:layout_height="150dp"
-        android:layout_alignLeft="@+id/editTextName"
+        android:layout_alignLeft="@+id/dispCatTextName"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -93,7 +93,7 @@
         android:maxLines="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName">
+        app:layout_constraintTop_toBottomOf="@+id/dispCatTextName">
 
         <requestFocus />
     </EditText>
@@ -106,7 +106,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription">
+        app:layout_constraintTop_toBottomOf="@+id/dispCatDescription">
 
         <RadioButton
             android:id="@+id/dispCatRadioIncome"
