@@ -26,6 +26,7 @@ import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 /**
  * Used by the menu to on the mainActivity to list the Categories
+ * Allow the user to add new, delete and update Categories
  */
 public class ListCategoryFragment extends Fragment {
 
