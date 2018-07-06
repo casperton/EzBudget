@@ -45,6 +45,7 @@ import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
 import com.cs246.EzBudget.mFragments.SelectViewFragment;
 import com.cs246.EzBudget.mFragments.SummaryFragment;
 import com.cs246.EzBudget.mRecycler.CommonCategory;
+import com.cs246.EzBudget.mRecycler.CommonFragments;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -82,7 +83,9 @@ public class MainActivity extends AppCompatActivity
         final MainViewPagerAdapter viewAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         // Adding Fragments
         viewAdapter.addFragment(new SelectViewFragment(), "Select View");
-        viewAdapter.addFragment(new SummaryFragment(),"Summary");
+        SummaryFragment theSummary = new SummaryFragment();
+        CommonFragments.summaryFrag = theSummary;
+        viewAdapter.addFragment(theSummary,"Summary");
         //Adapter Setup
         myViewPager.setAdapter(viewAdapter);
         myTabLayout.setupWithViewPager(myViewPager);

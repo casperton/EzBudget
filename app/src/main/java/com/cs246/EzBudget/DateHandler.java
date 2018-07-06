@@ -1,9 +1,12 @@
 package com.cs246.EzBudget;
 
 import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -74,6 +77,21 @@ public class DateHandler {
         // representation of a date with the defined format.
         theMonth = df.format(today);
        return theMonth;
+    }
+
+    public static String getMonth (Date theDate) {
+        String reportDate = "";
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(MONTH_FORMAT);
+
+        if(theDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(theDate);
+        }
+
+        return reportDate;
     }
     public static String getActualYear(){
         String theYear="";
@@ -238,5 +256,67 @@ public class DateHandler {
         String month_name = month_date.format(theDate);
         return month_name;
         //Month name will contain the full month name,
+    }
+
+    /**
+     * Calculate the number of days between two dates
+     * @param dateStart
+     * @param dateEnd
+     * @return the number of days between the passsed dates
+     */
+    public static long getDayCount(Date dateStart, Date dateEnd) {
+        long diff = -1;
+        try {
+
+            //time is always 00:00:00 so rounding should help to ignore the missing hour when going from winter to summer time as well as the extra hour in the other direction
+            diff = Math.round((dateEnd.getTime() - dateStart.getTime()) / (double) 86400000);
+        } catch (Exception e) {
+            //handle the exception according to your own situation
+        }
+        return diff;
+    }
+
+    public static ArrayList<Date> getListofDates(Date theViewIniDate,Date theViewEndDate,BalanceData theData){
+        ArrayList<Date> theRetArray = new ArrayList<>();
+        // This is just to test
+        //Todo: calculate the dates correctly based on the period and the recurrence od the data
+        Integer theDay = Integer.parseInt(theData.getDueDateDay());
+        Integer theMonth = Integer.parseInt(getMonth(theViewIniDate))-1;
+        //String theMonth = DateHandler.getActualMonth();
+        Integer theYear = Integer.parseInt(getActualYear());
+
+        Date date;
+        date = new GregorianCalendar(theYear, theMonth, theDay).getTime();
+        theRetArray.add(date);
+        /*
+        long theQtdDays = DateHandler.getDayCount(theViewIniDate,theViewEndDate);
+        int thePeriod = theData.getRecPeriod();
+        long theperiodDays=1;
+
+        long numberOfRepetitions=0;
+
+        if (thePeriod == RECURRENT.NO_PERIODIC){
+            theperiodDays= 0;
+        }else if (thePeriod == RECURRENT.UNKNOWN){
+            theperiodDays= 0;
+        }else if(thePeriod == RECURRENT.DAILY){
+            theperiodDays= 1;
+        }else if(thePeriod == RECURRENT.WEEKLY){
+            theperiodDays= 7;
+        }else if(thePeriod == RECURRENT.BI_WEEKLI){
+            theperiodDays= 14;
+        }else if(thePeriod == RECURRENT.MONTHLY){
+            theperiodDays= 30;
+        }
+        if (theperiodDays >0) {
+            numberOfRepetitions = theQtdDays / theperiodDays;
+        }
+        //todo: calculate the repetition dates
+        if (numberOfRepetitions > 1){
+
+
+        }
+*/
+        return theRetArray;
     }
 }

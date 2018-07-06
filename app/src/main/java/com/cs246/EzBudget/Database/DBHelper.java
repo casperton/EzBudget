@@ -195,6 +195,7 @@ public class DBHelper extends SQLiteOpenHelper {
         DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PHONE, CatUtilities);
         DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_CAR, CatTranport);
         DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_RENT,CatHousing);
+
         //* Table Balance View*/
         db.execSQL(CREATE_TABLE_BALANCEVIEW);
         DBBalanceView.insertBalView(db,BalanceView.DB_BALVIEW_LAST_MONTH);

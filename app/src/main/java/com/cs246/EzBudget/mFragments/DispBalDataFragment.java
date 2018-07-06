@@ -43,6 +43,7 @@ public class DispBalDataFragment extends Fragment {
     private DBBalanceData myDBBalanceData;
     private boolean myIsRecurrent = false;
     private boolean myShowRecurrent = true;
+
     Calendar myCalendar;
     DatePickerDialog myDateDialog;
 
@@ -64,6 +65,7 @@ public class DispBalDataFragment extends Fragment {
     private Long myIDtoChange = Long.valueOf(-1);
     private LinearLayout myStatusLayOut;
     private LinearLayout myRecurrenceLayOut;
+    private LinearLayout myPaymentLayOut;
 
 
 
@@ -90,6 +92,7 @@ public class DispBalDataFragment extends Fragment {
             myIDtoChange = args.getLong("id");
             myIsRecurrent = args.getBoolean("isRec");
             myShowRecurrent = args.getBoolean("showRec");
+
         }
 
         myDueDate = (EditText) myView.findViewById(R.id.dispBalDataDueDate);
@@ -111,8 +114,8 @@ public class DispBalDataFragment extends Fragment {
         final FragmentManager fm=getActivity().getSupportFragmentManager();
         final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
-        if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
-        if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.INVISIBLE);
+        if (myIsRecurrent) myStatusLayOut.setVisibility(View.GONE);
+        if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
 
 
         /**
@@ -286,8 +289,7 @@ public class DispBalDataFragment extends Fragment {
                         myDBBalanceData.delete(myIDtoChange);
                         Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
                                 Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                       // startActivity(intent);
+
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

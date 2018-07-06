@@ -2,10 +2,9 @@ package com.cs246.EzBudget.mRecycler;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +13,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBBalanceData;
-import com.cs246.EzBudget.OPERATION;
+import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.RECURRENT;
-import com.cs246.EzBudget.mFragments.DispBalDataFragment;
-import com.cs246.EzBudget.mFragments.DispBalViewFragment;
-import com.cs246.EzBudget.mFragments.DispCategoryFragment;
+import com.cs246.EzBudget.mFragments.SummaryFragment;
 
 
 import java.util.ArrayList;
@@ -45,6 +43,15 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     private int myRowIndex = -1;
     private Button myUpdateButton;
 
+    /**
+     *
+     * @param BalanceDataList
+     * @param theContext
+     * @param theFrag
+     * @param theRec
+     * @param theAction ACTION CHOOSE_LIST to only choose some item. ADD to be able to add and update itends of the list
+     * @param theUpdateButton
+     */
     public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction,Button theUpdateButton) {
         this.myBalanceDataList = BalanceDataList;
         this.myContext = theContext;
@@ -52,7 +59,9 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
         isRecurrent = theRec;
         myAction = theAction;
         myUpdateButton = theUpdateButton;
-
+        if (myAction == LIST_ACTION.ACT_LIST_CHOOSE){
+            if (myUpdateButton !=null )myUpdateButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Initialize View
@@ -84,17 +93,46 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                 int theNewPosition = position-1;
             //set background color
             //set highlight color
-            if((myRowIndex==position)){
-                holder.itemView.setBackgroundColor(Color.parseColor("#CACACA"));
-            }else{
-                if (theNewPosition % 2 == 0)
-                    holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
-                else
-                    holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
+            /*
+            */
+            //setg color of the Text
+            //red for outcomes and green for incomes
+            DBCategory catDB = new DBCategory(myContext);
+            Long theCat = myBalanceDataList.get(theNewPosition).getCategory();
+            Category cat = catDB.get(theCat);
+            if (cat.isCredit()){
+                if((myRowIndex==position)){
+                    holder.itemView.setBackgroundColor(Color.parseColor("#00FF40"));
+                }else{
+                    if (theNewPosition % 2 == 0)
+                        holder.itemView.setBackgroundColor(Color.parseColor("#A9F5A9"));
+                    else
+                        holder.itemView.setBackgroundColor(Color.parseColor("#58FA58"));
+                }
+
+            }else if(cat.isDebit()){
+                if((myRowIndex==position)){
+                    holder.itemView.setBackgroundColor(Color.parseColor("#DF3A01"));
+                }else{
+                    if (theNewPosition % 2 == 0)
+                        holder.itemView.setBackgroundColor(Color.parseColor("#F78181"));
+                    else
+                        holder.itemView.setBackgroundColor(Color.parseColor("#FA5858"));
+                }
+            }else if(cat.isInformative()){
+                if((myRowIndex==position)){
+                    holder.itemView.setBackgroundColor(Color.parseColor("#CACACA"));
+                }else{
+                    if (theNewPosition % 2 == 0)
+                        holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
+                    else
+                        holder.itemView.setBackgroundColor(Color.parseColor("#FAFAFA"));
+                }
+
             }
 
             if (isRecurrent)
-                holder.myDueDate.setText(myBalanceDataList.get(theNewPosition).getDueDateRecurrentHuman());
+                holder.myDueDate.setText(myBalanceDataList.get(theNewPosition).getDueDateDay());
             else
                 holder.myDueDate.setText(myBalanceDataList.get(theNewPosition).getDueDateHuman());
 
@@ -129,7 +167,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
                 });
             } else if (myAction == LIST_ACTION.ACT_LIST_CHOOSE) {
-                //Todo:  add click listener to add the chosen Recurrent data into de DalanceData
+                //We will add the record to the current View Period
                 holder.setItemClickListener(new RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
@@ -138,9 +176,14 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                         CommonBalData.currentItem = myBalanceDataList.get(theNewPosition);
                         BalanceData theRecord = myBalanceDataList.get(theNewPosition);
                         DBBalanceData theBalDataDatabase = new DBBalanceData(myContext);
+                        //the isFromRec indicates to the database classto make all calculations and add this
+                        //record to the current view Period
                         if (theBalDataDatabase.insert(theRecord, true) > 0) {
                             Toast.makeText(myContext.getApplicationContext(), "Added Successfully",
                                     Toast.LENGTH_SHORT).show();
+                            Fragment theFragment =  CommonFragments.summaryFrag;
+                            theFragment.onResume();
+
                         } else {
                             Toast.makeText(myContext.getApplicationContext(), "Not Added",
                                     Toast.LENGTH_SHORT).show();

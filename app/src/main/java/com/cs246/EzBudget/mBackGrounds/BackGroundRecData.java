@@ -37,6 +37,16 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
     private int myAction;
     private Button myUpgradeButton;
 
+    /**
+     *
+     * @param theView the view
+     * @param theBar  the progress bar
+     * @param context  the context
+     * @param theFrag  the fragment manager
+     * @param theConsult  BAL_ALL (everything) , BAL_INC (incomes) , BAL_BILLS (OUTCOMES)
+     * @param theAction  ACT_LIST_CHOOSE to only choose a item, or ADD to be able to add and update itens
+     * @param theUpgradeButton The Update Button
+     */
     public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction, Button theUpgradeButton ) {
         this.context = context;
         this.mylistView = theView;

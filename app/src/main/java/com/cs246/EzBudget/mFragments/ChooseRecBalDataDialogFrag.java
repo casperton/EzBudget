@@ -35,6 +35,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
     private Button myAddButton;
+    private Button myUpdateButton;
     private BackGroundRecData myBackGroundAction;
 
 
@@ -65,6 +66,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         myFagmentManager = getActivity().getSupportFragmentManager();
 
         myAddButton = (Button) myView.findViewById(R.id.listRecAddNew);
+        myUpdateButton = (Button) myView.findViewById(R.id.listRecUpdate);
 
         myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +77,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
                 bundle.putLong("id", myMessage );
                 bundle.putBoolean("isRec", false );
                 bundle.putBoolean("showRec", false);
+                bundle.putBoolean("showStatus", false);
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
@@ -85,7 +88,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         });
 
 
-        myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, null );
+        myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, myUpdateButton );
 
         myBackGroundAction.execute();
         return myView;

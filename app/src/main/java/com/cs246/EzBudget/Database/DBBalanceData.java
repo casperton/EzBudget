@@ -14,6 +14,11 @@ import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.RECURRENT;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+
 /**
  * Class to Handle the Table BalanceData of the Database
  */
@@ -21,8 +26,12 @@ public class DBBalanceData {
 
     private final String TAG = "DB_BALANCE_DATA";
     private DBHelper myDB;
+    private Context myContex;
+
+
     public DBBalanceData(Context context) {
         myDB = DBHelper.getInstance(context);
+        myContex =context;
 
     }
     static public boolean insertBalData (SQLiteDatabase db , BalanceData theData, Long theCatID) {
@@ -32,7 +41,7 @@ public class DBBalanceData {
          * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
          */
         if(isFromRecurrent) {
-            String theDay = theData.getDueDateRecurrentHuman();
+            String theDay = theData.getDueDateDay();
             String theMonth = DateHandler.getActualMonth();
             String theYear = DateHandler.getActualYear();
             theDate = theYear + "-" + theMonth + "-" + theDay; //database format
@@ -57,20 +66,8 @@ public class DBBalanceData {
      * @param theData
      * @return the number of the row inserted or -1 if failed
      */
-    public Long insert (BalanceData theData, boolean isFromRec) {
+    private Long insert (BalanceData theData) {
         Long result;
-        boolean isFromRecurrent = theData.IsRecurrent();
-        String theDate;
-        /**
-         * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
-         */
-        if(isFromRecurrent || isFromRec) {
-            String theDay = theData.getDueDateRecurrentHuman();
-            String theMonth = DateHandler.getActualMonth();
-            String theYear = DateHandler.getActualYear();
-            theDate = theYear + "-" + theMonth + "-" + theDay; //database format
-            theData.resetRecurrent();
-        }else theDate = theData.getDueDateDatabase();
 
         myDB.myLock.writeLock().lock();
         try {
@@ -80,7 +77,7 @@ public class DBBalanceData {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theData.getCategory());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theDate);
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDueDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
@@ -98,6 +95,48 @@ public class DBBalanceData {
         }
 
         myDB.notifyBalanceDataChanged();
+
+        return result;
+    }
+
+    /**
+     *  Insert a Register of Balance Data into the Database
+     * @param theData
+     * @param isFromRec the theData parameter came from the RecurrentDatabase. This indicates we must
+     *                  calculate how much recurrences of this record must be inserted in the current view period.
+     * @return the number of the row inserted or -1 if failed
+     */
+    public Long insert (BalanceData theData, boolean isFromRec) {
+        Long result = Long.valueOf(-1);
+        boolean isFromRecurrent = theData.IsRecurrent();
+        String theDate;
+
+        /**
+         * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
+         */
+        if(isFromRecurrent || isFromRec) {
+            DBBalanceView theViewDataBase = new DBBalanceView(myContex);
+            BalanceView theCurrentView = theViewDataBase.getCurrent();
+            Date theViewIniDate = theCurrentView.getInitialDate();
+            Date theViewEndDate = theCurrentView.getFinalDate();
+            ArrayList<Date> theDates = DateHandler.getListofDates(theViewIniDate,theViewEndDate,theData);
+
+
+
+
+
+            for (int count = 0;count < theDates.size();count ++){
+                theData.resetRecurrent();
+                theData.setDueDate(theDates.get(count));
+                result = insert(theData);
+            }
+
+
+            //END IS RECURRENT
+        }else {
+
+            result = insert(theData);
+        }
         return result;
     }
 

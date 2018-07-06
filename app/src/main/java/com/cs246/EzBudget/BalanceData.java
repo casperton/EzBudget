@@ -331,6 +331,10 @@ public class BalanceData {
     }
 
 
+    public void setDueDate(Date theDate){
+        myDate = theDate;
+    }
+
     public void setDueDate (Integer theDay, Integer theMonth, Integer theYear) {
 
         java.util.Calendar aCalendar = java.util.Calendar.getInstance();
@@ -414,10 +418,10 @@ public class BalanceData {
     }
 
     /**
-     * Get the value of Due Date in the String whithout the year in the Human readable format
-     * @return the value of myDate
+     * Get the value of Due Date in the String without the year and month
+     * @return the value of day field of the Due Date
      */
-    public String getDueDateRecurrentHuman () {
+    public String getDueDateDay () {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
