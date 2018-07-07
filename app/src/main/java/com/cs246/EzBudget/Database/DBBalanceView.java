@@ -131,7 +131,7 @@ public class DBBalanceView  {
         theView.setDescription(theDescription);
         theView.setInitialDateFromDatabase(theInitialDate);
         theView.setFinalDateFromDatabase(theFinalDate);
-        theView.setKeyDateFromDatabse(theKeyDate);
+        theView.setKeyDateFromDatabase(theKeyDate);
         theView.setCurrent();
         return theView;
     }
@@ -257,7 +257,7 @@ public class DBBalanceView  {
             theView.setDescription(theDescription);
             theView.setInitialDateFromDatabase(theInitialDate);
             theView.setFinalDateFromDatabase(theFinalDate);
-            theView.setKeyDateFromDatabse(theKeyDate);
+            theView.setKeyDateFromDatabase(theKeyDate);
             theView.setCurrent();
             return theView;
         }else{

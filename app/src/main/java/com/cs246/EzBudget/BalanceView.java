@@ -143,15 +143,7 @@ public class BalanceView{
      */
     public void setInitialDateFromHuman(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            this.myInitialDate = date;
+            this.myInitialDate = DateHandler.getDateFromHumanString(newVar);
         }
 
     }
@@ -162,15 +154,8 @@ public class BalanceView{
      */
     public void setInitialDateFromDatabase(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            this.myInitialDate = date;
+            this.myInitialDate = DateHandler.getDateFromDatabaseString(newVar);
         }
 
     }
@@ -199,7 +184,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(this.myInitialDate != null) {
             // Using DateFormat format method we can create a string
@@ -218,7 +203,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(this.myInitialDate != null) {
             // Using DateFormat format method we can create a string
@@ -237,15 +222,8 @@ public class BalanceView{
      */
     public void setKeyDateFromHuman(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            this.myKeyDate = date;
+            this.myKeyDate = DateHandler.getDateFromHumanString(newVar);
         }
 
     }
@@ -254,17 +232,10 @@ public class BalanceView{
      * Set the Key Date from a string in the Database Date Format
      * @param newVar the Date
      */
-    public void setKeyDateFromDatabse(String newVar) {
+    public void setKeyDateFromDatabase(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            this.myKeyDate = date;
+             this.myKeyDate =  DateHandler.getDateFromDatabaseString(newVar);
         }
 
     }
@@ -277,7 +248,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(this.myKeyDate != null) {
             // Using DateFormat format method we can create a string
@@ -296,7 +267,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(this.myKeyDate != null) {
             // Using DateFormat format method we can create a string
@@ -313,15 +284,8 @@ public class BalanceView{
      */
     public void setFinalDateFromHuman(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            this.myFinalDate = date;
+            this.myFinalDate = DateHandler.getDateFromHumanString(newVar);
         }
 
     }
@@ -332,15 +296,7 @@ public class BalanceView{
      */
     public void setFinalDateFromDatabase(String newVar) {
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            this.myFinalDate = date;
+             this.myFinalDate = DateHandler.getDateFromDatabaseString(newVar);
         }
 
     }
@@ -354,7 +310,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(this.myFinalDate != null) {
             // Using DateFormat format method we can create a string
@@ -373,7 +329,7 @@ public class BalanceView{
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(this.myFinalDate != null) {
             // Using DateFormat format method we can create a string

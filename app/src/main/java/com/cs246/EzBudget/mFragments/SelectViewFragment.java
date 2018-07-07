@@ -30,6 +30,7 @@ public class SelectViewFragment extends Fragment {
     private View myView;
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
+    private  BackGroundBalView  myBachgroundAction;
 
 
     @NonNull
@@ -39,6 +40,14 @@ public class SelectViewFragment extends Fragment {
 
     public SelectViewFragment() {
         // Required empty public constructor
+    }
+    @Override
+    public void onResume() {
+
+
+        myBachgroundAction.execute();
+        super.onResume();
+
     }
 
 
@@ -59,10 +68,9 @@ public class SelectViewFragment extends Fragment {
         myProgress.setVisibility(View.INVISIBLE);
         myFagmentManager = getActivity().getSupportFragmentManager();
 
+        myBachgroundAction = new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE,null);
 
-
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE,null).execute();
-
+        myBachgroundAction.execute();
         return myView;
     }
 

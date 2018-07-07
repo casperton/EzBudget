@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,14 @@ import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
+import com.cs246.EzBudget.RECURRENT;
+import com.cs246.EzBudget.mRecycler.CommonFragments;
 
 import java.util.Calendar;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Fragment will show the Balance Data information on the screen
+ * It will allow add and edit Balance Data information as Due Date, Description, Status, etc.
  */
 public class DispBalDataFragment extends Fragment {
 
@@ -55,6 +59,7 @@ public class DispBalDataFragment extends Fragment {
     RadioButton myStatusPaid;
     RadioButton myStatusNotPaid;
     CheckBox myRecurrent;
+    //this button will save the filds to the database
     Button mySaveButton;
     Button myUpdateButton;
     Button myDeleteButton;
@@ -63,9 +68,12 @@ public class DispBalDataFragment extends Fragment {
     RecyclerView.LayoutManager myLayoutManager;
     private ProgressBar myProgress=null;
     private Long myIDtoChange = Long.valueOf(-1);
+    /**
+     *
+     */
     private LinearLayout myStatusLayOut;
     private LinearLayout myRecurrenceLayOut;
-    private LinearLayout myPaymentLayOut;
+
 
 
 
@@ -114,7 +122,7 @@ public class DispBalDataFragment extends Fragment {
         final FragmentManager fm=getActivity().getSupportFragmentManager();
         final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
-        if (myIsRecurrent) myStatusLayOut.setVisibility(View.GONE);
+        if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
         if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
 
 
@@ -267,14 +275,14 @@ public class DispBalDataFragment extends Fragment {
     public void setDueDateText(int mDay ,int mMonth,int mYear){
 
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditInitialDate);
         myDueDate.setText(sdf.format(c.getTime()));
 
     }
     public void setMyPaymentDateText(int mDay ,int mMonth,int mYear){
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditFinalDate);
         myPaymentDate.setText(sdf.format(c.getTime()));
 
@@ -315,7 +323,7 @@ public void setCateGoryText(String theText){
      */
     public void SaveButton(View view) {
         Integer theStatus= PAY_STATUS.UNKNOWN;
-
+        boolean theRecurrence = false;
 
         Double theValue = Double.parseDouble(myValue.getText().toString());
         String theDueDate = myDueDate.getText().toString();
@@ -327,41 +335,58 @@ public void setCateGoryText(String theText){
             return;
         }
         String theDesc = myDescription.getText().toString();
-        Category theCategory = myCatDB.get(theCategoryID);
+
         // STATUS Handling
         if(myStatusNotPaid.isChecked()) theStatus = PAY_STATUS.UNPAID_UNRECEIVED;
         else if(myStatusPaid.isChecked()) theStatus = PAY_STATUS.PAID_RECEIVED;
         else theStatus = PAY_STATUS.UNKNOWN;
         String thePaymentDate = myPaymentDate.getText().toString();
-
-        //RECURRENCE HANDLING
-        boolean theRecurrence = myRecurrent.isChecked();
-
+        int theRecurrencePeriod = RECURRENT.UNKNOWN;
 
         BalanceData theData = new BalanceData();
+
+
+        //RECURRENCE HANDLING
+        if (myShowRecurrent) {
+            theRecurrence = myRecurrent.isChecked();
+        } else theRecurrence =false;
+
+        if (theRecurrence == false) {
+            theRecurrencePeriod = RECURRENT.NO_PERIODIC;
+            theData.resetRecurrent();
+        }else{
+            theData.setRecurrent();
+
+        }
+
+        Log.i("SALVADATA", "dataBefore: "+ theDueDate);
         theData.setValue(theValue);
         theData.setDescription(theDesc);
         theData.setCategory(theCategoryID);
         theData.setDueDateFromHuman(theDueDate);
         theData.setPaymentDateFromHuman(thePaymentDate);
         theData.setStatus(theStatus);
-
+        theData.setRecPeriod(theRecurrencePeriod);
+        Log.i("SALVADATA", "data After: "+ theData.getDueDateHuman());
 
         Long Value = myIDtoChange;
         if(Value>0){  //edit
 
             if(myDBBalanceData.update(myIDtoChange,theData)){
                 Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                //startActivity(intent);
+
             } else{
                 Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
             }
         } else{ //add
 
+            /**
+             * isFromRec = false indicates the database will add this recordonly, without repetition
+             */
             if(myDBBalanceData.insert(theData,false) > 0){
                 Toast.makeText(getActivity().getApplicationContext(), "Added",
                         Toast.LENGTH_SHORT).show();
+                if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
             } else{
                 Toast.makeText(getActivity().getApplicationContext(), "not Added",
                         Toast.LENGTH_SHORT).show();

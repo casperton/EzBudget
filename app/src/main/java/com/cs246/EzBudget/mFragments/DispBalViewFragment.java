@@ -26,6 +26,7 @@ import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
+import com.cs246.EzBudget.mRecycler.CommonFragments;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -283,7 +284,7 @@ public class DispBalViewFragment extends Fragment {
         c.set(Calendar.MONTH,mMonth);
         c.set(Calendar.DAY_OF_MONTH,mDay);
         c.set(Calendar.YEAR,mYear);
-        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditKeyDate);
         // Get the date today using Calendar object.
         Date today = c.getTime();
@@ -297,14 +298,14 @@ public class DispBalViewFragment extends Fragment {
     public void setInitialDateText(int mDay ,int mMonth,int mYear){
 
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         EditText myDate = myView.findViewById(R.id.dispBalViewEditInitialDate);
         myDate.setText(sdf.format(c.getTime()));
 
     }
     public void setFinalDateText(int mDay ,int mMonth,int mYear){
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
-        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         //EditText myDate = myView.findViewById(R.id.dispBalViewEditFinalDate);
         myFinalDate.setText(sdf.format(c.getTime()));
 
@@ -373,6 +374,7 @@ public class DispBalViewFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
                     //startActivity(intent);
+                    if (CommonFragments.selectView!=null)CommonFragments.selectView.onResume();
                 } else{
                     Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
@@ -381,6 +383,7 @@ public class DispBalViewFragment extends Fragment {
                 if(myDBBalView.insert(theData) > 0){
                     Toast.makeText(getActivity().getApplicationContext(), "Added",
                             Toast.LENGTH_SHORT).show();
+                    if (CommonFragments.selectView!=null)CommonFragments.selectView.onResume();
                 } else{
                     Toast.makeText(getActivity().getApplicationContext(), "not Added",
                             Toast.LENGTH_SHORT).show();

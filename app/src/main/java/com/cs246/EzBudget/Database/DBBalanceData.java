@@ -110,7 +110,7 @@ public class DBBalanceData {
         Long result = Long.valueOf(-1);
         boolean isFromRecurrent = theData.IsRecurrent();
         String theDate;
-
+        Log.i("SALVADATA", "data: "+ theData.getDueDateHuman());
         /**
          * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
          */
@@ -121,10 +121,6 @@ public class DBBalanceData {
             Date theViewEndDate = theCurrentView.getFinalDate();
             ArrayList<Date> theDates = DateHandler.getListofDates(theViewIniDate,theViewEndDate,theData);
 
-
-
-
-
             for (int count = 0;count < theDates.size();count ++){
                 theData.resetRecurrent();
                 theData.setDueDate(theDates.get(count));
@@ -134,7 +130,7 @@ public class DBBalanceData {
 
             //END IS RECURRENT
         }else {
-
+            Log.i("SALVADATA", "The Date Here: "+ theData.getDueDateHuman());
             result = insert(theData);
         }
         return result;

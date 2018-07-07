@@ -5,15 +5,17 @@ import android.icu.util.GregorianCalendar;
 import android.util.Log;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Handles Dates in the correct Format
  */
 public class DateHandler {
-
+    public static final Locale DEF_LOCALE = Locale.ENGLISH;
     public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATABASE_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT = "dd/MM/YYYY";
@@ -35,7 +37,7 @@ public class DateHandler {
         //NOW
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DATABASE_TIMESTAMP_FORMAT);
+        DateFormat df = new SimpleDateFormat(DATABASE_TIMESTAMP_FORMAT,DateHandler.DEF_LOCALE);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -55,7 +57,7 @@ public class DateHandler {
         //NOW
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DATABASE_DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -69,7 +71,7 @@ public class DateHandler {
     public static String getActualMonth(){
        String theMonth="";
 
-        DateFormat df = new SimpleDateFormat(MONTH_FORMAT);
+        DateFormat df = new SimpleDateFormat(MONTH_FORMAT,DateHandler.DEF_LOCALE);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -83,7 +85,7 @@ public class DateHandler {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(MONTH_FORMAT);
+        DateFormat df = new SimpleDateFormat(MONTH_FORMAT,DateHandler.DEF_LOCALE);
 
         if(theDate != null) {
             // Using DateFormat format method we can create a string
@@ -96,7 +98,7 @@ public class DateHandler {
     public static String getActualYear(){
         String theYear="";
 
-        DateFormat df = new SimpleDateFormat(YEAR_FORMAT);
+        DateFormat df = new SimpleDateFormat(YEAR_FORMAT,DateHandler.DEF_LOCALE);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -108,7 +110,7 @@ public class DateHandler {
     public static String getActualDay(){
         String theDay="";
 
-        DateFormat df = new SimpleDateFormat(DAY_FORMAT);
+        DateFormat df = new SimpleDateFormat(DAY_FORMAT,DateHandler.DEF_LOCALE);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -126,7 +128,7 @@ public class DateHandler {
         //NOW
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         // Get the date today using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -147,7 +149,7 @@ public class DateHandler {
     public static Date getDateFromLastMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         java.util.Calendar aCalendar = java.util.Calendar.getInstance();
         String firstDateOfPreviousMonth_str;
         String lastDateOfPreviousMonth_str;
@@ -178,7 +180,7 @@ public class DateHandler {
     public static Date getDateFromNextMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         java.util.Calendar aCalendar = java.util.Calendar.getInstance();
         String firstDateOfPreviousMonth_str;
         String lastDateOfPreviousMonth_str;
@@ -209,7 +211,7 @@ public class DateHandler {
     public static Date getDateFromThisMonth(int type) {
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
         java.util.Calendar aCalendar = java.util.Calendar.getInstance();
         String firstDateOfPreviousMonth_str;
         String lastDateOfPreviousMonth_str;
@@ -239,7 +241,7 @@ public class DateHandler {
     public static String getShortName(Date theDate){
         //Month name will contain the full month name,,if you want short month name use this
 
-        SimpleDateFormat month_date = new SimpleDateFormat(SHORT_MONTH_NAME+" "+"dd");
+        SimpleDateFormat month_date = new SimpleDateFormat(SHORT_MONTH_NAME+" "+"dd",DateHandler.DEF_LOCALE);
         String month_name = month_date.format(theDate);
         return month_name;
     }
@@ -252,7 +254,7 @@ public class DateHandler {
     public static String getLongName(Date theDate){
 
         Calendar cal=Calendar.getInstance();
-        SimpleDateFormat month_date = new SimpleDateFormat(LONG_MONTH_NAME+" "+"dd");
+        SimpleDateFormat month_date = new SimpleDateFormat(LONG_MONTH_NAME+" "+"dd",DateHandler.DEF_LOCALE);
         String month_name = month_date.format(theDate);
         return month_name;
         //Month name will contain the full month name,
@@ -318,5 +320,33 @@ public class DateHandler {
         }
 */
         return theRetArray;
+    }
+
+    public static Date getDateFromDatabaseString(String theDate){
+        Date retDate= null;
+        DateFormat format = new SimpleDateFormat(DATABASE_DATE_FORMAT,DEF_LOCALE);
+
+        try {
+            retDate = format.parse(theDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return retDate;
+    }
+
+    public static Date getDateFromHumanString(String theDate){
+        Date retDate= null;
+        DateFormat format = new SimpleDateFormat(DATE_FORMAT,DEF_LOCALE);
+
+        try {
+            retDate = format.parse(theDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return retDate;
     }
 }

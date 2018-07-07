@@ -82,7 +82,10 @@ public class MainActivity extends AppCompatActivity
 
         final MainViewPagerAdapter viewAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         // Adding Fragments
-        viewAdapter.addFragment(new SelectViewFragment(), "Select View");
+        SelectViewFragment theSelect = new SelectViewFragment();
+        CommonFragments.selectView = theSelect;
+
+        viewAdapter.addFragment(theSelect, "Select View");
         SummaryFragment theSummary = new SummaryFragment();
         CommonFragments.summaryFrag = theSummary;
         viewAdapter.addFragment(theSummary,"Summary");

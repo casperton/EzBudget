@@ -75,9 +75,9 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
                 Bundle bundle = new Bundle();
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                bundle.putBoolean("isRec", false );
-                bundle.putBoolean("showRec", false);
-                bundle.putBoolean("showStatus", false);
+                bundle.putBoolean("isRec", false ); //is not a recurrent data
+                bundle.putBoolean("showRec", false); //do not show recurrence layout
+                bundle.putBoolean("showStatus", false); //do not show status layout
                 DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();

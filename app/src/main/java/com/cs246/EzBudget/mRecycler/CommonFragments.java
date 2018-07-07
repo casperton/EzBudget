@@ -5,4 +5,5 @@ import android.support.v4.app.Fragment;
 public class CommonFragments {
 
     public static Fragment summaryFrag = null;
+    public static Fragment selectView = null;
 }

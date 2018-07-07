@@ -1,5 +1,7 @@
 package com.cs246.EzBudget;
 
+import android.util.Log;
+
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 
@@ -240,7 +242,7 @@ public class BalanceData {
     public void setPaymentDateFromHuman (String newVar) {
 
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -260,7 +262,7 @@ public class BalanceData {
     public void setPaymentDateFromDatabase (String newVar) {
 
         if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
             Date date = null;
             try {
                 date = format.parse(newVar);
@@ -281,7 +283,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(myPaymentDate != null) {
             // Using DateFormat format method we can create a string
@@ -301,7 +303,7 @@ public class BalanceData {
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
 
         if(myPaymentDate != null) {
             // Using DateFormat format method we can create a string
@@ -352,10 +354,12 @@ public class BalanceData {
     public void setDueDateFromHuman (String theDate) {
 
        if (! theDate.isEmpty()) {
-           DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+           DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
            Date date = null;
            try {
                date = format.parse(theDate);
+               System.out.println(date);
+                Log.i("SALVADATA", "DATE FORMATED: " +format.format(date));
            } catch (ParseException e) {
                e.printStackTrace();
            }
@@ -370,7 +374,7 @@ public class BalanceData {
     public void setDueDateFromDatabase (String theDate) {
 
         if (! theDate.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
+            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
             Date date = null;
             try {
                 date = format.parse(theDate);
@@ -488,7 +492,7 @@ public class BalanceData {
         isRecurrent = true;
     }
     public void resetRecurrent () {
-        isRecurrent = true;
+        isRecurrent = false;
         myRecPeriod = RECURRENT.NO_PERIODIC;
     }
 
