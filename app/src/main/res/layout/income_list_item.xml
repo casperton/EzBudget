@@ -44,6 +44,7 @@
 
         <TextView
             android:id="@+id/total_needed"
+            android:paddingRight="10dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:textColor="@android:color/white"

@@ -138,14 +138,14 @@ public class SummaryFragment extends Fragment
     }
 
     private void setup(){
-        bills.clear();
+        if (bills != null) bills.clear();
         BalanceView myBalanceView = myCurrentView.getCurrent();
         String dateRange = "";
         String theTitle = "";
         //todo: what to do when there is no cuurent
         if (myBalanceView == null){
             //if there are any data in table set the first as current
-            //otherwiseinsertthecurrent monht and set it as current
+            //otherwise insert the current month and set it as current
 
         }else{
             //get the dates from the current view
@@ -154,16 +154,13 @@ public class SummaryFragment extends Fragment
                     DateHandler.getShortName(myBalanceView.getFinalDate());
         }
 
-        myTextView.setText(theTitle + " - "+dateRange);
+        myTextView.setText(theTitle + " - " + dateRange);
 
         Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
 
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
-
-        // TODO : Replace with actual expense total code
-        double total = 0;
 
         if (cursor !=null) {
             if (cursor.moveToFirst()) {
@@ -179,8 +176,7 @@ public class SummaryFragment extends Fragment
                     SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
                     bills.add(summaryItem);
                     // TODO : Replace total with correct values for amount needed during this period
-                    total += amount;
-                } while (cursor.moveToNext());
+                  } while (cursor.moveToNext());
             }
         }
         // TODO : Add code to load income items - Set SummaryType.Income for income
