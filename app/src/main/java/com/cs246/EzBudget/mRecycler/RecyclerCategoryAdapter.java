@@ -107,11 +107,15 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerViewHo
 
                     myRowIndex = position;
                     CommonCategory.currentItem = myCategoryList.get(position);
+                    String CatName = myCategoryList.get(position).getName();
+                    DispBalDataFragment myFragment =  (DispBalDataFragment) myFagmentManager.findFragmentByTag("DISPLAY_BAL_DATA_FRAG");
+                    myFragment.setCateGoryText(CatName);
                     notifyDataSetChanged();
                     if(myUpdateButton !=null) {
                         myUpdateButton.setVisibility(View.INVISIBLE);
 
                     }
+
 
 
 

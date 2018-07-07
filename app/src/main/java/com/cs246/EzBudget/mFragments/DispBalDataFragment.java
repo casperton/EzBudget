@@ -290,12 +290,12 @@ public class DispBalDataFragment extends Fragment {
 
     public void DeleteButton(View view){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.deleteConfirmation)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         myDBBalanceData.delete(myIDtoChange);
-                        Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
+                        Toast.makeText(getActivity(), "Deleted Successfully",
                                 Toast.LENGTH_SHORT).show();
 
                     }
