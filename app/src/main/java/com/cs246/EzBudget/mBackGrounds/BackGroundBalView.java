@@ -39,6 +39,7 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
         myUpdateButton = theUpdateButton;
     }
 
+
     @Override
     protected void onPreExecute() {
         myAdapter = new RecyclerBalViewAdapter(myCategories,context,myFagmentManager,myActionType,myUpdateButton);

@@ -44,9 +44,9 @@ public class SelectViewFragment extends Fragment {
     @Override
     public void onResume() {
 
-         //this line crashes the app
-        //if(myBachgroundAction !=null) myBachgroundAction.execute();
+        setup();
         super.onResume();
+
 
     }
 
@@ -58,20 +58,21 @@ public class SelectViewFragment extends Fragment {
         myView =  inflater.inflate(R.layout.fragment_select_view, container, false);
         super.onCreate(savedInstanceState);
 
-
         myRecyclerView = (RecyclerView) myView.findViewById(R.id.listViewRecicler);
         myLayoutManager = new LinearLayoutManager(getActivity());
         myRecyclerView.setLayoutManager(myLayoutManager);
         myRecyclerView.setHasFixedSize(true);
-
         myProgress = (ProgressBar) myView.findViewById(R.id.listViewBar);
-        myProgress.setVisibility(View.INVISIBLE);
         myFagmentManager = getActivity().getSupportFragmentManager();
-
-        myBachgroundAction = new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE,null);
-
-        myBachgroundAction.execute();
+        setup();
         return myView;
     }
 
+
+    void setup(){
+
+        myProgress.setVisibility(View.INVISIBLE);
+        myBachgroundAction = new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager, RecyclerBalViewAdapter.ACTION_CHOOSE,null);
+        myBachgroundAction.execute();
+    }
 }
