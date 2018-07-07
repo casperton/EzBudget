@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,12 @@ import android.widget.Toast;
 import com.cs246.EzBudget.BALANCE_ITEM;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
+import com.cs246.EzBudget.Calculations;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
+import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
@@ -39,8 +42,12 @@ import com.cs246.EzBudget.SummaryView.SummaryItem;
 import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -134,14 +141,14 @@ public class SummaryFragment extends Fragment
     }
 
     private void setup(){
-        bills.clear();
+        if (bills != null) bills.clear();
         BalanceView myBalanceView = myCurrentView.getCurrent();
         String dateRange = "";
         String theTitle = "";
         //todo: what to do when there is no cuurent
         if (myBalanceView == null){
             //if there are any data in table set the first as current
-            //otherwiseinsertthecurrent monht and set it as current
+            //otherwise insert the current month and set it as current
 
         }else{
             //get the dates from the current view
@@ -150,7 +157,7 @@ public class SummaryFragment extends Fragment
                     DateHandler.getShortName(myBalanceView.getFinalDate());
         }
 
-        myTextView.setText(theTitle + " - "+dateRange);
+        myTextView.setText(theTitle + " - " + dateRange);
 
         Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
@@ -158,30 +165,34 @@ public class SummaryFragment extends Fragment
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
 
-        // TODO : Replace with actual expense total code
-        double total = 0;
-
         if (cursor !=null) {
             if (cursor.moveToFirst()) {
                 do {
                     String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
                     String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                     Double amount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    Long theCat = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                    //Log.i("SummaryFragment", "Category: " + theCat);
                     // TODO : Add boolean for marked as paid from database
                     boolean paid = false;
                     // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, BALANCE_ITEM.EXPENSE);
+                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
                     bills.add(summaryItem);
                     // TODO : Replace total with correct values for amount needed during this period
-                    total += amount;
-                } while (cursor.moveToNext());
+                  } while (cursor.moveToNext());
             }
         }
         // TODO : Add code to load income items - Set SummaryType.Income for income
 
         // Add a test paycheck
-        SummaryItem payItem = new SummaryItem("My First Paycheck of the Month", "07/08/18", 1200, false, BALANCE_ITEM.INCOME);
-        bills.add(0, payItem);
+        SummaryItem payItem = new SummaryItem("My First Paycheck", "2018-06-01", 1200, false, OPERATION.CREDIT);
+        bills.add(payItem);
+        payItem = new SummaryItem("My Second Paycheck", "2018-06-15", 1200, false, OPERATION.CREDIT);
+        bills.add(payItem);
+
+        Collections.sort(bills);
+        Calculations calc  = new Calculations(bills);
+        calc.updateTotals();
 
         adapter.notifyDataSetChanged();
 

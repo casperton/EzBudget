@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 import com.cs246.EzBudget.BALANCE_ITEM;
 import com.cs246.EzBudget.Calculations;
+import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +36,6 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
 
     private Context context;
     private List<SummaryItem> list;
-    private double total = 0;
 
     /**
      * Default constructor for the class
@@ -59,7 +60,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     @Override
     public SummaryListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MyViewHolder holder;
-        if (viewType == BALANCE_ITEM.INCOME) {
+        if (viewType == OPERATION.CREDIT) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.income_list_item, parent, false);
             holder = new IncomeViewHolder(itemView, viewType);
         } else {
@@ -84,14 +85,14 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         df.setMinimumFractionDigits(0);
         holder.amount.setText("$" + df.format(bill.getAmount()).toString());
         // TODO : Format date for locale
-        String date = bill.getDate();
-        if (bill.getType() == BALANCE_ITEM.INCOME) {
+        String date = bill.getUsDate();
+        if (bill.getType() == OPERATION.CREDIT) {
             // Set values for expense items
             IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
             incomeHolder.date.setText("Date: " + date);
             // TODO : Replace with calculated total for only this period
-            total = new Calculations(list).getPeriodTotal();
-            incomeHolder.total_needed.setText("Needed: $" + String.valueOf(df.format(total)));
+            Double total_needed = bill.getTotal_needed();
+            incomeHolder.total_needed.setText("Needed: $" + String.valueOf(df.format(total_needed)));
         } else {
             // Expense items have a due date only
             holder.date.setText("Due: " + date);
@@ -130,7 +131,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     public void removeItem(int position) {
         list.remove(position);
         // TODO : Recalculate total needed for this period once item is paid
-        total = new Calculations(list).getPeriodTotal();
+        Calculations calc  = new Calculations(list);
+        calc.updateTotals();
         notifyItemRemoved(position);
         notifyDataSetChanged();
     }
@@ -146,7 +148,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      */
     public void restoreItem(SummaryItem item, int position) {
         list.add(position, item);
-        total = new Calculations(list).getPeriodTotal();
+        Calculations calc  = new Calculations(list);
+        calc.updateTotals();
         notifyItemInserted(position);
         notifyDataSetChanged();
     }
