@@ -1,7 +1,7 @@
 package com.cs246.EzBudget;
 
 import android.icu.util.Calendar;
-import android.icu.util.GregorianCalendar;
+
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -18,7 +18,7 @@ public class DateHandler {
     public static final Locale DEF_LOCALE = Locale.ENGLISH;
     public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATABASE_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATE_FORMAT = "dd/MM/YYYY";
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String RECURRENT_DATE_FORMAT = "dd";
     private static final String YEAR_FORMAT = "yyyy";
@@ -288,7 +288,14 @@ public class DateHandler {
         Integer theYear = Integer.parseInt(getActualYear());
 
         Date date;
-        date = new GregorianCalendar(theYear, theMonth, theDay).getTime();
+        java.util.Calendar aCalendar = java.util.Calendar.getInstance();
+
+
+        // set DATE to 1, so first date of previous month
+        aCalendar.set(java.util.Calendar.DATE, theDay);
+        aCalendar.set(java.util.Calendar.MONTH, theMonth);
+        aCalendar.set(java.util.Calendar.YEAR, theYear);
+        date = aCalendar.getTime();
         theRetArray.add(date);
         /*
         long theQtdDays = DateHandler.getDayCount(theViewIniDate,theViewEndDate);

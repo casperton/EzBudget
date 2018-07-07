@@ -30,7 +30,7 @@ public class SelectViewFragment extends Fragment {
     private View myView;
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
-    private  BackGroundBalView  myBachgroundAction;
+    private  BackGroundBalView  myBachgroundAction=null;
 
 
     @NonNull
@@ -44,8 +44,8 @@ public class SelectViewFragment extends Fragment {
     @Override
     public void onResume() {
 
-
-        myBachgroundAction.execute();
+         //this line crashes the app
+        //if(myBachgroundAction !=null) myBachgroundAction.execute();
         super.onResume();
 
     }
