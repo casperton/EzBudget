@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity
                 //bundle.putLong("id", myMessage );
                 //bundle.putBoolean("isRec", true );
                 ChooseRecBalDataDialogFrag fragInfo = ChooseRecBalDataDialogFrag.newInstance();
+                CommonFragments.chooseRecData = fragInfo;
                 //fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerID, fragInfo,"LIST_BAL_DATA_DIALOG");
@@ -185,7 +186,9 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.containerID, ListCategoryFragment.newInstance());
+            Fragment theFrag = ListCategoryFragment.newInstance();
+            CommonFragments.listCategory = theFrag;
+            fragmentTransaction.replace(R.id.containerID, theFrag);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
                 //Intent intent = new Intent(getApplicationContext(),ListCategory.class);
@@ -203,8 +206,9 @@ public class MainActivity extends AppCompatActivity
             //startActivity(intent2);
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
-            fragmentTransaction.replace(R.id.containerID, ListBalDataFragment.newInstance());
+            Fragment theFrag = ListBalDataFragment.newInstance();
+            CommonFragments.listBalData = theFrag;
+            fragmentTransaction.replace(R.id.containerID,theFrag );
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -212,27 +216,26 @@ public class MainActivity extends AppCompatActivity
             //startActivity(intent2);
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
-            fragmentTransaction.replace(R.id.containerID, ListRecBalDataFragment.newInstance());
+            Fragment theFrag = ListRecBalDataFragment.newInstance();
+            CommonFragments.listRecData = theFrag;
+            fragmentTransaction.replace(R.id.containerID, theFrag);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else if (id == R.id.drawerListBalView) {
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            // fragmentTransaction.replace(R.id.containerID, DispBalViewFragment.newInstance());
-            fragmentTransaction.replace(R.id.containerID, ListBalViewFragment.newInstance());
+            Fragment theFrag = ListBalViewFragment.newInstance();
+            CommonFragments.listBalView = theFrag;
+            fragmentTransaction.replace(R.id.containerID, theFrag);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-            //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, BalViewEditFragment.newInstance()).commit();
-            //Intent intent4 = new Intent(getApplicationContext(),DispBalView.class);
-            //intent2.putExtras(dataBundle);
 
-            //startActivity(intent4);
         } else if (id == R.id.nav_share) {
             Long id_To_Search = Long.valueOf(-1);
             Bundle bundle = new Bundle();
             bundle.putLong("id", id_To_Search );
             DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
+            CommonFragments.dispCategory = fragInfo;
             fragInfo.setArguments(bundle);
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

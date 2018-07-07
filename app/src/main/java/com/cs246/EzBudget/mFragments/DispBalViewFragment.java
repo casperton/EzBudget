@@ -49,9 +49,6 @@ public class DispBalViewFragment extends Fragment {
     private EditText myTitle;
     private CheckBox isCurrent;
     View myView;
-    int mDay;
-    int mMonth;
-    int mYear;
     private Long myIDtoChange = Long.valueOf(-1);
 
     @NonNull
@@ -316,15 +313,15 @@ public class DispBalViewFragment extends Fragment {
 
  public void DeleteButton(View view){
 
-     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
      builder.setMessage(R.string.deleteConfirmation)
              .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                  public void onClick(DialogInterface dialog, int id) {
                      myDBBalView.delete(myIDtoChange);
-                     Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
+                     Toast.makeText(getActivity(), "Deleted Successfully",
                              Toast.LENGTH_SHORT).show();
-                     //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                     //startActivity(intent);
+                     if (CommonFragments.selectView!=null)CommonFragments.selectView.onResume();
+
                  }
              })
              .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

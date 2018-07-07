@@ -28,6 +28,9 @@ import com.cs246.EzBudget.R;
 public class DispCategoryFragment extends Fragment {
 
     private DBCategory mydb ;
+    private Button mySaveButton;
+    private Button myUpdateButton;
+    private Button myDeleteButton;
 
     TextView myName ;
     TextView myDescription;
@@ -52,23 +55,27 @@ public class DispCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_disp_category, container, false);
 
+        mySaveButton = myView.findViewById(R.id.dispCategorySave);
+        myUpdateButton = myView.findViewById(R.id.dispCategoryUpdate);
+        myDeleteButton = myView.findViewById(R.id.dispCategoryDelete);
 
         myName = (TextView) myView.findViewById(R.id.dispCatTextName);
         myDescription = (TextView) myView.findViewById(R.id.dispCatDescription);
         myOperation = (RadioGroup) myView.findViewById(R.id.dispCatRadioGroupOperation);
-
+        RadioButton myIncome,myOutcome,myInformative;
+        myIncome = (RadioButton) myView.findViewById(R.id.dispCatRadioIncome);
+        myOutcome = (RadioButton) myView.findViewById(R.id.dispCatRadioOutcome);
+        myInformative = (RadioButton) myView.findViewById(R.id.dispCatRadioInformative);
 
         mydb = new DBCategory(getActivity());
-        RadioButton myIncome,myOutcome,myInformative;
+
 
         Bundle args = getArguments();
 
 
         if(args !=null) {
             myIDtoChange = args.getLong("id");
-            myIncome = (RadioButton) myView.findViewById(R.id.dispCatRadioIncome);
-            myOutcome = (RadioButton) myView.findViewById(R.id.dispCatRadioOutcome);
-            myInformative = (RadioButton) myView.findViewById(R.id.dispCatRadioInformative);
+
 
             if(myIDtoChange>0){
                 //means this is the view/edit part not the add category part.
@@ -90,8 +97,10 @@ public class DispCategoryFragment extends Fragment {
                         rs.close();
                     }
                 }
-                Button b = (Button)myView.findViewById(R.id.dispCatButtonSave);
-                b.setVisibility(View.INVISIBLE);
+                mySaveButton.setVisibility(View.INVISIBLE);
+                myUpdateButton.setVisibility(View.VISIBLE);
+                myDeleteButton.setVisibility(View.VISIBLE);
+
 
                 myName.setText((CharSequence)thisName);
                 myName.setFocusable(false);
@@ -106,22 +115,47 @@ public class DispCategoryFragment extends Fragment {
                 else if (thisOperation == OPERATION.INFORMATIVE) myInformative.setChecked(true);
 
 
+            }else{
+                mySaveButton.setVisibility(View.VISIBLE);
+                myUpdateButton.setVisibility(View.INVISIBLE);
+                myDeleteButton.setVisibility(View.INVISIBLE);
             }
         }
+
+        //Click Listeners
+        mySaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View theView) {
+                SaveButton(theView);
+            }
+        });
+        myUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View theView) {
+                SaveButton(theView);
+            }
+        });
+        myDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View theView) {
+                DeleteButton(theView);
+            }
+        });
+
+
         return myView;
     }
 
 
-    public void Delete(View view) {
+    public void DeleteButton(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.deleteConfirmation)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mydb.delete(myIDtoChange);
-                        Toast.makeText(getActivity().getApplicationContext(), "Deleted Successfully",
+                        Toast.makeText(getActivity(), "Deleted Successfully",
                                 Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                        //startActivity(intent);
+
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -139,7 +173,7 @@ public class DispCategoryFragment extends Fragment {
      * Run when the save button is clicked
      * @param view
      */
-    public void Save(View view) {
+    public void SaveButton(View view) {
         Bundle extras = getActivity().getIntent().getExtras();
         Integer thisOperation= OPERATION.UNKNOWN;
 
@@ -147,9 +181,9 @@ public class DispCategoryFragment extends Fragment {
         RadioButton outcome = (RadioButton) myView.findViewById(R.id.dispCatRadioOutcome);
         RadioButton informative = (RadioButton) myView.findViewById(R.id.dispCatRadioInformative);
 
-        if(extras !=null) {
-            int Value = extras.getInt("id");
-            if(Value>0){  //edit Category
+
+
+            if(myIDtoChange>0){  //edit Category
                 String thisName = myName.getText().toString();
                 String thisDesc = myDescription.getText().toString();
                 if(income.isChecked()) thisOperation = OPERATION.CREDIT;
@@ -158,8 +192,7 @@ public class DispCategoryFragment extends Fragment {
 
                 if(mydb.update(myIDtoChange,thisName,thisDesc, thisOperation)){
                     Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                    //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                    //startActivity(intent);
+
                 } else{
                     Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
@@ -176,10 +209,9 @@ public class DispCategoryFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "not done",
                             Toast.LENGTH_SHORT).show();
                 }
-                //Intent intent = new Intent(getActivity().getApplicationContext(),ListCategory.class);
-                //startActivity(intent);
+
             }
-        }
+
     }
 
 

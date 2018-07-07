@@ -135,6 +135,10 @@ public class RecyclerBalViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
                         CommonBalView.currentItem = myBalanceViewList.get(theNewPosition);
                         DBBalanceView theBalView = new DBBalanceView(myContext);
                         theBalView.setCurrent(Long.valueOf(position));
+                        if(myUpdateButton !=null) {
+                            myUpdateButton.setVisibility(View.INVISIBLE);
+
+                        }
                         notifyDataSetChanged();
                         //Toast.makeText(myContext.getApplicationContext(), "Current Changed: "+Long.valueOf(position).toString(),
                         //        Toast.LENGTH_SHORT).show();

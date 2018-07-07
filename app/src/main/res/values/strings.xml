@@ -30,18 +30,18 @@
     <string name="catEdit">Edit Category</string>
     <string name="catDelete">Delete Category</string>
     <string name="catSave">Save Category</string>
-    <string name="catList">List Categories</string>
+    <string name="catList">Categories</string>
     <!-- BALANCE DATA -->
     <string name="balDataTitle">Financial Data</string>
-    <string name="balDataList">List Balance Data</string>
+    <string name="balDataList">Balance Data</string>
     <string name="balDataEdit">Edit Balance Data</string>
     <!-- BALANCE DATA RECURRENT-->
     <string name="balDataRecTitle">Recurrent Data</string>
-    <string name="balDataRecList">List Recurrent Data</string>
+    <string name="balDataRecList">Recurrent Data</string>
     <string name="balDataRecEdit">Edit Recurrent Data</string>
     <!-- BALANCE VIEW -->
     <string name="viewTitle">Title</string>
-    <string name="balViewList">List Periods</string>
+    <string name="balViewList">Periods</string>
     <!-- DATES -->
     <string name="dateInitial">Initial Date</string>
     <string name="dateFinal">End Date</string>

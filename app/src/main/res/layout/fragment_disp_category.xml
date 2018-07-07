@@ -109,17 +109,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/dispCatRadioGroupOperation"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/dispCatButtonSave"
+            android:id="@+id/dispCategorySave"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="144dp"
-            android:onClick="run"
-            android:text="@string/catSave"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="wrap_content"
+            android:text="@string/Save" />
+
+        <Button
+            android:id="@+id/dispCategoryUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Update" />
+
+        <Button
+            android:id="@+id/dispCategoryDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Delete" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

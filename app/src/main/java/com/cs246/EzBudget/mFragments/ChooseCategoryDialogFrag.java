@@ -1,6 +1,7 @@
 package com.cs246.EzBudget.mFragments;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -12,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.R;
-import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
+import com.cs246.EzBudget.mRecycler.RecyclerViewHolderCategory;
 
 
 public class ChooseCategoryDialogFrag extends DialogFragment {
@@ -33,6 +33,19 @@ public class ChooseCategoryDialogFrag extends DialogFragment {
 
     DBHelper mydb;
     private ProgressBar myProgress=null;
+
+    @Override
+    public void onResume() {
+        if(myBackGroundCat!=null){
+
+            if (myBackGroundCat.getStatus() != AsyncTask.Status.RUNNING) {
+                // My AsyncTask is currently doing work in doInBackground()
+                setup();
+            }
+        }
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,32 +68,37 @@ public class ChooseCategoryDialogFrag extends DialogFragment {
         myProgress = (ProgressBar) rootView.findViewById(R.id.myBar2);
         myProgress.setVisibility(View.INVISIBLE);
         mydb = DBHelper.getInstance(this.getActivity());
-        myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,this.getActivity(),  BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_TWO,myFragmentManager,null);
 
 
-        myBackGroundCat.execute();
 
         myGetIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,ChooseCategoryDialogFrag.this.getActivity(),  BackGroundCategory.CAT_INC, RecyclerViewHolder.LAYOUT_TWO,this);
+                //myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,ChooseCategoryDialogFrag.this.getActivity(),  BackGroundCategory.CAT_INC, RecyclerViewHolderCategory.LAYOUT_TWO,this);
                 myBackGroundCat.execute();
             }
         });
         myGetOutcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //new BackGroundCategory(myRecyclerView,myProgress,ChooseCategoryDialogFrag.this.getActivity(),  BackGroundCategory.CAT_OUT, RecyclerViewHolder.LAYOUT_TWO,this).execute();
+                //new BackGroundCategory(myRecyclerView,myProgress,ChooseCategoryDialogFrag.this.getActivity(),  BackGroundCategory.CAT_OUT, RecyclerViewHolderCategory.LAYOUT_TWO,this).execute();
                 myBackGroundCat.execute();
             }
         });
         myGetInformative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //new BackGroundCategory(myRecyclerView,myProgress,ChooseCategoryDialogFrag.this.getActivity(),  BackGroundCategory.CAT_INFO, RecyclerViewHolder.LAYOUT_TWO, this).execute();
+                //new BackGroundCategory(myRecyclerView,myProgress,ChooseCategoryDialogFrag.this.getActivity(),  BackGroundCategory.CAT_INFO, RecyclerViewHolderCategory.LAYOUT_TWO, this).execute();
                 myBackGroundCat.execute();
             }
         });
+
+        setup();
         return rootView;
+    }
+
+    void setup(){
+        myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,getActivity(),  BackGroundCategory.CAT_ALL, RecyclerViewHolderCategory.ACTION_CHOOSE,myFragmentManager,null);
+        myBackGroundCat.execute();
     }
 }

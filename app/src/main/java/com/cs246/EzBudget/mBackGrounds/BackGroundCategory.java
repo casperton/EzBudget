@@ -85,7 +85,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             int size = cursor.getCount();
-            Log.i("SALVATORE: SIZE: ", Integer.toString(size));
+            //Log.i("SALVATORE: SIZE: ", Integer.toString(size));
             do {
                 id = cursor.getLong(cursor.getColumnIndex(Category.CATEGORY_COLUMN_ID));
                 name = cursor.getString(cursor.getColumnIndex(Category.CATEGORY_COLUMN_NAME));
@@ -97,7 +97,7 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
                 theCat.setDescription(description);
                 theCat.setOperation(operation);
                 publishProgress(theCat);
-                Log.i("SALVATORE", "Added new register");
+                //Log.i("SALVATORE", "Added new register");
             } while (cursor.moveToNext());
         }
         cursor.close();

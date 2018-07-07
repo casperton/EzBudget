@@ -18,10 +18,8 @@ import android.widget.Toast;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
-import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
 import com.cs246.EzBudget.mRecycler.CommonBalView;
 import com.cs246.EzBudget.mRecycler.RecyclerBalViewAdapter;
-import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +34,7 @@ public class ListBalViewFragment extends Fragment {
     private ProgressBar myProgress=null;
     private Button myAddButton;
     private Button myUpdateButton;
-
+    private BackGroundBalView myBackGroundAction;
     @NonNull
     static public ListBalViewFragment newInstance(){
         return new ListBalViewFragment();
@@ -108,13 +106,17 @@ public class ListBalViewFragment extends Fragment {
 
         myUpdateButton.setVisibility(View.INVISIBLE);
 
-
-        new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager , RecyclerBalViewAdapter.ACTION_ADD,myUpdateButton).execute();
-
+        setup();
        return myView;
     }
 
+void setup(){
+        //AsyncTask instances can only be used one time.
+    myBackGroundAction = new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager , RecyclerBalViewAdapter.ACTION_ADD,myUpdateButton);
+    myBackGroundAction.execute();
 
+
+}
 
 
 

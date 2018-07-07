@@ -30,6 +30,7 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
+import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
@@ -60,6 +61,7 @@ public class SummaryFragment extends Fragment
     private DBBalanceData myBalanceData;
     private TextView myTextView;
 
+
     public static SummaryFragment newInstance() {
         return new SummaryFragment();
     }
@@ -78,6 +80,7 @@ public class SummaryFragment extends Fragment
         super.onResume();
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -205,5 +208,6 @@ public class SummaryFragment extends Fragment
             snackbar.show();
         }
     }
+
 
 }

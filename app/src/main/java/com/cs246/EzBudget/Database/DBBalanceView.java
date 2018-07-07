@@ -44,6 +44,7 @@ public class DBBalanceView  {
         status = db.insert(BalanceView.BALANCEVIEW_TABLE_NAME, null, contentValues);
         Log.i(DBBalanceView.TAG,"Data Inserted: "+ theData.getTitle());
         return status;
+
     }
 
 
@@ -312,8 +313,7 @@ public class DBBalanceView  {
         String secondQuery = "Update "+BalanceView.BALANCEVIEW_TABLE_NAME+
                 " set "+ BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT+" = 1 where "+
                 BalanceView.BALANCEVIEW_COLUMN_ID +" = "+theCurrent.toString();
-Log.i("SALVATORE",firstQuery);
-Log.i("SALVATORE",secondQuery);
+
         Cursor res;
         myDB.myLock.readLock().lock();
         try {
@@ -347,7 +347,7 @@ Log.i("SALVATORE",secondQuery);
         }
         res.close();
 
-
+        myDB.notifyBalanceViewChanged();
     }
 }
 

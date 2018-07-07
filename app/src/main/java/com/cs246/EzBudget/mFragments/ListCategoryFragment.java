@@ -1,6 +1,7 @@
 package com.cs246.EzBudget.mFragments;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,16 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundCategory;
-import com.cs246.EzBudget.mRecycler.CommonBalView;
 import com.cs246.EzBudget.mRecycler.CommonCategory;
-import com.cs246.EzBudget.mRecycler.RecyclerViewHolder;
+import com.cs246.EzBudget.mRecycler.CommonFragments;
+import com.cs246.EzBudget.mRecycler.RecyclerViewHolderCategory;
 
 /**
  * Used by the menu to on the mainActivity to list the Categories
@@ -38,6 +36,7 @@ public class ListCategoryFragment extends Fragment {
     private Button myAddButton;
     private Button myUpdateButton;
     private FragmentManager myFagmentManager;
+    private BackGroundCategory myBackGroundAction;
 
     @NonNull
     static public ListCategoryFragment newInstance(){
@@ -50,6 +49,24 @@ public class ListCategoryFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        if (myBackGroundAction !=null) {
+            if (myBackGroundAction.getStatus() == AsyncTask.Status.PENDING) {
+                // My AsyncTask has not started yet
+            }
+
+            if (myBackGroundAction.getStatus() != AsyncTask.Status.RUNNING) {
+                // My AsyncTask is currently doing work in doInBackground()
+                setup();
+            }
+
+            if (myBackGroundAction.getStatus() == AsyncTask.Status.FINISHED) {
+                // My AsyncTask is done and onPostExecute was called
+            }
+        }
+        super.onResume();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,9 +91,9 @@ public class ListCategoryFragment extends Fragment {
             public void onClick(View view) {
                 Long id_To_Search = Long.valueOf(-1);
                 Bundle bundle = new Bundle();
-                Long myMessage = id_To_Search;
-                bundle.putLong("id", myMessage );
+                bundle.putLong("id", id_To_Search );
                 DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
+                CommonFragments.dispCategory = fragInfo;
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerID, fragInfo);
@@ -97,6 +114,7 @@ public class ListCategoryFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putLong("id", id_To_Search);
                     DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
+                    CommonFragments.dispCategory = fragInfo;
                     fragInfo.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.containerID, fragInfo);
@@ -110,10 +128,16 @@ public class ListCategoryFragment extends Fragment {
         myUpdateButton.setVisibility(View.INVISIBLE);
 
 
-        new BackGroundCategory(myRecyclerView,myProgress,getActivity(),BackGroundCategory.CAT_ALL, RecyclerViewHolder.LAYOUT_ONE,null,myUpdateButton).execute();
-
+        setup();
 
         return myView;
+    }
+
+    void setup(){
+
+        myBackGroundAction = new BackGroundCategory(myRecyclerView,myProgress,getActivity(),BackGroundCategory.CAT_ALL, RecyclerViewHolderCategory.ACTION_ADD,null,myUpdateButton);
+        myBackGroundAction.execute();
+
     }
 
 }

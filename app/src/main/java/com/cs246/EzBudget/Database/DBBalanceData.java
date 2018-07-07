@@ -207,6 +207,13 @@ public class DBBalanceData {
     public Cursor getAllCursor(BalanceView theView){
         Cursor cursor;
         //return cursor;
+        if (theView == null){
+            DBBalanceView myView = new DBBalanceView(myContex);
+            theView = myView.getCurrent();
+            if (theView == null){
+                return null;
+            }
+        }
         String theInitialDate = theView.getInitialDateToDatabase();
         String theFinalDate = theView.getFinalDateToDatabase();
 
