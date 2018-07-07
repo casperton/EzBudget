@@ -181,17 +181,7 @@ public class BalanceView{
      */
     public String getInitialDateToHuman() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(this.myInitialDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myInitialDate);
-        }
-        return reportDate;
+        return DateHandler.getStrDateInHumanFormat(this.myInitialDate);
     }
 
     /**
@@ -200,17 +190,7 @@ public class BalanceView{
      */
     public String getInitialDateToDatabase() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(this.myInitialDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myInitialDate);
-        }
-        return reportDate;
+        return DateHandler.getStrDateInDatabaseFormat(this.myInitialDate);
     }
 
 
@@ -245,17 +225,7 @@ public class BalanceView{
      */
     public String getKeyDateToHuman() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(this.myKeyDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myKeyDate);
-        }
-        return reportDate;
+        return DateHandler.getStrDateInHumanFormat(this.myKeyDate);
     }
 
     /**
@@ -264,17 +234,7 @@ public class BalanceView{
      */
     public String getKeyDateToDatabase() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(this.myKeyDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myKeyDate);
-        }
-        return reportDate;
+        return DateHandler.getStrDateInDatabaseFormat(this.myKeyDate);
     }
 
 
@@ -307,17 +267,7 @@ public class BalanceView{
      */
     public String getFinalDateToHuman() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(this.myFinalDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myFinalDate);
-        }
-        return reportDate;
+        return DateHandler.getStrDateInHumanFormat(this.myFinalDate);
     }
 
     /**
@@ -326,17 +276,7 @@ public class BalanceView{
      */
     public String getFinalDateToDatabase() {
 
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(this.myFinalDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myFinalDate);
-        }
-        return reportDate;
+        return DateHandler.getStrDateInDatabaseFormat(this.myFinalDate);
     }
     public void setDescription(String theDescription){
         myDescription = theDescription;

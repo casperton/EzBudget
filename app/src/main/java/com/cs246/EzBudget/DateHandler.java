@@ -356,4 +356,52 @@ public class DateHandler {
 
         return retDate;
     }
+    /**
+     * Get the value of the date in the human readable format string
+     * usualy to show in textview or editview
+     * @return the string of date
+     */
+    public static String getStrDateInHumanFormat(Date theDate){
+        String reportDate = "";
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(DATE_FORMAT,DEF_LOCALE);
+
+        if(theDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(theDate);
+        }
+        return reportDate;
+    }
+
+    /**
+     * Get the value of the date in the Database format string
+     *  "YYYY-MM-DD"
+     * @return the string of date
+     */
+    public static String getStrDateInDatabaseFormat(Date theDate){
+        String reportDate = "";
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(DATABASE_DATE_FORMAT,DEF_LOCALE);
+
+        if(theDate != null) {
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+            reportDate = df.format(theDate);
+        }
+        return reportDate;
+    }
+
+    public static Date getDate (Integer theDay, Integer theMonth, Integer theYear) {
+
+        java.util.Calendar aCalendar = java.util.Calendar.getInstance();
+        // set DATE to 1, so first date of previous month
+        aCalendar.set(java.util.Calendar.DATE, theDay);
+        aCalendar.set(java.util.Calendar.MONTH, theMonth);
+        aCalendar.set(java.util.Calendar.YEAR, theYear);
+        return aCalendar.getTime();
+
+    }
 }

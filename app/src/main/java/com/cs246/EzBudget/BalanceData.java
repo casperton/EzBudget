@@ -237,61 +237,38 @@ public class BalanceData {
 
     /**
      * Set the value of the payment date
-     * @param newVar the new value of payment date in the Human readable Format
+     * @param theDate the new value of payment date in the Human readable Format
      */
-    public void setPaymentDateFromHuman (String newVar) {
+    public void setPaymentDateFromHuman (String theDate) {
 
-        if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if (! theDate.isEmpty()) {
 
-            myPaymentDate = date;
+            myPaymentDate = DateHandler.getDateFromHumanString(theDate);
         }
 
     }
 
     /**
      * Set the value of the payment date
-     * @param newVar the new value of payment date in Database Format
+     * @param theDate the new value of payment date in Database Format
      */
-    public void setPaymentDateFromDatabase (String newVar) {
+    public void setPaymentDateFromDatabase (String theDate) {
 
-        if (! newVar.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
-            Date date = null;
-            try {
-                date = format.parse(newVar);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if (! theDate.isEmpty()) {
 
-            myPaymentDate = date;
+            myPaymentDate = DateHandler.getDateFromDatabaseString(theDate);
         }
 
     }
 
      /**
-     * Get the value of payment date in the human readeble format
+     * Get the value of payment date in the human readable format
      * @return the value of payment date
      */
     public String getPaymentDateHuman () {
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(myPaymentDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myPaymentDate);
-        }
-        return reportDate;
-
+        if (this.myPaymentDate != null)
+            return DateHandler.getStrDateInHumanFormat(this.myPaymentDate);
+        else return "";
 
     }
 
@@ -300,17 +277,9 @@ public class BalanceData {
      * @return the value of payment date
      */
     public String getPaymentDateDatabase() {
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
-
-        if(myPaymentDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(this.myPaymentDate);
-        }
-        return reportDate;
+        if (this.myPaymentDate != null)
+            return DateHandler.getStrDateInDatabaseFormat(this.myPaymentDate);
+        else return "";
 
 
     }
@@ -338,13 +307,8 @@ public class BalanceData {
     }
 
     public void setDueDate (Integer theDay, Integer theMonth, Integer theYear) {
-
-        java.util.Calendar aCalendar = java.util.Calendar.getInstance();
-        // set DATE to 1, so first date of previous month
-        aCalendar.set(java.util.Calendar.DATE, theDay);
-        aCalendar.set(Calendar.MONTH, theMonth);
-        aCalendar.set(Calendar.YEAR, theYear);
-        myDate  = aCalendar.getTime();
+        
+        myDate  = DateHandler.getDate(theDay, theMonth, theYear);
 
     }
 
@@ -354,17 +318,8 @@ public class BalanceData {
     public void setDueDateFromHuman (String theDate) {
 
        if (! theDate.isEmpty()) {
-           DateFormat format = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-           Date date = null;
-           try {
-               date = format.parse(theDate);
-               System.out.println(date);
-                Log.i("SALVADATA", "DATE FORMATED: " +format.format(date));
-           } catch (ParseException e) {
-               e.printStackTrace();
-           }
 
-           myDate = date;
+           myDate = DateHandler.getDateFromHumanString(theDate);
        }
     }
 
@@ -374,15 +329,7 @@ public class BalanceData {
     public void setDueDateFromDatabase (String theDate) {
 
         if (! theDate.isEmpty()) {
-            DateFormat format = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT,DateHandler.DEF_LOCALE);
-            Date date = null;
-            try {
-                date = format.parse(theDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            myDate = date;
+              myDate = DateHandler.getDateFromDatabaseString(theDate);
         }
     }
 
@@ -391,34 +338,18 @@ public class BalanceData {
      * @return the value of myDate
      */
     public String getDueDateHuman () {
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (month/day/year)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT);
-
-        if(myDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(myDate);
-        }
-        return reportDate;
+        if (this.myDate != null)
+            return DateHandler.getStrDateInHumanFormat(this.myDate);
+        else return "";
     }
     /**
      * Get the value of myDate in the String in the Database format
      * @return the value of myDate
      */
     public String getDueDateDatabase () {
-        String reportDate = "";
-        // Create an instance of SimpleDateFormat used for formatting
-        // the string representation of date (year-month-day)
-        DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
-
-        if(myDate != null) {
-            // Using DateFormat format method we can create a string
-            // representation of a date with the defined format.
-            reportDate = df.format(myDate);
-        }
-        return reportDate;
+        if (this.myDate != null)
+            return DateHandler.getStrDateInDatabaseFormat(this.myDate);
+        else return "";
     }
 
     /**
