@@ -30,20 +30,21 @@ public class Calculations {
      * this period.
      * @return  Returns the total for the period as a double value
      */
-    public double getPeriodTotal() {
+    public double getPeriodTotal(int start_position) {
         periodTotal = 0;
-        for (SummaryItem listItem : list) {
-            ////////////////////////////////////////////////////////////////////////
-            // MEssage from Salvatore. You should use the class OPERATION for that
-            // OPERATION.CREDIT = BALANCE_ITEM.INCOME
-            // OPERATION.DEBIT = BALANCE_ITEM.EXPENSE
-            // OPERATION.INFORMATIVE =>  used to store the cash flow.which is only informative
-            /////////////////////////////////////////////////////////////////////
-            if (listItem.getType() == BALANCE_ITEM.EXPENSE) {
-                periodTotal += listItem.getAmount();
+        for (int i = start_position + 1; i < list.size() && list.get(i).getType() != OPERATION.CREDIT; i++)  {
+            if (list.get(i).getType() == OPERATION.DEBIT) {
+                periodTotal += list.get(i).getAmount();
             }
         }
         return periodTotal;
     }
 
+    public void updateTotals() {
+        for (SummaryItem item: list) {
+            if (item.getType() == OPERATION.CREDIT) {
+                item.setTotal_needed(getPeriodTotal(list.indexOf(item)));
+            }
+        }
+    }
 }
