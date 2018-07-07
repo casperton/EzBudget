@@ -1,17 +1,21 @@
 package com.cs246.EzBudget.SummaryView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * <p>
  * This class is a temporary modal class created to store expense and income items
  * that are stored in the database. These are all added as objects in the list sent
  * to the summary view to be displayed
  */
-public class SummaryItem {
+public class SummaryItem implements Comparable<SummaryItem>{
     private String name;
     private boolean paid;
     private double amount;
     private int type;
-    private String date; // Due date of bill, or date income is received
+    private Date date; // Due date of bill, or date income is received
     private double total_needed;
 
     /**
@@ -27,7 +31,19 @@ public class SummaryItem {
         this.paid = paid;
         this.amount = amount;
         this.type = type;
-        this.date = date;
+        // Convert string into date
+        SimpleDateFormat foreignFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date converted_date = new Date() ;
+        // Dates are stored initially as foreign format
+        // Convert the strings to date in this format
+        try {
+            converted_date = foreignFormat.parse(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.date = converted_date;
     }
 
     /**
@@ -63,11 +79,46 @@ public class SummaryItem {
     }
 
     /**
-     * G et the date (due_date or date of payment)
+     * Gets the date (due_date or date of payment)
      * @return  String date value for the item
      */
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
+    /**
+     * This method will return the total needed to cover
+     * bills during the period if the item is income
+     *
+     * @return
+     */
+    public double getTotal_needed() {
+        return total_needed;
+    }
+
+    /**
+     * This method will store the total needed for
+     * expenses that will be taken out of this income
+     * item for the given period
+     *
+     * @param total_needed
+     */
+    public void setTotal_needed(double total_needed) {
+        this.total_needed = total_needed;
+    }
+
+    public String getUsDate() {
+        SimpleDateFormat formatter =  new SimpleDateFormat("MM-dd-yyyy");
+        return formatter.format(this.date);
+    }
+
+    public String getForeignDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(this.date);
+    }
+
+    @Override
+    public int compareTo(SummaryItem o) {
+        return getDate().compareTo(o.getDate());
+    }
 }
