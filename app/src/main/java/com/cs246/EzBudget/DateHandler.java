@@ -82,6 +82,7 @@ public class DateHandler {
     }
 
     public static String getMonth (Date theDate) {
+        if (theDate == null) return "";
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -239,6 +240,7 @@ public class DateHandler {
      * @return the formatet date
      */
     public static String getShortName(Date theDate){
+        if (theDate==null) return "";
         //Month name will contain the full month name,,if you want short month name use this
 
         SimpleDateFormat month_date = new SimpleDateFormat(SHORT_MONTH_NAME+" "+"dd",DateHandler.DEF_LOCALE);
@@ -252,7 +254,7 @@ public class DateHandler {
      * @return the formatet date
      */
     public static String getLongName(Date theDate){
-
+        if (theDate==null) return "";
         Calendar cal=Calendar.getInstance();
         SimpleDateFormat month_date = new SimpleDateFormat(LONG_MONTH_NAME+" "+"dd",DateHandler.DEF_LOCALE);
         String month_name = month_date.format(theDate);
@@ -267,6 +269,7 @@ public class DateHandler {
      * @return the number of days between the passsed dates
      */
     public static long getDayCount(Date dateStart, Date dateEnd) {
+        if (dateStart == null || dateEnd==null) return 0;
         long diff = -1;
         try {
 
@@ -278,8 +281,16 @@ public class DateHandler {
         return diff;
     }
 
+    /**
+     * Get the list of dates that the Balance Data repeats (recurent) inside the period
+     * @param theViewIniDate  the initial date of the period
+     * @param theViewEndDate the final date of the period
+     * @param theData  the BalanceData record to check its recurrence
+     * @return the list of recurrent dates this "theData" will repeat itsenf inside he passed period
+     */
     public static ArrayList<Date> getListofDates(Date theViewIniDate,Date theViewEndDate,BalanceData theData){
         ArrayList<Date> theRetArray = new ArrayList<>();
+        if (theViewIniDate==null || theViewIniDate==null || theData==null) return theRetArray;
         // This is just to test
         //Todo: calculate the dates correctly based on the period and the recurrence od the data
         Integer theDay = Integer.parseInt(theData.getDueDateDay());
@@ -329,7 +340,15 @@ public class DateHandler {
         return theRetArray;
     }
 
+    /**
+     * Convert the passed string with a date in the Database format to a Date (java.Calendar)
+     * @param theDate the string with the date in the Database Format "yyyy-MM-dd"
+     * @return the Date initialized with the correct yyy,MM and dd
+     */
     public static Date getDateFromDatabaseString(String theDate){
+        if (theDate == null) return null;
+        if (theDate.isEmpty()) return null;
+
         Date retDate= null;
         DateFormat format = new SimpleDateFormat(DATABASE_DATE_FORMAT,DEF_LOCALE);
 
@@ -343,7 +362,15 @@ public class DateHandler {
         return retDate;
     }
 
+    /**
+     * Convert the passed string with a date in the Human readable format to a Date (java.Calendar)
+     * @param theDate the string with the date in the Human readable format
+     * @return the Date initialized with the correct yyy,MM and dd
+     */
     public static Date getDateFromHumanString(String theDate){
+        if (theDate == null) return null;
+        if (theDate.isEmpty()) return null;
+
         Date retDate= null;
         DateFormat format = new SimpleDateFormat(DATE_FORMAT,DEF_LOCALE);
 
@@ -362,6 +389,8 @@ public class DateHandler {
      * @return the string of date
      */
     public static String getStrDateInHumanFormat(Date theDate){
+        if (theDate == null) return "";
+
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -381,6 +410,8 @@ public class DateHandler {
      * @return the string of date
      */
     public static String getStrDateInDatabaseFormat(Date theDate){
+        if (theDate == null) return "";
+
         String reportDate = "";
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
@@ -394,7 +425,18 @@ public class DateHandler {
         return reportDate;
     }
 
+    /**
+     * initialize a Date with the passed parameters
+     * @param theDay the day of the date
+     * @param theMonth the month of the date
+     * @param theYear the year of the date
+     * @return the date initialed with the passed paramentes
+     * @warning DO NOT MAKE CHECKS IF THE PARAMENTERS ARE IN THE CORRECT RANGE - TAKE CARE
+     */
     public static Date getDate (Integer theDay, Integer theMonth, Integer theYear) {
+        if (theDay == null) return null;
+        if (theMonth == null) return null;
+        if (theYear == null) return null;
 
         java.util.Calendar aCalendar = java.util.Calendar.getInstance();
         // set DATE to 1, so first date of previous month
@@ -406,6 +448,11 @@ public class DateHandler {
     }
 
 
+    /**
+     * Convert a date from Database Format "yyyy-MM-dd"to a human readable format
+     * @param theDate the date to be converted
+     * @return the string with the converted date
+     */
     public static String convertStrFromDatabaseToHuman(String theDate){
         if(theDate ==null){
             return "";

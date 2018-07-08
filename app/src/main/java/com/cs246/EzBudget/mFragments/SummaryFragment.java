@@ -35,6 +35,7 @@ import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
+import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
@@ -172,9 +173,16 @@ public class SummaryFragment extends Fragment
                     String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
                     Double amount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
                     Long theCat = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
-                    //Log.i("SummaryFragment", "Category: " + theCat);
-                    // TODO : Add boolean for marked as paid from database
-                    boolean paid = false;
+                    //Thestatus can be:
+                    //UNKNOWN = -1;
+                    //PAID_RECEIVED = 0;
+                    //UNPAID_UNRECEIVED = 1;
+                    Integer Status = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    boolean paid=false;
+                    Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    if (theStatus== PAY_STATUS.UNKNOWN) paid = false;
+                    if (theStatus== PAY_STATUS.UNPAID_UNRECEIVED) paid = false;
+                    if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
                     // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
                     SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
                     bills.add(summaryItem);
@@ -182,13 +190,44 @@ public class SummaryFragment extends Fragment
                   } while (cursor.moveToNext());
             }
         }
-        // TODO : Add code to load income items - Set SummaryType.Income for income
+        // THIS CODE WILL ADD INCOMES FROM THE BalanceDATA table the are in the same period as the current one (mBalanceView)
+
+        Cursor cursorIncomes = myBalanceData.getIncomesCursor(myBalanceView);
+        //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
+
+
+        if (cursor !=null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                    String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                    Double amount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    Long theCat = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                    //Thestatus can be:
+                    //UNKNOWN = -1;
+                    //PAID_RECEIVED = 0;
+                    //UNPAID_UNRECEIVED = 1;
+                    Integer Status = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    boolean paid=false;
+                    Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    if (theStatus== PAY_STATUS.UNKNOWN) paid = false;
+                    if (theStatus== PAY_STATUS.UNPAID_UNRECEIVED) paid = false;
+                    if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
+
+                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
+                    bills.add(summaryItem);
+                    // TODO : Replace total with correct values for amount needed during this period
+                } while (cursor.moveToNext());
+            }
+        }
+
 
         // Add a test paycheck
-        SummaryItem payItem = new SummaryItem("My First Paycheck", "2018-06-01", 1200, false, OPERATION.CREDIT);
-        bills.add(payItem);
-        payItem = new SummaryItem("My Second Paycheck", "2018-06-15", 1200, false, OPERATION.CREDIT);
-        bills.add(payItem);
+        //SummaryItem payItem = new SummaryItem("My First Paycheck", "2018-06-01", 1200, false, OPERATION.CREDIT);
+        //bills.add(payItem);
+        //payItem = new SummaryItem("My Second Paycheck", "2018-06-15", 1200, false, OPERATION.CREDIT);
+        //bills.add(payItem);
 
         Collections.sort(bills);
         Calculations calc  = new Calculations(bills);
