@@ -102,6 +102,10 @@ public class DispBalViewFragment extends Fragment {
                 String theKeyDate = rs.getString(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_KEY_DATE));
                 Integer theCurrent = rs.getInt(rs.getColumnIndex(BalanceView.BALANCEVIEW_COLUMN_IS_CURRENT));
 
+                //convet Dates to Human Format
+                theInitialDate= DateHandler.convertStrFromDatabaseToHuman(theInitialDate);
+                theFinalDate=DateHandler.convertStrFromDatabaseToHuman(theFinalDate);
+                theKeyDate=DateHandler.convertStrFromDatabaseToHuman(theKeyDate);
 
                 if (!rs.isClosed())  {
                     rs.close();

@@ -179,8 +179,12 @@ public class DispBalDataFragment extends Fragment {
                             theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
                             theStatus = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
                             theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                            //this date is in the Database Format
                             theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                            theDueDate = DateHandler.convertStrFromDatabaseToHuman(theDueDate);
                             thePaymentDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
+                            thePaymentDate = DateHandler.convertStrFromDatabaseToHuman(thePaymentDate);
+
                             theLastModification = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
                             thePeriod = RECURRENT.NO_PERIODIC;
                             if(theCategory >0) myCatName = myCatDB.getName(theCategory);
@@ -203,7 +207,9 @@ public class DispBalDataFragment extends Fragment {
                             theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION));
                             theStatus = PAY_STATUS.UNKNOWN;
                             theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY));
+                            //this date is formateed in the Database Format
                             theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE));
+                            theDueDate = DateHandler.convertStrFromDatabaseToHuman(theDueDate);
                             thePeriod = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_PERIOD));
 
                             if(theCategory >0) myCatName = myCatDB.getName(theCategory);

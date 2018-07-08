@@ -404,4 +404,17 @@ public class DateHandler {
         return aCalendar.getTime();
 
     }
+
+
+    public static String convertStrFromDatabaseToHuman(String theDate){
+        if(theDate ==null){
+            return "";
+        }
+        if (theDate.isEmpty()){
+            return "";
+        }
+        Date myDate = getDateFromDatabaseString(theDate);
+        return getStrDateInHumanFormat(myDate);
+
+    }
 }
