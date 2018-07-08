@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.Database.DBBalanceData;
+import com.cs246.EzBudget.Database.DBBalanceDataRec;
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
@@ -45,6 +46,7 @@ public class DispBalDataFragment extends Fragment {
 
     private DBCategory myCatDB ;
     private DBBalanceData myDBBalanceData;
+    private DBBalanceDataRec myDBBalanceDataRec;
     private boolean myIsRecurrent = false;
     private boolean myShowRecurrent = true;
 
@@ -58,7 +60,12 @@ public class DispBalDataFragment extends Fragment {
     EditText myPaymentDate;
     RadioButton myStatusPaid;
     RadioButton myStatusNotPaid;
+    RadioButton myRecDaily;
+    RadioButton myRecWeekly;
+    RadioButton myRecMonthly;
+    RadioButton myRecBiWeekly;
     CheckBox myRecurrent;
+
     //this button will save the filds to the database
     Button mySaveButton;
     Button myUpdateButton;
@@ -111,6 +118,11 @@ public class DispBalDataFragment extends Fragment {
         myStatusPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioPaid);
         myStatusNotPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioUnPaid);
         myRecurrent = (CheckBox) myView.findViewById(R.id.dispBalDataCheckBoxRecurrent);
+        myRecDaily = (RadioButton) myView.findViewById(R.id.dispBalDataRadioDaily);
+        myRecWeekly = (RadioButton) myView.findViewById(R.id.dispBalDataRadioWeekly);
+        myRecMonthly = (RadioButton) myView.findViewById(R.id.dispBalDataRadioMonthly);
+        myRecBiWeekly = (RadioButton) myView.findViewById(R.id.dispBalDataRadioBiWeekly);
+
         myProgress = (ProgressBar) myView.findViewById(R.id.dispBalDataBar);
         myProgress.setVisibility(View.INVISIBLE);
         myStatusLayOut = (LinearLayout) myView.findViewById(R.id.dispBalDataLayoutStatus);
@@ -139,28 +151,68 @@ public class DispBalDataFragment extends Fragment {
 
         myCatDB = new DBCategory(getActivity());
         myDBBalanceData = new DBBalanceData(getActivity());
+        myDBBalanceDataRec = new DBBalanceDataRec(getActivity());
 
         if(myIDtoChange > 0) {
-           Long Value = myIDtoChange;
 
-            if(Value>0){  //update
+            if(myIDtoChange>0){  //update
+
+                String theValue = "";
+                String theDescription = "";
+                Integer theStatus = PAY_STATUS.UNKNOWN;
+                Long theCategory = Long.valueOf(-1);
+                String theDueDate = "";
+                String thePaymentDate = "";
+                String theLastModification = "";
+                String myCatName = "";
+                Integer thePeriod = RECURRENT.UNKNOWN;
+                Cursor rs = null;
                 //means this is the view/edit part not the add  part.
-                Cursor rs = myDBBalanceData.getDataCursor(Value);
-                rs.moveToFirst();
+                if(myIsRecurrent == false) {
+                    rs = myDBBalanceData.getDataCursor(myIDtoChange);
+                    if (rs !=null ) {
+                        if (rs.getCount()>0) {
+                            rs.moveToFirst();
 
-                //column values
-                String theValue = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                String theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                Integer theStatus = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
-                Long theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
-                String theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                String thePaymentDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
-                String theLastModification = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
+                            //column values
+                            theValue = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                            theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                            theStatus = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                            theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                            theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                            thePaymentDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
+                            theLastModification = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
+                            thePeriod = RECURRENT.NO_PERIODIC;
+                            if(theCategory >0) myCatName = myCatDB.getName(theCategory);
 
-                String myCatName=myCatDB.getName(theCategory);
+                            if (!rs.isClosed()) {
+                                rs.close();
+                            }
+                        }
+                    }
 
-                if (!rs.isClosed())  {
-                    rs.close();
+
+                }else{
+                    rs = myDBBalanceDataRec.getDataCursor(myIDtoChange);
+                    if (rs !=null ) {
+                        if (rs.getCount()>0) {
+                            rs.moveToFirst();
+
+                            //column values
+                            theValue = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_VALUE));
+                            theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION));
+                            theStatus = PAY_STATUS.UNKNOWN;
+                            theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY));
+                            theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE));
+                            thePeriod = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_PERIOD));
+
+                            if(theCategory >0) myCatName = myCatDB.getName(theCategory);
+
+                            if (!rs.isClosed()) {
+                                rs.close();
+                            }
+                        }
+                    }
                 }
 
                 mySaveButton.setVisibility(View.INVISIBLE);
@@ -190,6 +242,13 @@ public class DispBalDataFragment extends Fragment {
                 if (theStatus == PAY_STATUS.PAID_RECEIVED)  myStatusPaid.setChecked(true);
                 else if (theStatus == PAY_STATUS.UNPAID_UNRECEIVED) myStatusNotPaid.setChecked(true);
 
+                if(thePeriod == RECURRENT.UNKNOWN || thePeriod == RECURRENT.NO_PERIODIC) myRecurrent.setChecked(false);
+                else myRecurrent.setChecked(true);
+
+                if (thePeriod == RECURRENT.DAILY) myRecDaily.setChecked(true);
+                else if (thePeriod == RECURRENT.WEEKLY) myRecWeekly.setChecked(true);
+                else if (thePeriod == RECURRENT.BI_WEEKLI) myRecBiWeekly.setChecked(true);
+                else if (thePeriod == RECURRENT.MONTHLY) myRecMonthly.setChecked(true);
 
             }
         }else {

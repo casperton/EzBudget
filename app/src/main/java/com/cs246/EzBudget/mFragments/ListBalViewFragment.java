@@ -87,8 +87,7 @@ public class ListBalViewFragment extends Fragment {
             public void onClick(View view) {
 
                 BalanceView myBalView = CommonBalView.currentItem;
-                Toast.makeText(getActivity(), "Clicked: ",
-                        Toast.LENGTH_SHORT).show();
+
                 if (myBalView != null) {
                     Long id_To_Search =myBalView.getID();
                     Bundle bundle = new Bundle();

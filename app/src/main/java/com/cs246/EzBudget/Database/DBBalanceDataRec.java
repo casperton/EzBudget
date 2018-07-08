@@ -80,8 +80,8 @@ public class DBBalanceDataRec{
      * @param id The id of the Balance Data to retrieve its data
      * @return The Cursor wirh the required Data
      */
-    public Cursor getDataCursor(int id) {
-        String theQuery = "select * from "+BalanceData.BALANCEDATAREC_TABLE_NAME+" where "+BalanceData.BALANCEDATAREC_COLUMN_ID+" = "+id+"";
+    public Cursor getDataCursor(Long id) {
+        String theQuery = "select * from "+BalanceData.BALANCEDATAREC_TABLE_NAME+" where "+BalanceData.BALANCEDATAREC_COLUMN_ID+" = "+id.toString()+"";
 
         Cursor res;
         myDB.myLock.readLock().lock();

@@ -19,6 +19,7 @@ import com.cs246.EzBudget.RECURRENT;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalData;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalView;
 import com.cs246.EzBudget.mRecycler.CommonBalData;
+import com.cs246.EzBudget.mRecycler.CommonFragments;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,10 +77,11 @@ public class ListBalDataFragment extends Fragment {
                 bundle.putLong("id", myMessage );
                 bundle.putBoolean("isRec", false );
                 bundle.putBoolean("showRec", true);
-                DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
-                fragInfo.setArguments(bundle);
+                DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
+                CommonFragments.dispBalData = theFrag;
+                theFrag.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_FRAG");
+                fragmentTransaction.replace(R.id.containerID, theFrag,"DISPLAY_BAL_DATA_FRAG");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -91,13 +93,13 @@ public class ListBalDataFragment extends Fragment {
 
                 Long id_To_Search = CommonBalData.currentItem.getID();
                 Bundle bundle = new Bundle();
-                Long myMessage = id_To_Search;
-                bundle.putLong("id", myMessage);
-                if (CommonBalData.currentItem.getRecPeriod()== RECURRENT.NO_PERIODIC) bundle.putBoolean("isRec", true);
-                else bundle.putBoolean("isRec", false);
+                bundle.putLong("id", id_To_Search);
+                if (CommonBalData.currentItem.getRecPeriod()== RECURRENT.NO_PERIODIC) bundle.putBoolean("isRec", false);
+                else bundle.putBoolean("isRec", true);
                 bundle.putBoolean("showRec", true);
                 DispBalDataFragment theFrag = DispBalDataFragment.newInstance();
                 theFrag.setArguments(bundle);
+                CommonFragments.dispBalData = theFrag;
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerID, theFrag, "DISPLAY_BAL_DATA_FRAG");
                 fragmentTransaction.addToBackStack(null);
