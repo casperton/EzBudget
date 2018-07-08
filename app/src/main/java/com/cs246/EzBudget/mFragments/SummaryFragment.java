@@ -196,20 +196,20 @@ public class SummaryFragment extends Fragment
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
 
 
-        if (cursor !=null) {
-            if (cursor.moveToFirst()) {
+        if (cursorIncomes !=null) {
+            if (cursorIncomes.moveToFirst()) {
                 do {
-                    String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                    String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                    Double amount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                    Long theCat = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                    String description = cursorIncomes.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                    String due_date = cursorIncomes.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                    Double amount = cursorIncomes.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    Long theCat = cursorIncomes.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
                     //Thestatus can be:
                     //UNKNOWN = -1;
                     //PAID_RECEIVED = 0;
                     //UNPAID_UNRECEIVED = 1;
-                    Integer Status = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    Integer Status = cursorIncomes.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
                     boolean paid=false;
-                    Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    Integer theStatus = cursorIncomes.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
                     if (theStatus== PAY_STATUS.UNKNOWN) paid = false;
                     if (theStatus== PAY_STATUS.UNPAID_UNRECEIVED) paid = false;
                     if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
