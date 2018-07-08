@@ -16,6 +16,9 @@ import com.cs246.EzBudget.R;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -96,7 +99,14 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         } else {
             // Expense items have a due date only
             holder.date.setText("Due: " + date);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+            Date now = new Date();
+            if (bill.getDate().before(now)) {
+                ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
+                expenseHolder.past_due.setText("(Past Due)");
+            }
         }
+
     }
 
     /**
@@ -183,6 +193,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
 
     public class ExpenseViewHolder extends MyViewHolder {
         public RelativeLayout viewBackground;
+        public TextView past_due;
+
         /**
          * The constructor method sets up the items in the
          * TextView needed to display the data for the
@@ -197,6 +209,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
             name = itemView.findViewById(R.id.name);
             amount = itemView.findViewById(R.id.amount);
             date = itemView.findViewById(R.id.date);
+            past_due = itemView.findViewById(R.id.past_due);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
         }
