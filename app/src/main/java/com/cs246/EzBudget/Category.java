@@ -16,6 +16,28 @@ public class Category {
     public static final String CATEGORY_COLUMN_DESCRIPTION = "catDescription";
     public static final String CATEGORY_COLUMN_OPERATION = "operation";
 
+
+    /**
+     GENERAL INCOME
+     Whatever income it is
+
+     */
+    public static final String DB_CAT_GEN_INCOME_NAME = "INCOME";
+    public static final String DB_CAT_GEN_INCOME_DESCRIPTION = "Whatever income it is";
+    public static final Integer DB_CAT_GEN_INCOME_OPERATION = OPERATION.CREDIT;
+    public static final Category DB_CAT_GEN_INCOME = new Category(DB_CAT_GEN_INCOME_NAME,DB_CAT_GEN_INCOME_DESCRIPTION,DB_CAT_GEN_INCOME_OPERATION);
+
+
+    /**
+     GENERAL OUTCOME
+     Whatever bill it is
+
+     */
+    public static final String DB_CAT_GEN_OUTCOME_NAME = "BILL";
+    public static final String DB_CAT_GEN_OUTCOME_DESCRIPTION = "Whatever BILL it is";
+    public static final Integer DB_CAT_GEN_OUTCOME_OPERATION = OPERATION.DEBIT;
+    public static final Category DB_CAT_GEN_OUTCOME = new Category(DB_CAT_GEN_OUTCOME_NAME,DB_CAT_GEN_OUTCOME_DESCRIPTION,DB_CAT_GEN_OUTCOME_OPERATION);
+
     //Most common budget categories
     /**
      * HOUSING is generally the largest item in a family budget. Depending on the type and cost of your home,

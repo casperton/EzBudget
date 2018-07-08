@@ -32,9 +32,12 @@
     <string name="catSave">Save Category</string>
     <string name="catList">Categories</string>
     <!-- BALANCE DATA -->
+    <string name="balDataAmount">Amount</string>
     <string name="balDataTitle">Financial Data</string>
     <string name="balDataList">Balance Data</string>
     <string name="balDataEdit">Edit Balance Data</string>
+    <string name="balDataBill">Bill</string>
+    <string name="balDataIncome">Income</string>
     <!-- BALANCE DATA RECURRENT-->
     <string name="balDataRecTitle">Recurrent Data</string>
     <string name="balDataRecList">Recurrent Data</string>

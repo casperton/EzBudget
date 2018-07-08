@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
@@ -55,7 +56,7 @@ public class DispBalDataFragment extends Fragment {
 
     EditText myDueDate;
     EditText myValue;
-    EditText myCategory;
+    Switch myCategory;
     EditText myDescription;
     EditText myPaymentDate;
     RadioButton myStatusPaid;
@@ -112,7 +113,7 @@ public class DispBalDataFragment extends Fragment {
 
         myDueDate = (EditText) myView.findViewById(R.id.dispBalDataDueDate);
         myValue = (EditText) myView.findViewById(R.id.dispBalDataValue);
-        myCategory = (EditText) myView.findViewById(R.id.dispBalDataCategory);
+        myCategory = (Switch) myView.findViewById(R.id.switchCategory);
         myDescription = (EditText) myView.findViewById(R.id.dispBalDataDescription);
         myPaymentDate = (EditText) myView.findViewById(R.id.dispBalDataPaymentDate);
         myStatusPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioPaid);
@@ -134,20 +135,21 @@ public class DispBalDataFragment extends Fragment {
         final FragmentManager fm=getActivity().getSupportFragmentManager();
         final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
-        if (myIsRecurrent) myStatusLayOut.setVisibility(View.INVISIBLE);
+        myStatusLayOut.setVisibility(View.GONE);
         if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
 
 
         /**
          * Show Fragment to select the category on long click
          */
+        /*
         myCategory.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 tv.show(fm,"CATEGORY_SHOW_FRAGMENT");
                 return true;
             }
-        });
+        });*/
 
         myCatDB = new DBCategory(getActivity());
         myDBBalanceData = new DBBalanceData(getActivity());
@@ -187,8 +189,7 @@ public class DispBalDataFragment extends Fragment {
 
                             theLastModification = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
                             thePeriod = RECURRENT.NO_PERIODIC;
-                            if(theCategory >0) myCatName = myCatDB.getName(theCategory);
-
+                            //if(theCategory >0) myCatName = myCatDB.getName(theCategory);
                             if (!rs.isClosed()) {
                                 rs.close();
                             }
@@ -233,7 +234,9 @@ public class DispBalDataFragment extends Fragment {
                 myDescription.setFocusable(true);
                 myDescription.setClickable(true);
 
-                myCategory.setText(myCatName);
+                //myCategory.setText(myCatName);
+                if (theCategory==DBCategory.GEN_INCOME) myCategory.setPressed(false);
+                if (theCategory==DBCategory.GEN_OUTCOME) myCategory.setPressed(true);
                 myCategory.setFocusable(true);
                 myCategory.setClickable(true);
 
@@ -380,7 +383,7 @@ public class DispBalDataFragment extends Fragment {
 
 public void setCateGoryText(String theText){
 
-        myCategory.setText(theText);
+        //myCategory.setText(theText);
 }
     /**
      * Run when the save button is clicked
@@ -392,13 +395,25 @@ public void setCateGoryText(String theText){
 
         Double theValue = Double.parseDouble(myValue.getText().toString());
         String theDueDate = myDueDate.getText().toString();
-        String theCategoryNAME = myCategory.getText().toString();
-        Long theCategoryID = myCatDB.getID(theCategoryNAME);
-        if (theCategoryID == Category.UNKNOWN) {
-            Toast.makeText(getActivity().getApplicationContext(), "UNKNOWN CATEGORY",
-                    Toast.LENGTH_SHORT).show();
-            return;
+        //String theCategoryNAME = myCategory.getText().toString();
+        //Long theCategoryID = myCatDB.getID(theCategoryNAME);
+        //if (theCategoryID == Category.UNKNOWN) {
+        //    Toast.makeText(getActivity().getApplicationContext(), "UNKNOWN CATEGORY",
+        //            Toast.LENGTH_SHORT).show();
+        //    return;
+        //}
+        //if switch is income set the category general income
+        //if switch is outcome set category to general outcome
+        Long theCategoryID=Category.UNKNOWN;
+        if (myCategory.isEnabled()) {
+            //it is a bill
+            theCategoryID = DBCategory.GEN_INCOME;
+        }else{
+            //it is an income
+            theCategoryID = DBCategory.GEN_OUTCOME;
         }
+
+
         String theDesc = myDescription.getText().toString();
 
         // STATUS Handling

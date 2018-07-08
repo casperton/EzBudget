@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class DBCategory {
 
+    public static  Long GEN_INCOME = Long.valueOf(1);
+    public static Long GEN_OUTCOME = Long.valueOf(2);
     private final String TAG = "DB_CATEGORY";
     private DBHelper myDB;
     public DBCategory(Context context) {

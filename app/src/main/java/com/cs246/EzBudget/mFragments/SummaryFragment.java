@@ -193,8 +193,6 @@ public class SummaryFragment extends Fragment
         // THIS CODE WILL ADD INCOMES FROM THE BalanceDATA table the are in the same period as the current one (mBalanceView)
 
         Cursor cursorIncomes = myBalanceData.getIncomesCursor(myBalanceView);
-        //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
-
 
         if (cursorIncomes !=null) {
             if (cursorIncomes.moveToFirst()) {

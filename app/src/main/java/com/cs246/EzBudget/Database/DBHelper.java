@@ -165,6 +165,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //* Table Category*/
         db.execSQL(CREATE_TABLE_CATEGORY);
+        Long CatGenIncome = DBCategory.insertCategory(db,Category.DB_CAT_GEN_INCOME);
+        DBCategory.GEN_INCOME=CatGenIncome;
+        Long CatGenOutcome = DBCategory.insertCategory(db,Category.DB_CAT_GEN_OUTCOME);
+        DBCategory.GEN_OUTCOME=CatGenOutcome;
         Long CatHousing = DBCategory.insertCategory(db,Category.DB_CAT_HOUSING);
         //Log.i(TAG,CatHousing.toString());
         Long CatFood =DBCategory.insertCategory(db,Category.DB_CAT_FOOD);
@@ -181,20 +185,20 @@ public class DBHelper extends SQLiteOpenHelper {
         Long CatInvest =DBCategory.insertCategory(db,Category.DB_CAT_INVESTMENTS);
         //* Table Balance Data*/
         db.execSQL(CREATE_TABLE_BALANCEDATA);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_PAYMENT, CatSalary);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_ELETRICITY, CatUtilities);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_PHONE, CatUtilities);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_CAR, CatTranport);
-        DBBalanceData.insertBalData(db,BalanceData.DB_REC_RENT,CatHousing);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_PAYMENT, CatGenIncome);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_ELETRICITY, CatGenOutcome);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_PHONE, CatGenOutcome);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_CAR, CatGenOutcome);
+        DBBalanceData.insertBalData(db,BalanceData.DB_REC_RENT,CatGenOutcome);
         //* Table Balance Data Recurrent*/
         db.execSQL(CREATE_TABLE_BALANCEDATAREC);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PAYMENT, CatSalary);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_GROCERY ,CatFood);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_ELETRICITY, CatUtilities);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_WATER, CatUtilities);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PHONE, CatUtilities);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_CAR, CatTranport);
-        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_RENT,CatHousing);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PAYMENT, CatGenIncome);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_GROCERY ,CatGenOutcome);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_ELETRICITY, CatGenOutcome);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_WATER, CatGenOutcome);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_PHONE, CatGenOutcome);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_CAR, CatGenOutcome);
+        DBBalanceDataRec.insertBalDataRec(db,BalanceData.DB_REC_RENT,CatGenOutcome);
 
         //* Table Balance View*/
         db.execSQL(CREATE_TABLE_BALANCEVIEW);

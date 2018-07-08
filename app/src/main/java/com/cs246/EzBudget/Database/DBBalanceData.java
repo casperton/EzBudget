@@ -247,7 +247,7 @@ public class DBBalanceData {
     }
 
     /**
-     * Return a Cursor with all Income BalanceDatas in the database
+     * Return a Cursor with all Income BalanceDatas in the database in the passed period
      * @return TheCursor with all Incomes
      */
     public Cursor getIncomesCursor(BalanceView theView){
@@ -287,7 +287,43 @@ where category.operation = 1
     }
 
     /**
-     * Return a Cursor with all Outcomes BalanceDatas in the database
+     * Return a Cursor with all Income Balance Datas in the database
+     * @return TheCursor with all Incomes regardless of its view period
+     */
+    public Cursor getIncomesCursor(){
+
+        Cursor cursor;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* "inner" join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
+
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Outcomes BalanceDatas in the database in the passed period
      * @return the Cursor with all Outcomes
      */
     public Cursor getOutcomesCursor(BalanceView theView){
@@ -319,6 +355,46 @@ where category.operation = 1
             String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString()+
                     " AND "+BalanceData.BALANCEDATA_COLUMN_DUE_DATE+
                     " BETWEEN "+"\""+theInitialDate+"\""+" AND "+"\""+theFinalDate+"\"";
+
+            cursor = db.query(theTableArg,Projections,theWhere,null,
+                    null,null,null);
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+        return cursor;
+    }
+
+    /**
+     * Return a Cursor with all Outcomes BalanceDatas in the database in the passed period
+     * @return the Cursor with all Outcomes regardless of the period
+     */
+    public Cursor getOutcomesCursor(){
+
+
+        Cursor cursor;
+
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            String[] Projections = getProjections();
+
+            /* "inner" join.
+        select *
+from category
+join balanceData
+   on category.category_id = balanceData.category_id
+where category.operation = 1
+
+         */
+            //SELECT id, idCategory, description, date, paymentDate, status, modificationDateTime
+            // FROM category inner join balanceData on id = idCategory WHERE operation = 1
+            String theTableArg = BalanceData.BALANCEDATA_TABLE_NAME +
+                    " inner join " + Category.CATEGORY_TABLE_NAME +
+                    " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
+
+
+            String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
             cursor = db.query(theTableArg,Projections,theWhere,null,
                     null,null,null);
 
