@@ -94,7 +94,7 @@ public class ListBalDataFragment extends Fragment {
                 Long id_To_Search = CommonBalData.currentItem.getID();
                 Bundle bundle = new Bundle();
                 bundle.putLong("id", id_To_Search);
-                if (CommonBalData.currentItem.getRecPeriod()== RECURRENT.NO_PERIODIC) bundle.putBoolean("isRec", false);
+                if (CommonBalData.currentItem.getRecPeriod()== RECURRENT.ONCE) bundle.putBoolean("isRec", false);
                 else bundle.putBoolean("isRec", true);
                 bundle.putBoolean("showRec", true);
                 DispBalDataFragment theFrag = DispBalDataFragment.newInstance();

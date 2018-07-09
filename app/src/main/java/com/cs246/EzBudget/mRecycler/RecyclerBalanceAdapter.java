@@ -161,7 +161,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                             myUpdateButton.setVisibility(View.VISIBLE);
 
                         }
-                        if(!isRecurrent) CommonBalData.currentItem.setRecPeriod(RECURRENT.NO_PERIODIC);
+                        if(!isRecurrent) CommonBalData.currentItem.resetRecurrent();
 
                     }
 
@@ -181,8 +181,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                         if (theBalDataDatabase.insert(theRecord, true) > 0) {
                             Toast.makeText(myContext.getApplicationContext(), "Added Successfully",
                                     Toast.LENGTH_SHORT).show();
-                            Fragment theFragment =  CommonFragments.summaryFrag;
-                            theFragment.onResume();
+                            if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
 
                         } else {
                             Toast.makeText(myContext.getApplicationContext(), "Not Added",

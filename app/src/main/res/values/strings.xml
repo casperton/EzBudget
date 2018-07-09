@@ -52,7 +52,7 @@
 
     <!-- Recurrence text -->
     <string name="viewCurrent">Is Current</string>
-    <string name="recDaily">Daily</string>
+    <string name="recOnce">Once</string>
     <string name="recWeekly">Weekly</string>
     <string name="recBiWeekly">Bi Weekly</string>
     <string name="recMonthly">Monthly</string>

@@ -169,7 +169,9 @@ public class DBHelper extends SQLiteOpenHelper {
         DBCategory.GEN_INCOME=CatGenIncome;
         Long CatGenOutcome = DBCategory.insertCategory(db,Category.DB_CAT_GEN_OUTCOME);
         DBCategory.GEN_OUTCOME=CatGenOutcome;
+        /*
         Long CatHousing = DBCategory.insertCategory(db,Category.DB_CAT_HOUSING);
+
         //Log.i(TAG,CatHousing.toString());
         Long CatFood =DBCategory.insertCategory(db,Category.DB_CAT_FOOD);
         //Log.i(TAG,CatFood.toString());
@@ -182,7 +184,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Long CatRetire =DBCategory.insertCategory(db,Category.DB_CAT_RETIREMENT);
         Long CatSalary =DBCategory.insertCategory(db,Category.DB_CAT_SALARY);
         Long CatRefund =DBCategory.insertCategory(db,Category.DB_CAT_TAX_REFUNDS);
-        Long CatInvest =DBCategory.insertCategory(db,Category.DB_CAT_INVESTMENTS);
+        Long CatInvest =DBCategory.insertCategory(db,Category.DB_CAT_INVESTMENTS);*/
         //* Table Balance Data*/
         db.execSQL(CREATE_TABLE_BALANCEDATA);
         DBBalanceData.insertBalData(db,BalanceData.DB_REC_PAYMENT, CatGenIncome);

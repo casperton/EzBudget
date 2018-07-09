@@ -7,9 +7,8 @@ public class RECURRENT {
     //
     // Fields
     //
-    public static final Integer NO_PERIODIC = -2;
     public static final Integer UNKNOWN = -1;
-    public static final Integer DAILY = 0;
+    public static final Integer ONCE = 0;
     public static final Integer WEEKLY = 1;
     public static final Integer BI_WEEKLI = 2;
     public static final Integer MONTHLY = 3;

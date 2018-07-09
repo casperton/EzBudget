@@ -61,11 +61,12 @@ public class DispBalDataFragment extends Fragment {
     EditText myPaymentDate;
     RadioButton myStatusPaid;
     RadioButton myStatusNotPaid;
-    RadioButton myRecDaily;
+
+    RadioButton myRecOnce;
     RadioButton myRecWeekly;
     RadioButton myRecMonthly;
     RadioButton myRecBiWeekly;
-    CheckBox myRecurrent;
+
 
     //this button will save the filds to the database
     Button mySaveButton;
@@ -118,8 +119,7 @@ public class DispBalDataFragment extends Fragment {
         myPaymentDate = (EditText) myView.findViewById(R.id.dispBalDataPaymentDate);
         myStatusPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioPaid);
         myStatusNotPaid = (RadioButton) myView.findViewById(R.id.dispBalDataRadioUnPaid);
-        myRecurrent = (CheckBox) myView.findViewById(R.id.dispBalDataCheckBoxRecurrent);
-        myRecDaily = (RadioButton) myView.findViewById(R.id.dispBalDataRadioDaily);
+        myRecOnce = (RadioButton) myView.findViewById(R.id.dispBalDataRadioOnce);
         myRecWeekly = (RadioButton) myView.findViewById(R.id.dispBalDataRadioWeekly);
         myRecMonthly = (RadioButton) myView.findViewById(R.id.dispBalDataRadioMonthly);
         myRecBiWeekly = (RadioButton) myView.findViewById(R.id.dispBalDataRadioBiWeekly);
@@ -136,7 +136,7 @@ public class DispBalDataFragment extends Fragment {
         final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
         myStatusLayOut.setVisibility(View.GONE);
-        if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
+        //if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
 
 
         /**
@@ -188,7 +188,7 @@ public class DispBalDataFragment extends Fragment {
                             thePaymentDate = DateHandler.convertStrFromDatabaseToHuman(thePaymentDate);
 
                             theLastModification = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
-                            thePeriod = RECURRENT.NO_PERIODIC;
+                            thePeriod = RECURRENT.ONCE;
                             //if(theCategory >0) myCatName = myCatDB.getName(theCategory);
                             if (!rs.isClosed()) {
                                 rs.close();
@@ -251,10 +251,13 @@ public class DispBalDataFragment extends Fragment {
                 if (theStatus == PAY_STATUS.PAID_RECEIVED)  myStatusPaid.setChecked(true);
                 else if (theStatus == PAY_STATUS.UNPAID_UNRECEIVED) myStatusNotPaid.setChecked(true);
 
-                if(thePeriod == RECURRENT.UNKNOWN || thePeriod == RECURRENT.NO_PERIODIC) myRecurrent.setChecked(false);
-                else myRecurrent.setChecked(true);
-
-                if (thePeriod == RECURRENT.DAILY) myRecDaily.setChecked(true);
+                if(thePeriod == RECURRENT.UNKNOWN ) {
+                    myRecOnce.setChecked(false);
+                    myRecWeekly.setChecked(false);
+                    myRecBiWeekly.setChecked(false);
+                    myRecMonthly.setChecked(false);
+                }
+                else if (thePeriod == RECURRENT.ONCE) myRecOnce.setChecked(true);
                 else if (thePeriod == RECURRENT.WEEKLY) myRecWeekly.setChecked(true);
                 else if (thePeriod == RECURRENT.BI_WEEKLI) myRecBiWeekly.setChecked(true);
                 else if (thePeriod == RECURRENT.MONTHLY) myRecMonthly.setChecked(true);
@@ -405,12 +408,12 @@ public void setCateGoryText(String theText){
         //if switch is income set the category general income
         //if switch is outcome set category to general outcome
         Long theCategoryID=Category.UNKNOWN;
-        if (myCategory.isEnabled()) {
+        if (myCategory.isChecked()) {
             //it is a bill
-            theCategoryID = DBCategory.GEN_INCOME;
+            theCategoryID = DBCategory.GEN_OUTCOME;
         }else{
             //it is an income
-            theCategoryID = DBCategory.GEN_OUTCOME;
+            theCategoryID = DBCategory.GEN_INCOME;
         }
 
 
@@ -421,34 +424,24 @@ public void setCateGoryText(String theText){
         else if(myStatusPaid.isChecked()) theStatus = PAY_STATUS.PAID_RECEIVED;
         else theStatus = PAY_STATUS.UNKNOWN;
         String thePaymentDate = myPaymentDate.getText().toString();
-        int theRecurrencePeriod = RECURRENT.UNKNOWN;
 
+        int theRecurrencePeriod = RECURRENT.UNKNOWN;
+        if(myRecOnce.isChecked()) theRecurrencePeriod = RECURRENT.ONCE;
+        else if (myRecWeekly.isChecked())    theRecurrencePeriod = RECURRENT.WEEKLY;
+        else if (myRecBiWeekly.isChecked())    theRecurrencePeriod = RECURRENT.BI_WEEKLI;
+        else if (myRecMonthly.isChecked())    theRecurrencePeriod = RECURRENT.MONTHLY;
+        //Log.i("SALVAREC","The Recurrent period: "+theRecurrencePeriod);
         BalanceData theData = new BalanceData();
 
-
-        //RECURRENCE HANDLING
-        if (myShowRecurrent) {
-            theRecurrence = myRecurrent.isChecked();
-        } else theRecurrence =false;
-
-        if (theRecurrence == false) {
-            theRecurrencePeriod = RECURRENT.NO_PERIODIC;
-            theData.resetRecurrent();
-        }else{
-            theData.setRecurrent();
-
-        }
-
-        Log.i("SALVADATA", "dataBefore: "+ theDueDate);
+        theData.setRecurrent(theRecurrencePeriod);
         theData.setValue(theValue);
         theData.setDescription(theDesc);
         theData.setCategory(theCategoryID);
         theData.setDueDateFromHuman(theDueDate);
         theData.setPaymentDateFromHuman(thePaymentDate);
         theData.setStatus(theStatus);
-        theData.setRecPeriod(theRecurrencePeriod);
-        Log.i("SALVADATA", "data After: "+ theData.getDueDateHuman());
-
+        //Log.i("SALVADATA", "data After: "+ theData.getDueDateHuman());
+        //Log.i("SALVAREC","is Recurrent?: "+theData.isRecurrent());
         Long Value = myIDtoChange;
         if(Value>0){  //edit
 
@@ -460,10 +453,27 @@ public void setCateGoryText(String theText){
             }
         } else{ //add
 
+
             /**
              * isFromRec = false indicates the database will add this recordonly, without repetition
              */
-            if(myDBBalanceData.insert(theData,false) > 0){
+            if(theData.isRecurrent()){
+                //Log.i("SALVAREC","ENTERED IN RECURRENT DATABASE ADD "+theData.isRecurrent());
+
+                if(myDBBalanceDataRec.insert(theData) > 0){
+
+                    Toast.makeText(getActivity().getApplicationContext(), "Added in Recurrent Table",
+                            Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getActivity().getApplicationContext(), "not Added in recuurent",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            if(myDBBalanceData.insert(theData,theData.isRecurrent()) > 0){
+                //Log.i("SALVAREC","CHECK the recurrence again "+theData.isRecurrent());
+
+
                 Toast.makeText(getActivity().getApplicationContext(), "Added",
                         Toast.LENGTH_SHORT).show();
                 if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
@@ -471,8 +481,9 @@ public void setCateGoryText(String theText){
                 Toast.makeText(getActivity().getApplicationContext(), "not Added",
                         Toast.LENGTH_SHORT).show();
             }
-            //Intent intent = new Intent(getApplicationContext(),ListCategory.class);
-            //startActivity(intent);
+
+
+
         }
 
     }

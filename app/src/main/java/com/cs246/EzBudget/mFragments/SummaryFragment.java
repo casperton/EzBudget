@@ -160,9 +160,9 @@ public class SummaryFragment extends Fragment
 
         myTextView.setText(theTitle + " - " + dateRange);
 
-        Cursor cursor = myBalanceData.getOutcomesCursor(myBalanceView);
+        Cursor cursor = myBalanceData.getOutcomesCursor();
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
-
+        //Log.i("SALVADATABASE","CURSOR OUTCOMES SIZE: "+cursor.getCount());
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
 
@@ -186,14 +186,16 @@ public class SummaryFragment extends Fragment
                     // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
                     SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
                     bills.add(summaryItem);
+                    //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
+
                     // TODO : Replace total with correct values for amount needed during this period
                   } while (cursor.moveToNext());
             }
         }
         // THIS CODE WILL ADD INCOMES FROM THE BalanceDATA table the are in the same period as the current one (mBalanceView)
 
-        Cursor cursorIncomes = myBalanceData.getIncomesCursor(myBalanceView);
-
+        Cursor cursorIncomes = myBalanceData.getIncomesCursor();
+        //Log.i("SALVADATABASE","CURSOR INCOMES SIZE: "+cursorIncomes.getCount());
         if (cursorIncomes !=null) {
             if (cursorIncomes.moveToFirst()) {
                 do {
@@ -213,10 +215,13 @@ public class SummaryFragment extends Fragment
                     if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
 
                     // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
-                    bills.add(summaryItem);
+                    SummaryItem payItem = new SummaryItem(description, due_date, amount, paid, OPERATION.CREDIT);
+                    //
+
+                    bills.add(payItem);
+                    //Log.i("SALVADATABASE","ADDED INCOMES: "+description);
                     // TODO : Replace total with correct values for amount needed during this period
-                } while (cursor.moveToNext());
+                } while (cursorIncomes.moveToNext());
             }
         }
 

@@ -313,9 +313,12 @@ where category.operation = 1
                     " on " +Category.CATEGORY_TABLE_NAME+"."+Category.CATEGORY_COLUMN_ID +" = "+ BalanceData.BALANCEDATA_TABLE_NAME+"."+BalanceData.BALANCEDATA_COLUMN_CATEGORY;
 
             String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.CREDIT).toString();
-
+            //Log.i("SALVADATABASE","INCOMES");
+            //Log.i("SALVADATABASE",theTableArg);
+            //Log.i("SALVADATABASE",theWhere);
             cursor = db.query(theTableArg,Projections,theWhere,null,
                     null,null,null);
+            //Log.i("SALVADATABASE","CURSOR SIZE: "+cursor.getCount());
         } finally {
             myDB.myLock.readLock().unlock();
         }
@@ -395,6 +398,9 @@ where category.operation = 1
 
 
             String theWhere = Category.CATEGORY_COLUMN_OPERATION + " = "+ (OPERATION.DEBIT).toString();
+            //Log.i("SALVADATABASE","OUTCOMES");
+            //Log.i("SALVADATABASE",theTableArg);
+            //Log.i("SALVADATABASE",theWhere);
             cursor = db.query(theTableArg,Projections,theWhere,null,
                     null,null,null);
 

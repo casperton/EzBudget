@@ -76,20 +76,6 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <CheckBox
-                    android:id="@+id/dispBalDataCheckBoxRecurrent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Recurrent" />
-
-                <TextView
-                    android:id="@+id/textViewPeriod"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Period" />
-
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,7 +100,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription">
 
-
+        <RadioButton
+            android:id="@+id/dispBalDataRadioOnce"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:text="@string/recOnce" />
         <RadioButton
             android:id="@+id/dispBalDataRadioWeekly"
             android:layout_width="wrap_content"
@@ -136,12 +127,6 @@
             android:layout_weight="1"
             android:text="@string/recMonthly" />
 
-        <RadioButton
-            android:id="@+id/dispBalDataRadioDaily"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_weight="1"
-            android:text="@string/recDaily" />
     </RadioGroup>
 </LinearLayout>
 </LinearLayout>

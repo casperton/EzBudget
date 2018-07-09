@@ -164,7 +164,7 @@ public class BalanceData {
     private String myDescription;
     private Double myValue;
     private Long myCategoryID;
-    private boolean isRecurrent;
+    //private boolean isRecurrent;
     private int myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
     private Long myID; //the ID of this cat in the database
 
@@ -185,16 +185,16 @@ public class BalanceData {
     public BalanceData () {
 
         this.myStatus = PAY_STATUS.UNKNOWN;
-        this.myRecPeriod = RECURRENT.NO_PERIODIC;
-        this.isRecurrent = false;
+        this.myRecPeriod = RECURRENT.UNKNOWN;
+
     }
 
 
     public BalanceData (String theDescr, Double theValue, Integer theStatus, Integer theDueDay,Integer theMonth, Integer theYear, Integer theRecurrence) {
-
+        boolean isRecurrent;
         this.myStatus = theStatus;
         this.myRecPeriod = theRecurrence;
-        if(myRecPeriod == RECURRENT.NO_PERIODIC || myRecPeriod == RECURRENT.UNKNOWN) isRecurrent=false;
+        if(myRecPeriod == RECURRENT.UNKNOWN || myRecPeriod == RECURRENT.ONCE) isRecurrent=false;
         else isRecurrent = true;
         if(!isRecurrent && theMonth == 0) theMonth=Integer.parseInt(DateHandler.getActualMonth());
         if(!isRecurrent && theYear == 0) theYear = Integer.parseInt(DateHandler.getActualYear());
@@ -230,13 +230,7 @@ public class BalanceData {
         return myRecPeriod;
     }
 
-    /**
-     * Set the period this balance data must repeat
-     * @param theRecPeriod
-     */
-    public void setRecPeriod(int theRecPeriod) {
-        this.myRecPeriod = theRecPeriod;
-    }
+
 
     /**
      * Set the value of the payment date
@@ -422,12 +416,23 @@ public class BalanceData {
     }
 
 
-    public void setRecurrent () {
-        isRecurrent = true;
+    public boolean isRecurrent(){
+        if (myRecPeriod == RECURRENT.ONCE) return false;
+        else if (myRecPeriod == RECURRENT.WEEKLY) return true;
+        else if (myRecPeriod == RECURRENT.BI_WEEKLI) return true;
+        else if (myRecPeriod == RECURRENT.MONTHLY) return true;
+        else return false;
+    }
+
+    public void setRecurrent (int thePeriod) {
+        if (thePeriod == RECURRENT.ONCE) myRecPeriod = RECURRENT.ONCE;
+        else if (thePeriod == RECURRENT.WEEKLY) myRecPeriod = RECURRENT.WEEKLY;
+        else if (thePeriod == RECURRENT.BI_WEEKLI) myRecPeriod = RECURRENT.BI_WEEKLI;
+        else if (thePeriod == RECURRENT.MONTHLY) myRecPeriod = RECURRENT.MONTHLY;
+        else myRecPeriod = RECURRENT.UNKNOWN;
     }
     public void resetRecurrent () {
-        isRecurrent = false;
-        myRecPeriod = RECURRENT.NO_PERIODIC;
+       myRecPeriod = RECURRENT.ONCE;
     }
 
     /**
@@ -435,7 +440,8 @@ public class BalanceData {
      * @return the value of isRecurrent
      */
     public boolean IsRecurrent () {
-        return isRecurrent;
+        if (myRecPeriod == RECURRENT.ONCE || myRecPeriod == RECURRENT.UNKNOWN) return false;
+        else return true;
     }
 
     /**
@@ -475,13 +481,6 @@ public class BalanceData {
     //
 
     /**
-     * Set this balance data to be Daily recurrent
-     */
-    public void setDAILYrec(){
-        this.myRecPeriod = RECURRENT.DAILY;
-    }
-
-    /**
      * Set this balance data to be Weekly Recurrent
      */
     public void setWEEKLYrec(){
@@ -506,7 +505,8 @@ public class BalanceData {
     Set this Balance data to be not recurrent
      */
     public void setNOrec(){
-        this.myRecPeriod = RECURRENT.NO_PERIODIC;
+        this.myRecPeriod = RECURRENT.ONCE;
+
     }
 
 

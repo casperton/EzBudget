@@ -43,7 +43,7 @@ public class DBBalanceDataRec{
      * @param theData
      * @return the number of the row inserted or -1 if some error ocurred
      */
-    private Long insert(BalanceData theData) {
+    public Long insert(BalanceData theData) {
 
         Long result;
 
