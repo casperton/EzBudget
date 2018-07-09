@@ -1,6 +1,7 @@
 package com.cs246.EzBudget.mFragments;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -14,14 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mBackGrounds.BackGroundBalData;
 import com.cs246.EzBudget.mBackGrounds.BackGroundRecData;
+import com.cs246.EzBudget.mRecycler.CommonBalData;
+import com.cs246.EzBudget.mRecycler.CommonFragments;
 import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This fragment is called by the ($) button to add data to the summary view
  */
 public class ChooseRecBalDataDialogFrag extends DialogFragment {
 
@@ -34,9 +40,10 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
     private View myView;
     private FragmentManager myFagmentManager;
     private ProgressBar myProgress=null;
-    private Button myAddButton;
+    private Button myAddButtonNewData;
     private Button myUpdateButton;
-    private BackGroundRecData myBackGroundAction;
+    private Button myAddToSummaryButton;
+    private BackGroundRecData myBackGroundTask;
 
 
     @NonNull
@@ -46,6 +53,19 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
 
     public ChooseRecBalDataDialogFrag() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        if (myBackGroundTask !=null) {
+
+            if (myBackGroundTask.getStatus() != AsyncTask.Status.RUNNING) {
+                // My AsyncTask is currently doing work in doInBackground()
+                setup();
+            }
+
+        }
+        super.onResume();
     }
 
     @Override
@@ -65,10 +85,11 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         myProgress.setVisibility(View.INVISIBLE);
         myFagmentManager = getActivity().getSupportFragmentManager();
 
-        myAddButton = (Button) myView.findViewById(R.id.listRecAddNew);
+        myAddButtonNewData = (Button) myView.findViewById(R.id.listRecAddNew);
         myUpdateButton = (Button) myView.findViewById(R.id.listRecUpdate);
+        myAddToSummaryButton = (Button) myView.findViewById(R.id.listRecAddToSummary);
 
-        myAddButton.setOnClickListener(new View.OnClickListener() {
+        myAddButtonNewData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -87,11 +108,75 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
             }
         });
 
+        myUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        myBackGroundAction = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, myUpdateButton );
+                BalanceData myBalData = CommonBalData.currentItem;
 
-        myBackGroundAction.execute();
+                if (myBalData != null) {
+
+                    Long id_To_Search = myBalData.getID();
+                    Toast.makeText(getActivity(), "ID to SEARCH: "+id_To_Search.toString(),
+                            Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("id", id_To_Search);
+                    bundle.putBoolean("isRec", true);
+                    bundle.putBoolean("showRec", true);
+                    DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
+                    CommonFragments.dispBalData = fragInfo;
+                    fragInfo.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerID, fragInfo, "DISPLAY_BAL_DATA_FRAG");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+
+            }
+        });
+
+        myAddToSummaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                BalanceData myBalData = CommonBalData.currentItem;
+
+                if (myBalData != null) {
+
+                    Long id_To_Search = myBalData.getID();
+                    Toast.makeText(getActivity(), "ID to SEARCH: "+id_To_Search.toString(),
+                            Toast.LENGTH_SHORT).show();
+                    //old action
+                    //int theNewPosition = position-1;
+                    //myRowIndex = position;
+                    //CommonBalData.currentItem = myBalanceDataList.get(theNewPosition);
+                    //BalanceData theRecord = myBalanceDataList.get(theNewPosition);
+                    DBBalanceData theBalDataDatabase = new DBBalanceData(getActivity());
+                    //the isFromRec indicates to the database classto make all calculations and add this
+                    //record to the current view Period
+
+                    if (theBalDataDatabase.insert( myBalData,true) > 0) {
+                        Toast.makeText(getActivity(), "Added Successfully",
+                                Toast.LENGTH_SHORT).show();
+                        if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
+
+                    } else {
+                        Toast.makeText(getActivity(), "Not Added",
+                                Toast.LENGTH_SHORT).show();
+                    }                }
+
+            }
+        });
+
+        setup();
+
         return myView;
     }
+    private void setup(){
+        myBackGroundTask = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, myUpdateButton, myAddToSummaryButton );
 
+        myBackGroundTask.execute();
+    }
 }
+
+

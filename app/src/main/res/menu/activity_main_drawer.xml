@@ -10,14 +10,14 @@
             android:id="@+id/drawerListBalData"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/balDataList" />
+        <!-- <item
+             android:id="@+id/drawerListRecurrent"
+             android:icon="@drawable/ic_menu_slideshow"
+             android:title="@string/balDataRecList" />
         <item
-            android:id="@+id/drawerListRecurrent"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/balDataRecList" />
-        <!--<item
-            android:id="@+id/drawerListBalView"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/balViewList" />-->
+             android:id="@+id/drawerListBalView"
+             android:icon="@drawable/ic_menu_manage"
+             android:title="@string/balViewList" />-->
     </group>
 <!--
     <item android:title="Communicate">

@@ -36,6 +36,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
 
     private int myAction;
     private Button myUpgradeButton;
+    private Button myAddToSummaryButton;
 
     /**
      *
@@ -47,7 +48,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
      * @param theAction  ACT_LIST_CHOOSE to only choose a item, or ADD to be able to add and update itens
      * @param theUpgradeButton The Update Button
      */
-    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction, Button theUpgradeButton ) {
+    public BackGroundRecData(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theConsult, int theAction, Button theUpgradeButton, Button theAddToSumaryButton ) {
         this.context = context;
         this.mylistView = theView;
         this.myProgressBar = theBar;
@@ -56,11 +57,12 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
         myConsultType = theConsult;
         myAction = theAction;
         myUpgradeButton = theUpgradeButton;
+        myAddToSummaryButton = theAddToSumaryButton;
     }
 
     @Override
     protected void onPreExecute() {
-        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true, myAction, myUpgradeButton);
+        myAdapter = new RecyclerBalanceAdapter(myBalanceData,context,myFagmentManager,true, myAction, myUpgradeButton,myAddToSummaryButton);
         mylistView.setAdapter(myAdapter);
         myProgressBar.setVisibility(View.VISIBLE);
 

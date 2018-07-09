@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.drawerListRecurrent) {
+        }/* else if (id == R.id.drawerListRecurrent) {
             //startActivity(intent2);
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.containerID, theFrag);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-        } /*else if (id == R.id.drawerListBalView) {
+        } else if (id == R.id.drawerListBalView) {
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             Fragment theFrag = ListBalViewFragment.newInstance();

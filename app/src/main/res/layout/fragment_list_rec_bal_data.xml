@@ -58,11 +58,18 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
             <Button
                 android:id="@+id/listRecAddNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/AddNew" />
+    <Button
+        android:id="@+id/listRecAddToSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addToSummary" />
+
     <Button
         android:id="@+id/listRecUpdate"
         android:layout_width="wrap_content"

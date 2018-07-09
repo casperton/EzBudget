@@ -42,6 +42,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     //indicate the selected row
     private int myRowIndex = -1;
     private Button myUpdateButton;
+    private Button myAddToSummaryButton;
 
     /**
      *
@@ -52,15 +53,17 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
      * @param theAction ACTION CHOOSE_LIST to only choose some item. ADD to be able to add and update itends of the list
      * @param theUpdateButton
      */
-    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction,Button theUpdateButton) {
+    public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction,Button theUpdateButton,Button theAddToSummaryButton) {
         this.myBalanceDataList = BalanceDataList;
         this.myContext = theContext;
         myFagmentManager = theFrag;
         isRecurrent = theRec;
         myAction = theAction;
         myUpdateButton = theUpdateButton;
+        myAddToSummaryButton = theAddToSummaryButton;
         if (myAction == LIST_ACTION.ACT_LIST_CHOOSE){
             if (myUpdateButton !=null )myUpdateButton.setVisibility(View.INVISIBLE);
+            if (myAddToSummaryButton !=null )myAddToSummaryButton.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -161,6 +164,9 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                             myUpdateButton.setVisibility(View.VISIBLE);
 
                         }
+                        if (myAddToSummaryButton !=null ){
+                            myAddToSummaryButton.setVisibility(View.VISIBLE);
+                        }
                         if(!isRecurrent) CommonBalData.currentItem.resetRecurrent();
 
                     }
@@ -171,22 +177,21 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
                 holder.setItemClickListener(new RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
+
                         int theNewPosition = position-1;
                         myRowIndex = position;
                         CommonBalData.currentItem = myBalanceDataList.get(theNewPosition);
-                        BalanceData theRecord = myBalanceDataList.get(theNewPosition);
-                        DBBalanceData theBalDataDatabase = new DBBalanceData(myContext);
-                        //the isFromRec indicates to the database classto make all calculations and add this
-                        //record to the current view Period
-                        if (theBalDataDatabase.insert(theRecord, true) > 0) {
-                            Toast.makeText(myContext.getApplicationContext(), "Added Successfully",
-                                    Toast.LENGTH_SHORT).show();
-                            if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
+                        notifyDataSetChanged();
+                        if(myUpdateButton !=null) {
+                            myUpdateButton.setVisibility(View.VISIBLE);
 
-                        } else {
-                            Toast.makeText(myContext.getApplicationContext(), "Not Added",
-                                    Toast.LENGTH_SHORT).show();
                         }
+                        if (myAddToSummaryButton !=null ){
+                            myAddToSummaryButton.setVisibility(View.VISIBLE);
+                        }
+                        if(!isRecurrent) CommonBalData.currentItem.resetRecurrent();
+
+
 
                     }
 

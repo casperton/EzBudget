@@ -43,6 +43,7 @@
     <string name="balDataRecTitle">Recurrent Data</string>
     <string name="balDataRecList">Recurrent Data</string>
     <string name="balDataRecEdit">Edit Recurrent Data</string>
+    <string name="addToSummary">Add Summary</string>
     <!-- BALANCE VIEW -->
     <string name="viewTitle">Title</string>
     <string name="balViewList">Periods</string>
