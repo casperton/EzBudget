@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
+        <!--<item
             android:id="@+id/drawerListCat"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/catList" />
+            android:title="@string/catList" />-->
         <item
             android:id="@+id/drawerListBalData"
             android:icon="@drawable/ic_menu_gallery"
@@ -14,12 +14,12 @@
             android:id="@+id/drawerListRecurrent"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/balDataRecList" />
-        <item
+        <!--<item
             android:id="@+id/drawerListBalView"
             android:icon="@drawable/ic_menu_manage"
-            android:title="@string/balViewList" />
+            android:title="@string/balViewList" />-->
     </group>
-
+<!--
     <item android:title="Communicate">
         <menu>
             <item
@@ -32,5 +32,5 @@
                 android:title="Send" />
         </menu>
     </item>
-
+-->
 </menu>

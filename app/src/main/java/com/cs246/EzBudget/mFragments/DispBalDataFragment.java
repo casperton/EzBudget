@@ -169,7 +169,7 @@ public class DispBalDataFragment extends Fragment {
                 String myCatName = "";
                 Integer thePeriod = RECURRENT.UNKNOWN;
                 Cursor rs = null;
-                //means this is the view/edit part not the add  part.
+                //means this came from balance data edit menu
                 if(myIsRecurrent == false) {
                     rs = myDBBalanceData.getDataCursor(myIDtoChange);
                     if (rs !=null ) {
@@ -197,7 +197,7 @@ public class DispBalDataFragment extends Fragment {
                     }
 
 
-                }else{
+                }else{  //means this came from the Edit Recurrent task in the menu
                     rs = myDBBalanceDataRec.getDataCursor(myIDtoChange);
                     if (rs !=null ) {
                         if (rs.getCount()>0) {
@@ -235,10 +235,10 @@ public class DispBalDataFragment extends Fragment {
                 myDescription.setClickable(true);
 
                 //myCategory.setText(myCatName);
-                if (theCategory==DBCategory.GEN_INCOME) myCategory.setPressed(false);
-                if (theCategory==DBCategory.GEN_OUTCOME) myCategory.setPressed(true);
                 myCategory.setFocusable(true);
                 myCategory.setClickable(true);
+                if (theCategory==DBCategory.GEN_INCOME) myCategory.setChecked(false);
+                if (theCategory==DBCategory.GEN_OUTCOME) myCategory.setChecked(true);
 
                 myDueDate.setText((CharSequence)theDueDate);
                 myDueDate.setFocusable(false);

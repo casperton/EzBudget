@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //OPEN APPROPRIATE FRAGMENT WHEN NAV ITEM IS SELECTED
-        if (id == R.id.drawerListCat) {
+        /*if (id == R.id.drawerListCat) {
             //PERFORM TRANSACTION TO REPLACE CONTAINER WITH FRAGMENT
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterPlanetary.newInstance()).commit();
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity
             // if you return true the menu do not close
                 //return true;
 
-        } else if (id == R.id.drawerListBalData) {
+        } else*/ if (id == R.id.drawerListBalData) {
             //MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.containerID, InterStellar.newInstance()).commit();
             //Intent intent2 = new Intent(getApplicationContext(),DispBalData.class);
             //intent2.putExtras(dataBundle);
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.containerID, theFrag);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-        } else if (id == R.id.drawerListBalView) {
+        } /*else if (id == R.id.drawerListBalView) {
             FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             Fragment theFrag = ListBalViewFragment.newInstance();
@@ -230,22 +230,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_share) {
-            Long id_To_Search = Long.valueOf(-1);
-            Bundle bundle = new Bundle();
-            bundle.putLong("id", id_To_Search );
-            DispCategoryFragment fragInfo = DispCategoryFragment.newInstance();
-            CommonFragments.dispCategory = fragInfo;
-            fragInfo.setArguments(bundle);
-            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.containerID, fragInfo,"CATEGORY_SHOW_FRAGMENT");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_send) {
-
-        }
+        } */
 
         //REFERENCE AND CLOSE DRAWER LAYOUT
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
