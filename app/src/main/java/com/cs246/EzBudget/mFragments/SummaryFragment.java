@@ -69,6 +69,8 @@ public class SummaryFragment extends Fragment
     private DBBalanceData myBalanceData;
     private TextView myTextView;
 
+    public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May",
+            "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
     public static SummaryFragment newInstance() {
         return new SummaryFragment();
@@ -103,17 +105,7 @@ public class SummaryFragment extends Fragment
 
         // Print 3 month range title
         myTextView = myView.findViewById(R.id.sumTextViewMonthRange);
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int monthBegin = calendar.get(Calendar.MONTH);
-        int yearBegin = calendar.get(Calendar.YEAR);
-        int monthEnd = (monthBegin + 2);
-        int yearEnd = yearBegin;
-        if (monthEnd > 11) {
-            monthEnd = (monthEnd - 12);
-            yearEnd++;
-        }
+
 
 
         bills = new ArrayList<>();
@@ -146,6 +138,19 @@ public class SummaryFragment extends Fragment
         BalanceView myBalanceView = myCurrentView.getCurrent();
         String dateRange = "";
         String theTitle = "";
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int monthBegin = calendar.get(Calendar.MONTH);
+        int yearBegin = calendar.get(Calendar.YEAR);
+        int monthEnd = (monthBegin + 2);
+        int yearEnd = yearBegin;
+        if (monthEnd > 11) {
+            monthEnd = (monthEnd - 12);
+            yearEnd++;
+        }
+
+        /*
         //todo: what to do when there is no cuurent
         if (myBalanceView == null){
             //if there are any data in table set the first as current
@@ -157,8 +162,13 @@ public class SummaryFragment extends Fragment
             dateRange = DateHandler.getShortName(myBalanceView.getInitialDate())+" - "+
                     DateHandler.getShortName(myBalanceView.getFinalDate());
         }
+        */
+        //myTextView.setText(theTitle + " - " + dateRange);
 
-        myTextView.setText(theTitle + " - " + dateRange);
+        dateRange = MONTHS[monthBegin] + " " + yearBegin + " - " +
+                MONTHS[monthEnd] + " " + yearEnd;
+        //String testDate = "This is a test date range.";
+        myTextView.setText(dateRange);
 
         Cursor cursor = myBalanceData.getOutcomesCursor();
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
