@@ -32,6 +32,7 @@
     <string name="catSave">Save Category</string>
     <string name="catList">Categories</string>
     <!-- BALANCE DATA -->
+    <string name="date">Date</string>
     <string name="balDataAmount">Amount</string>
     <string name="balDataTitle">Financial Data</string>
     <string name="balDataList">Balance Data</string>
