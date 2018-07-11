@@ -138,18 +138,26 @@ public class SummaryFragment extends Fragment
         BalanceView myBalanceView = myCurrentView.getCurrent();
         String dateRange = "";
         String theTitle = "";
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int monthBegin = calendar.get(Calendar.MONTH);
-        int yearBegin = calendar.get(Calendar.YEAR);
-        int monthEnd = (monthBegin + 2);
-        int yearEnd = yearBegin;
-        if (monthEnd > 11) {
-            monthEnd = (monthEnd - 12);
-            yearEnd++;
-        }
 
+        //  Kirk
+        // I moved this function to the DataHandler so I can reuse it in the Database in order to calculate the recurrenciveness.
+        // PLEASE, IF YOU NEED TO CHAGE IT> CHANGE IT THERE. SO the effect will be the same in the database calculations
+        //Salvatore
+        //Date date = new Date();
+        //Calendar calendar = Calendar.getInstance();
+        //calendar.setTime(date);
+        //int monthBegin = calendar.get(Calendar.MONTH);
+        int monthBegin = DateHandler.getMonthBegin();
+        // int yearBegin = calendar.get(Calendar.YEAR);
+        int yearBegin = DateHandler.getYearBegin();
+        // int monthEnd = (monthBegin + 2);
+        int monthEnd = DateHandler.getMonthEnd();
+        //int yearEnd = yearBegin;
+        //if (monthEnd > 11) {
+        //    monthEnd = (monthEnd - 12);
+        //    yearEnd++;
+        //}
+        int yearEnd =  DateHandler.getYearEnd();
         /*
         //todo: what to do when there is no cuurent
         if (myBalanceView == null){

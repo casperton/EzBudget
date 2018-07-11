@@ -115,12 +115,12 @@ public class DBBalanceData {
          * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
          */
         if(isFromRecurrent || isFromRec) {
-            DBBalanceView theViewDataBase = new DBBalanceView(myContex);
-            BalanceView theCurrentView = theViewDataBase.getCurrent();
-            Date theViewIniDate = theCurrentView.getInitialDate();
-            Date theViewEndDate = theCurrentView.getFinalDate();
-            ArrayList<Date> theDates = DateHandler.getListofDates(theViewIniDate,theViewEndDate,theData);
-
+            //DBBalanceView theViewDataBase = new DBBalanceView(myContex);
+            //BalanceView theCurrentView = theViewDataBase.getCurrent();
+            //Date theViewIniDate = theCurrentView.getInitialDate();
+            //Date theViewEndDate = theCurrentView.getFinalDate();
+            // ArrayList<Date> theDates = DateHandler.getListofDates(theViewIniDate,theViewEndDate,theData);
+            ArrayList<Date> theDates = DateHandler.getListofDates(theData);
             for (int count = 0;count < theDates.size();count ++){
                 theData.resetRecurrent();
                 theData.setDueDate(theDates.get(count));

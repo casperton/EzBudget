@@ -427,7 +427,8 @@ public void setCateGoryText(String theText){
         else theStatus = PAY_STATUS.UNKNOWN;
         String thePaymentDate = myPaymentDate.getText().toString();
 
-        int theRecurrencePeriod = RECURRENT.UNKNOWN;
+        //if none is selected it is once
+        int theRecurrencePeriod = RECURRENT.ONCE;
         if(myRecOnce.isChecked()) theRecurrencePeriod = RECURRENT.ONCE;
         else if (myRecWeekly.isChecked())    theRecurrencePeriod = RECURRENT.WEEKLY;
         else if (myRecBiWeekly.isChecked())    theRecurrencePeriod = RECURRENT.BI_WEEKLI;
@@ -473,14 +474,15 @@ public void setCateGoryText(String theText){
              */
             if(myIsRecurrent){
                 //Log.i("SALVAREC","ENTERED IN RECURRENT DATABASE ADD "+theData.isRecurrent());
+                if(theData.IsRecurrent()) { //Add only if the recurrent period is other than once
+                    if (myDBBalanceDataRec.insert(theData) > 0) {
 
-                if(myDBBalanceDataRec.insert(theData) > 0){
-
-                    Toast.makeText(getActivity().getApplicationContext(), "Added in Recurrent Table",
-                            Toast.LENGTH_SHORT).show();
-                } else{
-                    Toast.makeText(getActivity().getApplicationContext(), "not Added in recuurent",
-                            Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Added in Recurrent Table",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "not Added in recuurent",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
                 //came from recurrent but must add to summary as well
                 if (myAddToSumaryToo){

@@ -4,6 +4,7 @@ import android.icu.util.Calendar;
 
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -234,6 +235,65 @@ public class DateHandler {
         else return lastDateOfTheMonth;
     }
 
+
+    /**
+     * Return the last day of the passed month
+     * @param month the month to get the last doy
+     * @return the last day
+     */
+    public static int getLastDayOfMonth(int month) {
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
+        java.util.Calendar aCalendar = java.util.Calendar.getInstance();
+        String firstDateOfPreviousMonth_str;
+        String lastDateOfPreviousMonth_str;
+        // add -1 month to current month
+        //aCalendar.add(Calendar.MONTH,1);
+        // set DATE to 1, so first date of previous month
+        aCalendar.set(java.util.Calendar.MONTH, month);
+
+        Date firstDateOfTheMonth = aCalendar.getTime();
+        // set actual maximum date of previous month
+        aCalendar.set(java.util.Calendar.DATE, aCalendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
+        //read it
+        Date lastDateOfTheMonth = aCalendar.getTime();
+        lastDateOfPreviousMonth_str = df.format(lastDateOfTheMonth);
+
+        // Create an instance of SimpleDateFormat used for formatting
+        // the string representation of date (month/day/year)
+        DateFormat df2 = new SimpleDateFormat(DateHandler.RECURRENT_DATE_FORMAT);
+
+
+            // Using DateFormat format method we can create a string
+            // representation of a date with the defined format.
+           String reportDate = df2.format(lastDateOfTheMonth);
+
+        int theDay = Integer.parseInt(reportDate);
+        return theDay;
+    }
+
+
+
+    static Date addDays(Date theDate, int theNumberofDaysToAdd){
+
+
+            // Create an instance of SimpleDateFormat used for formatting
+            // the string representation of date (month/day/year)
+            DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
+            java.util.Calendar aCalendar = java.util.Calendar.getInstance();
+            String firstDateOfPreviousMonth_str;
+            String lastDateOfPreviousMonth_str;
+            // add -1 month to current month
+            aCalendar.add(java.util.Calendar.DATE,theNumberofDaysToAdd);
+            // set DATE to 1, so first date of previous month
+
+
+            Date retDate = aCalendar.getTime();
+
+            return retDate;
+    }
+
     /**
      * Convert a Date into a String in the Format (Short_Month_name Year)
      * @param theDate The date to be formated
@@ -279,6 +339,51 @@ public class DateHandler {
             //handle the exception according to your own situation
         }
         return diff;
+    }
+
+
+
+    public static ArrayList<Date> getListofDates(BalanceData theData){
+        ArrayList<Date> theRetArray = new ArrayList<>();
+
+        int theRecPeriod = theData.getRecPeriod();
+        int daysToAdd =0;
+        if (theRecPeriod == RECURRENT.ONCE) daysToAdd=0;
+        else if (theRecPeriod == RECURRENT.WEEKLY) daysToAdd=7;
+        else if (theRecPeriod == RECURRENT.BI_WEEKLI) daysToAdd=14;
+        else if (theRecPeriod == RECURRENT.MONTHLY) daysToAdd=30;
+        else if (theRecPeriod == RECURRENT.UNKNOWN) daysToAdd=0;
+
+        int initialDay = Integer.parseInt(theData.getDueDateDay());
+
+
+        //period Start Day is alway dia 1
+        int iniMonth = getMonthBegin();
+        int iniYear = getYearBegin();
+        int LastDayOftheIniMonth = getLastDayOfMonth(iniMonth);
+        //if the bill Due Date id more than the last day of the month. make the Due Date the last day of the month
+        // for instance the bill due date is 30 and we are in February. The last day is 28 or 29
+        if (initialDay > LastDayOftheIniMonth) initialDay = LastDayOftheIniMonth;
+        Date FirstDate = getDate(initialDay, iniMonth,iniYear);
+        theRetArray.add(FirstDate);
+
+        int theEndMonth = getMonthEnd();
+        int theEndYear = getYearEnd();
+        int LastDayOftheLastMonth = getLastDayOfMonth(theEndMonth);
+        Date EndDate = getDate(LastDayOftheLastMonth, theEndMonth,theEndYear);
+
+
+        Date ActualDate = FirstDate;
+        //if (daysToAdd > 0) {
+        //    while (ActualDate.before(EndDate)) {
+        //        Date newDate = addDays(ActualDate, daysToAdd);
+        //        theRetArray.add(newDate);
+         //       ActualDate = newDate;
+         //   }
+       // }
+
+
+        return theRetArray;
     }
 
     /**
@@ -464,4 +569,54 @@ public class DateHandler {
         return getStrDateInHumanFormat(myDate);
 
     }
+
+    public static int getMonthBegin(){
+
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int monthBegin = calendar.get(Calendar.MONTH);
+        int yearBegin = calendar.get(Calendar.YEAR);
+        int monthEnd = (monthBegin + 2);
+        int yearEnd = yearBegin;
+        if (monthEnd > 11) {
+            monthEnd = (monthEnd - 12);
+            yearEnd++;
+        }
+        return monthBegin;
+    }
+
+    public static int getMonthEnd(){
+
+
+        int monthBegin = getMonthBegin();
+
+        int monthEnd = (monthBegin + 2);
+        if (monthEnd > 11) {
+            monthEnd = (monthEnd - 12);
+
+        }
+        return monthEnd;
+    }
+
+    public static int getYearBegin(){
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int yearBegin = calendar.get(Calendar.YEAR);
+        return yearBegin;
+    }
+
+    public static int getYearEnd(){
+        int monthBegin = getMonthBegin();
+        int yearBegin = getYearBegin();
+        int monthEnd = (monthBegin + 2);
+        int yearEnd = yearBegin;
+        if (monthEnd > 11) {
+            yearEnd++;
+        }
+        return  yearEnd;
+    }
+
+
 }
