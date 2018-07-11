@@ -99,18 +99,19 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
             Integer count = cursor.getColumnCount();
             //String index = cursor.getString(cursor.getColumnIndex("value"));
             // Log.i("CURSOR_BAL_DATA_INDEX", index);
-            Log.i("CURSOR_BAL_DATA_INDEX_COUNT", count.toString());
-            for (Integer i =0 ; i< count; i++)
-            {
-                String data = cursor.getString(i);
-                Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
-            }
+            //Log.i("CURSOR_BAL_DATA_INDEX_COUNT", count.toString());
+            //for (Integer i =0 ; i< count; i++)
+            //{
+              //  String data = cursor.getString(i);
+                //Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
+            //}
             theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
             theValue = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
             theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
             theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
             catID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
             theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+
             BalanceData theData = new BalanceData();
             theData.setID(theID);
             theData.setValue(theValue);
@@ -118,6 +119,7 @@ public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
             theData.setCategory(catID);
             theData.setDueDateFromDatabase(theDueDate);
             theData.setStatus(theStatus);
+            theData.resetRecurrent();
             publishProgress(theData);
 
 

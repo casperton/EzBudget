@@ -101,12 +101,12 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
             Integer count = cursor.getColumnCount();
             //String index = cursor.getString(cursor.getColumnIndex("value"));
             // Log.i("CURSOR_BAL_DATA_INDEX", index);
-            Log.i("CURSOR_BAL_DATA_INDEX_COUNT", count.toString());
-            for (Integer i =0 ; i< count; i++)
-            {
-                String data = cursor.getString(i);
+            //Log.i("CURSOR_BAL_DATA_INDEX_COUNT", count.toString());
+            //for (Integer i =0 ; i< count; i++)
+            //{
+             //   String data = cursor.getString(i);
                // Log.i("CURSOR_BAL_DATA_INDEX", "col: " +i.toString()+" : " + data);
-            }
+            //}
             theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_ID));
             theValue = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
             theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION));

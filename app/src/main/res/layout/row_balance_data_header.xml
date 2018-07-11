@@ -7,19 +7,37 @@
     android:background="#000000"
     android:orientation="horizontal"
     android:padding="3dp">
+    <TextView
+        android:id="@+id/rowBalDataHeaderRec"
+        android:layout_width="39dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textColor="#ffffff"
+        android:paddingLeft="10dp"
+        android:text="Rec" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="3dp" />
 
     <TextView
         android:id="@+id/rowBalDataHeaderDate"
-        android:layout_width="95dp"
-        android:layout_height="wrap_content"
+        android:layout_width="84dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
         android:text="@string/date"
+        android:textAlignment="center"
         android:textColor="#ffffff"
-        android:textAlignment="center" />
+        app:layout_constraintStart_toEndOf="@+id/rowBalDataHeaderRec"
+        tools:layout_editor_absoluteY="1dp" />
 
     <TextView
         android:id="@+id/rowBalDataHeaderValue"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
+        android:layout_width="83dp"
+        android:layout_height="19dp"
         android:text="@string/balDataAmount"
         android:textAlignment="textStart"
         android:textColor="#ffffff"

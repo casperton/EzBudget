@@ -21,6 +21,7 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
     TextView myDueDate;
     TextView myValue;
     TextView myDescription;
+    TextView myRecurrence;
     TextView myTitleDate, myTitleValue, myTitleDescription;
 
     private RecyclerClickListener myItemClickListener;
@@ -38,6 +39,7 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
             this.myDueDate = (TextView) itemView.findViewById(R.id.textViewBDDueDate);
             this.myValue = (TextView) itemView.findViewById(R.id.textViewBDValue);
             this.myDescription = (TextView) itemView.findViewById(R.id.textViewBDDescription);
+            this.myRecurrence = (TextView) itemView.findViewById(R.id.textViewBDRec);
             myViewType = 1;
         }
         else if (theViewType == TYPE_HEAD) {
@@ -45,6 +47,7 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
             this.myTitleDate = (TextView) itemView.findViewById(R.id.rowBalDataHeaderDate);
             this.myTitleValue = (TextView) itemView.findViewById(R.id.rowBalDataHeaderValue);
             this.myTitleDescription = (TextView) itemView.findViewById(R.id.rowBalDataHeaderDescription);
+            this.myRecurrence = (TextView) itemView.findViewById(R.id.rowBalDataHeaderRec);
             myViewType = 0;
         }
 

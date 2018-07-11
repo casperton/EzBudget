@@ -445,6 +445,29 @@ public class BalanceData {
     }
 
     /**
+     * return true if it is paid
+     * @return true if it is paid
+     */
+    public boolean isPaid(){
+        if (myStatus==PAY_STATUS.PAID_RECEIVED) return true;
+        else return false;
+    }
+
+    /**
+     * Set the status to Paid
+     */
+    public void setPaid(){
+        myStatus=PAY_STATUS.PAID_RECEIVED;
+    }
+
+    /**
+     * Set the Status to unpaid
+     */
+    public void resetPaid(){
+        myStatus=PAY_STATUS.UNPAID_UNRECEIVED;
+    }
+
+    /**
      * Set the value of status
      * to indicate that :
      * if it is a bill, it was already paid

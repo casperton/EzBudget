@@ -111,7 +111,7 @@ public class DBBalanceDataRec{
      * @param theData
      * @return true if the update was a success, false otherwise
      */
-    public boolean update (Integer id, BalanceData theData) {
+    public boolean update (Long id, BalanceData theData) {
 
 
         boolean retState = false;
@@ -129,7 +129,7 @@ public class DBBalanceDataRec{
                 //contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_TIMESTAMP, DateHandler.getNow());
                 String theWhere = BalanceData.BALANCEDATAREC_COLUMN_ID+" = ? ";
                 //update returns the number of rows affected
-                if (db.update(BalanceData.BALANCEDATAREC_TABLE_NAME, contentValues, theWhere, new String[] { Integer.toString(id) } ) != 1){
+                if (db.update(BalanceData.BALANCEDATAREC_TABLE_NAME, contentValues, theWhere, new String[] { Long.toString(id) } ) != 1){
                     Log.e(TAG, "Update Balance Data failed");
                 }else {
                     retState = true;

@@ -13,6 +13,18 @@ public class RECURRENT {
     public static final Integer BI_WEEKLI = 2;
     public static final Integer MONTHLY = 3;
 
+    public static String getStrName(Integer theStatus){
+     String myRecStatus="U";
+     if(theStatus==UNKNOWN) myRecStatus="U";
+     if(theStatus==ONCE) myRecStatus="O";
+     if(theStatus==WEEKLY) myRecStatus="W";
+     if(theStatus==BI_WEEKLI) myRecStatus="B";
+     if(theStatus==MONTHLY) myRecStatus="M";
+
+
+    return myRecStatus;
+    }
+
     //
     // Constructors
     //

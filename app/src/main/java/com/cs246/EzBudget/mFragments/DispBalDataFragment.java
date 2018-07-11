@@ -49,7 +49,7 @@ public class DispBalDataFragment extends Fragment {
     private DBBalanceData myDBBalanceData;
     private DBBalanceDataRec myDBBalanceDataRec;
     private boolean myIsRecurrent = false;
-    private boolean myShowRecurrent = true;
+    private boolean myAddToSumaryToo = false;
 
     Calendar myCalendar;
     DatePickerDialog myDateDialog;
@@ -107,8 +107,10 @@ public class DispBalDataFragment extends Fragment {
         Bundle args = getArguments();
         if (args !=null) {
             myIDtoChange = args.getLong("id");
+            //true indicate that was called from the recurent list or update button
+            //false indicate that was called from the non recurrent list fragment
             myIsRecurrent = args.getBoolean("isRec");
-            myShowRecurrent = args.getBoolean("showRec");
+            myAddToSumaryToo = args.getBoolean("addToSummaryToo");
 
         }
 
@@ -136,7 +138,7 @@ public class DispBalDataFragment extends Fragment {
         final ChooseCategoryDialogFrag tv=new ChooseCategoryDialogFrag();
 
         myStatusLayOut.setVisibility(View.GONE);
-        //if (!myShowRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
+        if (!myIsRecurrent) myRecurrenceLayOut.setVisibility(View.GONE);
 
 
         /**
@@ -445,19 +447,31 @@ public void setCateGoryText(String theText){
         Long Value = myIDtoChange;
         if(Value>0){  //edit
 
-            if(myDBBalanceData.update(myIDtoChange,theData)){
-                Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+            //if it came from the recurrent list fragment
+            if(myIsRecurrent){
+                if(myDBBalanceDataRec.update(myIDtoChange,theData)){
+                    Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
 
-            } else{
-                Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
+                }
+            }else {
+
+                if (myDBBalanceData.update(myIDtoChange, theData)) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
+                }
             }
         } else{ //add
 
 
             /**
-             * isFromRec = false indicates the database will add this recordonly, without repetition
+             * isRec = false indicates the database will add this record only, without repetition
+             * true indicate we add in the recurrent table and in the balance data table
              */
-            if(theData.isRecurrent()){
+            if(myIsRecurrent){
                 //Log.i("SALVAREC","ENTERED IN RECURRENT DATABASE ADD "+theData.isRecurrent());
 
                 if(myDBBalanceDataRec.insert(theData) > 0){
@@ -468,21 +482,36 @@ public void setCateGoryText(String theText){
                     Toast.makeText(getActivity().getApplicationContext(), "not Added in recuurent",
                             Toast.LENGTH_SHORT).show();
                 }
+                //came from recurrent but must add to summary as well
+                if (myAddToSumaryToo){
+                    if (myDBBalanceData.insert(theData, theData.isRecurrent()) > 0) {
+                        //Log.i("SALVAREC","CHECK the recurrence again "+theData.isRecurrent());
+
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Added",
+                                Toast.LENGTH_SHORT).show();
+                        if (CommonFragments.summaryFrag != null) CommonFragments.summaryFrag.onResume();
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "not Added",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }else {
+
+                if (myDBBalanceData.insert(theData, theData.isRecurrent()) > 0) {
+                    //Log.i("SALVAREC","CHECK the recurrence again "+theData.isRecurrent());
+
+
+                    Toast.makeText(getActivity().getApplicationContext(), "Added",
+                            Toast.LENGTH_SHORT).show();
+                    if (CommonFragments.summaryFrag != null) CommonFragments.summaryFrag.onResume();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "not Added",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
-
-            if(myDBBalanceData.insert(theData,theData.isRecurrent()) > 0){
-                //Log.i("SALVAREC","CHECK the recurrence again "+theData.isRecurrent());
-
-
-                Toast.makeText(getActivity().getApplicationContext(), "Added",
-                        Toast.LENGTH_SHORT).show();
-                if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
-            } else{
-                Toast.makeText(getActivity().getApplicationContext(), "not Added",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-
 
         }
 

@@ -139,17 +139,17 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
             else
                 holder.myDueDate.setText(myBalanceDataList.get(theNewPosition).getDueDateHuman());
 
+            holder.myRecurrence.setText(RECURRENT.getStrName(myBalanceDataList.get(theNewPosition).getRecPeriod()));
+
             holder.myValue.setText(Double.toString(myBalanceDataList.get(theNewPosition).getValue()));
             holder.myDescription.setText(myBalanceDataList.get(theNewPosition).getDescription());
-            int oper = myBalanceDataList.get(theNewPosition).getStatus();
 
-            if (oper == PAY_STATUS.PAID_RECEIVED) {
+
+            if (myBalanceDataList.get(theNewPosition).isPaid()) {
                 //todo: change color depending of the status payd or not
                 //holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_add_circle_green_24dp,myContext.getTheme()));
-            } else if (oper == PAY_STATUS.UNPAID_UNRECEIVED) {
-                //holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_remove_circle_red_24dp, myContext.getTheme()));
             } else {
-                //holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_warning_black_24dp, myContext.getTheme()));
+                //holder.icon.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_remove_circle_red_24dp, myContext.getTheme()));
             }
 
             if (myAction == LIST_ACTION.ACT_LIST_ADD) {
@@ -199,6 +199,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
             }
         }else if (holder.myViewType==TYPE_HEAD){
         //holder.myTitleDate.setText("@string/");
+
         }
     }
 
