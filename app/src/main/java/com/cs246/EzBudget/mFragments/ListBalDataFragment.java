@@ -67,7 +67,7 @@ public class ListBalDataFragment extends Fragment {
 
         myAddButton = (Button) myView.findViewById(R.id.listBalDataAddNew);
         myUpdateButton = (Button) myView.findViewById(R.id.listBalDataUpdate);
-
+        myAddButton.setVisibility(View.GONE);
         myAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
