@@ -20,7 +20,9 @@ import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.mRecycler.RecyclerViewHolderCategory;
 
-
+/**
+ * This Class is used to open a Dialog used to choose Category records to be added to BalanceData/BalanceDataRec, edited or deleted
+ */
 public class ChooseCategoryDialogFrag extends DialogFragment {
 
     private RecyclerView myRecyclerView;

@@ -28,7 +28,7 @@ import com.cs246.EzBudget.mRecycler.CommonFragments;
 import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Class will display a RecyclerView with the Balance Data Recurrent records to allow several actions with the records
  */
 public class ListRecBalDataFragment extends Fragment {
 

@@ -26,7 +26,7 @@ import com.cs246.EzBudget.mFragments.SummaryFragment;
 import java.util.ArrayList;
 
 /**
- * This class is the list View to show the categories in the screen
+ * This class is the list View to show the Balance Data in the screen
  */
 public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHolderBalanceData> {
 
@@ -46,13 +46,13 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
     private Button myAddToSummaryButton;
 
     /**
-     *
-     * @param BalanceDataList
-     * @param theContext
-     * @param theFrag
-     * @param theRec
+     * The Adapter used by BalanceData Lists and BalanceData Recurrent ones as well
+     * @param BalanceDataList The Array With Data to the adapter
+     * @param theContext The Context
+     * @param theFrag The Fragment Manager
+     * @param theRec If it is a Recurrent DAta List or not
      * @param theAction ACTION CHOOSE_LIST to only choose some item. ADD to be able to add and update itends of the list
-     * @param theUpdateButton
+     * @param theUpdateButton The Update Button
      */
     public RecyclerBalanceAdapter(ArrayList<BalanceData> BalanceDataList, Context theContext, FragmentManager theFrag, boolean theRec , int theAction,Button theUpdateButton,Button theAddToSummaryButton) {
         this.myBalanceDataList = BalanceDataList;

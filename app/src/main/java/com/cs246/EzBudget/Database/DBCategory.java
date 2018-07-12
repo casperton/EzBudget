@@ -12,6 +12,9 @@ import com.cs246.EzBudget.OPERATION;
 
 import java.util.ArrayList;
 
+/**
+ * This class Handle the Table Category of the Database
+ */
 public class DBCategory {
 
     public static  Long GEN_INCOME = Long.valueOf(1);

@@ -8,7 +8,9 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-//https://www.youtube.com/watch?v=DSqGU0wbZuI
+/**
+ * This Class is used to open a Diagog used to get Dates from the user
+ */
 public class DatePickerDialogFragment extends DialogFragment {
 
     private OnDateSetListener mDateSetListener;

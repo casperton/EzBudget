@@ -32,7 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Fragment will show the Balance View information on the screen
+ * It will allow add and edit Balance View information like Dates, Description,  etc.
  */
 public class DispBalViewFragment extends Fragment {
 

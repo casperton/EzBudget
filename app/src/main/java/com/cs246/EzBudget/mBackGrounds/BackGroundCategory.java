@@ -17,7 +17,7 @@ import com.cs246.EzBudget.mRecycler.RecyclerCategoryAdapter;
 import java.util.ArrayList;
 
 /**
- * Class to load the categories using asyncTask
+ * Class to load the table category from the database to the RecyclerView using asyncTask
  *
  */
 public class BackGroundCategory extends AsyncTask<Void,Category,Void>{

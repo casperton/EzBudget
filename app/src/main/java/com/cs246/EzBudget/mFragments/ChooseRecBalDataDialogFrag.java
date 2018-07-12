@@ -28,6 +28,7 @@ import com.cs246.EzBudget.mRecycler.LIST_ACTION;
 
 /**
  * This fragment is called by the ($) button to add data to the summary view
+  * This Class is used to open a Dialog used to choose BalanceDataRec records to be added to the Summary, edited or deleted
  */
 public class ChooseRecBalDataDialogFrag extends DialogFragment {
 

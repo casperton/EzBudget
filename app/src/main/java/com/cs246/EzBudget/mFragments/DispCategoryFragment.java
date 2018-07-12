@@ -23,7 +23,8 @@ import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Fragment will show the Category information on the screen
+ * It will allow add and edit Category information like Description,credit/debit,  etc.
  */
 public class DispCategoryFragment extends Fragment {
 

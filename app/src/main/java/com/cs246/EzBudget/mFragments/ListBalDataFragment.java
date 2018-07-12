@@ -22,7 +22,7 @@ import com.cs246.EzBudget.mRecycler.CommonBalData;
 import com.cs246.EzBudget.mRecycler.CommonFragments;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Class will display a RecyclerView with the Balance Data records to allow several actions with the records
  */
 public class ListBalDataFragment extends Fragment {
 

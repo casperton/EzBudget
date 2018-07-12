@@ -21,7 +21,9 @@ import com.cs246.EzBudget.mRecycler.RecyclerBalanceAdapter;
 import java.util.ArrayList;
 
 
-
+/**
+ * This Class Loads the Data from the Table BalanceData into the RecyclerView in a background thread
+ * */
 public class BackGroundBalData extends AsyncTask<Void,BalanceData,Void> {
 
     private RecyclerView mylistView;

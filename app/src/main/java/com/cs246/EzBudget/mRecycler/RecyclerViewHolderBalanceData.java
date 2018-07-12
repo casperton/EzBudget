@@ -11,7 +11,7 @@ import com.cs246.EzBudget.R;
 
 
 /**
- * The RecyclerView Holder for Category
+ * The RecyclerView Holder for Balance Data. It is used by the RecyclerBalanceAdapter
  * Defined how the line will be
  */
 public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

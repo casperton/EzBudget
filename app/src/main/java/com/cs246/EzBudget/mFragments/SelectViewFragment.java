@@ -23,7 +23,7 @@ import com.cs246.EzBudget.mRecycler.CommonFragments;
 import com.cs246.EzBudget.mRecycler.RecyclerBalViewAdapter;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Class is used to allow selection of current view
  */
 public class SelectViewFragment extends Fragment {
 
