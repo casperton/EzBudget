@@ -1,5 +1,7 @@
 package com.cs246.EzBudget.SummaryView;
 
+import android.util.Log;
+
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.PAY_STATUS;
 
@@ -134,18 +136,49 @@ public class SummaryItem implements Comparable<SummaryItem>{
         this.total_needed = total_needed;
     }
 
+    /**
+     * This method will return the date in US format mm/dd/yyyy
+     * @return Formatted date as string
+     */
     public String getUsDate() {
         SimpleDateFormat formatter =  new SimpleDateFormat("MM-dd-yyyy");
         return formatter.format(this.date);
     }
 
+    /**
+     * This method will return the date in non-US format yyyy-mm-dd
+     * @return Formatted date as string
+     */
     public String getForeignDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(this.date);
     }
 
+    /**
+     * This method is used for sorting the objects in a list
+     * by date
+     * @param o The item to compare against
+     * @return  The item sorted by date
+     */
     @Override
     public int compareTo(SummaryItem o) {
         return getDate().compareTo(o.getDate());
+    }
+
+    /**
+     * Set this BalanceData item as paid
+     */
+    public void setPaid() {
+        this.balData.setPaid();
+        Log.d("SummaryItem", "Marked the following item as paid: " + this.name);
+        this.paid = true;
+    }
+
+    /**
+     * Set this BalanceData item as unpaid
+     */
+    public void resetPaid() {
+        this.balData.resetPaid();
+        this.paid = false;
     }
 }

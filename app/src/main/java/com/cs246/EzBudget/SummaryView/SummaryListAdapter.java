@@ -2,6 +2,7 @@ package com.cs246.EzBudget.SummaryView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     public void onBindViewHolder(SummaryListAdapter.MyViewHolder holder, int position) {
         SummaryItem bill = list.get(position);
         holder.name.setText(bill.getName());
+        Log.d("SummaryListAdapter", "Item added to summary list: " + bill.getName());
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(0);
         holder.amount.setText("$" + df.format(bill.getAmount()).toString());
@@ -139,6 +141,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      * @param position  The position index of the item in the list
      */
     public void removeItem(int position) {
+        // Mark the BalanceData item as paid and remove it from the list
+        list.get(position).setPaid();
         list.remove(position);
         // TODO : Recalculate total needed for this period once item is paid
         Calculations calc  = new Calculations(list);
@@ -157,6 +161,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      * @param position  The position index of the item in the summary view
      */
     public void restoreItem(SummaryItem item, int position) {
+        // Reset the BalanceData item paid status to unpaid and restore the item
+        item.resetPaid();
         list.add(position, item);
         Calculations calc  = new Calculations(list);
         calc.updateTotals();
