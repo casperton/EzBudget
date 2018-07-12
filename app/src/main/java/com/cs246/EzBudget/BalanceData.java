@@ -2,6 +2,7 @@ package com.cs246.EzBudget;
 
 import android.util.Log;
 
+import com.cs246.EzBudget.Database.DBBalanceView;
 import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 
@@ -237,7 +238,7 @@ public class BalanceData {
      * @param theDate the new value of payment date in the Human readable Format
      */
     public void setPaymentDateFromHuman (String theDate) {
-
+        if (theDate == null) return;
         if (! theDate.isEmpty()) {
 
             myPaymentDate = DateHandler.getDateFromHumanString(theDate);
@@ -250,7 +251,7 @@ public class BalanceData {
      * @param theDate the new value of payment date in Database Format
      */
     public void setPaymentDateFromDatabase (String theDate) {
-
+        if (theDate == null) return;
         if (! theDate.isEmpty()) {
 
             myPaymentDate = DateHandler.getDateFromDatabaseString(theDate);
@@ -284,7 +285,7 @@ public class BalanceData {
      * @param theDate the new value of myDate in the human readebleFormat
      */
     public void setDueDateWithFormat (String theDate, String theFormat) {
-
+        if (theDate == null) return;
         if (! theDate.isEmpty()) {
             DateFormat format = new SimpleDateFormat(theFormat);
             Date date = null;
@@ -330,6 +331,11 @@ public class BalanceData {
         }
     }
 
+    public Date getDueDate(){
+        if (myDate !=null)
+        return myDate;
+        else return null;
+    }
     /**
      * Get the value of myDate in the String fin the Human readeble format
      * @return the value of myDate
@@ -424,6 +430,10 @@ public class BalanceData {
         else return false;
     }
 
+    /**
+     * Set the Recurrent Period
+     * @param thePeriod the Period to be setted
+     */
     public void setRecurrent (int thePeriod) {
         if (thePeriod == RECURRENT.ONCE) myRecPeriod = RECURRENT.ONCE;
         else if (thePeriod == RECURRENT.WEEKLY) myRecPeriod = RECURRENT.WEEKLY;
@@ -431,6 +441,10 @@ public class BalanceData {
         else if (thePeriod == RECURRENT.MONTHLY) myRecPeriod = RECURRENT.MONTHLY;
         else myRecPeriod = RECURRENT.UNKNOWN;
     }
+
+    /**
+     * set the Recurrent Periond top Once. This indicates the this is not recurrent
+     */
     public void resetRecurrent () {
        myRecPeriod = RECURRENT.ONCE;
     }
@@ -531,6 +545,8 @@ public class BalanceData {
         this.myRecPeriod = RECURRENT.ONCE;
 
     }
+
+
 
 
 }

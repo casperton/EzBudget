@@ -1,5 +1,8 @@
 package com.cs246.EzBudget.SummaryView;
 
+import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.PAY_STATUS;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +14,7 @@ import java.util.Date;
  * to the summary view to be displayed
  */
 public class SummaryItem implements Comparable<SummaryItem>{
+    private BalanceData balData;
     private String name;
     private boolean paid;
     private double amount;
@@ -39,6 +43,29 @@ public class SummaryItem implements Comparable<SummaryItem>{
         // Convert the strings to date in this format
         try {
             converted_date = foreignFormat.parse(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.date = converted_date;
+    }
+
+    public SummaryItem(BalanceData theBalData, int type) {
+        this.balData = theBalData;
+
+        this.name = theBalData.getDescription();
+        this.paid = theBalData.isPaid();
+        this.amount = theBalData.getValue();
+        
+        this.type = type;
+        // Convert string into date
+        SimpleDateFormat foreignFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date converted_date = new Date() ;
+        // Dates are stored initially as foreign format
+        // Convert the strings to date in this format
+        try {
+            converted_date = foreignFormat.parse(theBalData.getDueDateDatabase());
 
         } catch (ParseException e) {
             e.printStackTrace();

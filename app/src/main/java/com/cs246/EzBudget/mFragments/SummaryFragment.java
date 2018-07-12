@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs246.EzBudget.BALANCE_ITEM;
+import com.cs246.EzBudget.Balance;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Calculations;
@@ -51,6 +52,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -178,12 +180,27 @@ public class SummaryFragment extends Fragment
         //String testDate = "This is a test date range.";
         myTextView.setText(dateRange);
 
-        Cursor cursor = myBalanceData.getOutcomesCursor();
+        //Cursor cursor = myBalanceData.getOutcomesCursor();
+        ArrayList<BalanceData> theBalanceDataList = myBalanceData.getOutcomesArray();
         //Cursor cursor = myBalanceData.getAllCursor(myBalanceView);
         //Log.i("SALVADATABASE","CURSOR OUTCOMES SIZE: "+cursor.getCount());
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
 
+
+        //Get an object of ListIterator using listIterator() method
+        ListIterator listIterator = theBalanceDataList.listIterator();
+
+
+        while(listIterator.hasNext()) {
+            BalanceData theActualData = (BalanceData)listIterator.next();
+
+            // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+            SummaryItem summaryItem = new SummaryItem(theActualData, OPERATION.DEBIT);
+            bills.add(summaryItem);
+
+        }
+/*
         if (cursor !=null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -210,24 +227,43 @@ public class SummaryFragment extends Fragment
                   } while (cursor.moveToNext());
             }
         }
+        */
         // THIS CODE WILL ADD INCOMES FROM THE BalanceDATA table the are in the same period as the current one (mBalanceView)
 
         Cursor cursorIncomes = myBalanceData.getIncomesCursor();
+
+        ArrayList<BalanceData> theBalanceDataIncList = myBalanceData.getIncomesArray();
+
+
+        //Get an object of ListIterator using listIterator() method
+        listIterator = theBalanceDataIncList.listIterator();
+
+
+        while(listIterator.hasNext()) {
+            BalanceData theActualData = (BalanceData)listIterator.next();
+
+            // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+            SummaryItem summaryItem = new SummaryItem(theActualData, OPERATION.CREDIT);
+            bills.add(summaryItem);
+
+        }
+/*
+
         //Log.i("SALVADATABASE","CURSOR INCOMES SIZE: "+cursorIncomes.getCount());
         if (cursorIncomes !=null) {
             if (cursorIncomes.moveToFirst()) {
                 do {
-                    String description = cursorIncomes.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                    String due_date = cursorIncomes.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                    Double amount = cursorIncomes.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                    Long theCat = cursorIncomes.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                    String description = cursorIncomes.getString(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                    String due_date = cursorIncomes.getString(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                    Double amount = cursorIncomes.getDouble(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    Long theCat = cursorIncomes.getLong(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
                     //Thestatus can be:
                     //UNKNOWN = -1;
                     //PAID_RECEIVED = 0;
                     //UNPAID_UNRECEIVED = 1;
-                    Integer Status = cursorIncomes.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    Integer Status = cursorIncomes.getInt(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
                     boolean paid=false;
-                    Integer theStatus = cursorIncomes.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+                    Integer theStatus = cursorIncomes.getInt(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
                     if (theStatus== PAY_STATUS.UNKNOWN) paid = false;
                     if (theStatus== PAY_STATUS.UNPAID_UNRECEIVED) paid = false;
                     if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
@@ -242,7 +278,7 @@ public class SummaryFragment extends Fragment
                 } while (cursorIncomes.moveToNext());
             }
         }
-
+*/
 
         // Add a test paycheck
         //SummaryItem payItem = new SummaryItem("My First Paycheck", "2018-06-01", 1200, false, OPERATION.CREDIT);

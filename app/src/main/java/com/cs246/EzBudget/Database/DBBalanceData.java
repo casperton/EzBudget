@@ -12,7 +12,9 @@ import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
+import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.RECURRENT;
+import com.cs246.EzBudget.SummaryView.SummaryItem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -409,6 +411,84 @@ where category.operation = 1
         }
         return cursor;
     }
+
+    public ArrayList<BalanceData> getOutcomesArray(){
+        ArrayList<BalanceData> theArray = new ArrayList<>();
+        Cursor cursor = getOutcomesCursor();
+        if (cursor !=null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    BalanceData theBalData= new BalanceData();
+                    Long theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
+                    String theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                    String theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                    Double theAmount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    Long theCatID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                    String thePaymentDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
+                    String theTimesTamp = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
+                    Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+
+                    //initialize BalanceData
+                    theBalData.setDueDateFromDatabase(theDueDate);
+                    theBalData.setDescription(theDescription);
+                    theBalData.setValue(theAmount);
+                    theBalData.setPaymentDateFromDatabase(thePaymentDate);
+                    theBalData.setStatus(theStatus);
+                    theBalData.setCategory(theCatID);
+                    theBalData.setID(theID);
+                    theBalData.resetRecurrent();
+
+                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+                    theArray.add(theBalData);
+                    //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
+
+
+                } while (cursor.moveToNext());
+            }
+        }
+
+        return theArray;
+    }
+
+    public ArrayList<BalanceData> getIncomesArray(){
+        ArrayList<BalanceData> theArray = new ArrayList<>();
+        Cursor cursor = getIncomesCursor();
+        if (cursor !=null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    BalanceData theBalData= new BalanceData();
+                    Long theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
+                    String theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                    String theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                    Double theAmount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                    Long theCatID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                    String thePaymentDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
+                    String theTimesTamp = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
+                    Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+
+                    //initialize BalanceData
+                    theBalData.setDueDateFromDatabase(theDueDate);
+                    theBalData.setDescription(theDescription);
+                    theBalData.setValue(theAmount);
+                    theBalData.setPaymentDateFromDatabase(thePaymentDate);
+                    theBalData.setStatus(theStatus);
+                    theBalData.setCategory(theCatID);
+                    theBalData.setID(theID);
+                    theBalData.resetRecurrent();
+
+                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+                    theArray.add(theBalData);
+                    //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
+
+
+                } while (cursor.moveToNext());
+            }
+        }
+
+        return theArray;
+
+    }
+
     /**
      * Return a Cursor with all Income BalanceDatas in the database
      * @return TheCursor with all Informative data
