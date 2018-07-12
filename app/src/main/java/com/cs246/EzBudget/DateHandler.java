@@ -277,15 +277,19 @@ public class DateHandler {
 
     static Date addDays(Date theDate, int theNumberofDaysToAdd){
 
-
+            Date myDate = theDate;
             // Create an instance of SimpleDateFormat used for formatting
             // the string representation of date (month/day/year)
             DateFormat df = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
-            java.util.Calendar aCalendar = java.util.Calendar.getInstance();
-            String firstDateOfPreviousMonth_str;
-            String lastDateOfPreviousMonth_str;
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.setTime(theDate);
+           //initialize calendar to the date.
+            //aCalendar.set(Calendar.YEAR, 1999);
+            //aCalendar.set(Calendar.MONTH, 7);
+            //aCalendar.set(Calendar.DAY_OF_MONTH, 26);
+
             // add -1 month to current month
-            aCalendar.add(java.util.Calendar.DATE,theNumberofDaysToAdd);
+            aCalendar.add(Calendar.DATE,theNumberofDaysToAdd);
             // set DATE to 1, so first date of previous month
 
 
@@ -375,20 +379,24 @@ public class DateHandler {
 
         Date ActualDate = FirstDate;
 
-int count =0;
+
         if (daysToAdd > 0) {
-            while ( count < 4) {
+            while ( ActualDate.before(EndDate)) {
+                //Log.i("SALVADATES","ACTUAL DATE: "+ActualDate.toString());
                 Date newDate = addDays(ActualDate, daysToAdd);
-                Log.i("SALVADATES","ADDED DAYS to ActualDate: "+daysToAdd);
-                Log.i("SALVADATES","NEW DATE: "+newDate.toString());
-                theRetArray.add(newDate);
-                ActualDate = newDate;
-                Log.i("SALVADATES","ACTUAL DATE: "+ActualDate.toString());
-                count ++;
+                //Log.i("SALVADATES","ADDED DAYS to ActualDate: "+daysToAdd);
+                //Log.i("SALVADATES","NEW DATE: "+newDate.toString());
+                Date addDate=  new Date();
+                addDate = newDate;
+                //Log.i("SALVADATES","Added DATE: "+addDate.toString());
+                theRetArray.add(addDate);
+                ActualDate = new Date();
+                 ActualDate = newDate;
+
             }
         }
 
-
+        //Log.i("SALVADATES","Date Array Size: "+theRetArray.size());
         return theRetArray;
     }
 
