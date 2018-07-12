@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,22 +106,22 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
             Category cat = catDB.get(theCat);
             if (cat.isCredit()){
                 if((myRowIndex==position)){
-                    holder.itemView.setBackgroundColor(Color.parseColor("#00FF40"));
+                    holder.itemView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.ListCreditSelected));
                 }else{
                     if (theNewPosition % 2 == 0)
-                        holder.itemView.setBackgroundColor(Color.parseColor("#A9F5A9"));
+                        holder.itemView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.ListCreditLight));
                     else
-                        holder.itemView.setBackgroundColor(Color.parseColor("#58FA58"));
+                        holder.itemView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.ListCreditDark));
                 }
 
             }else if(cat.isDebit()){
                 if((myRowIndex==position)){
-                    holder.itemView.setBackgroundColor(Color.parseColor("#DF3A01"));
+                    holder.itemView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.ListDebitSelected));
                 }else{
                     if (theNewPosition % 2 == 0)
-                        holder.itemView.setBackgroundColor(Color.parseColor("#F78181"));
+                        holder.itemView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.ListDebitLight));
                     else
-                        holder.itemView.setBackgroundColor(Color.parseColor("#FA5858"));
+                        holder.itemView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.ListDebitDark));
                 }
             }else if(cat.isInformative()){
                 if((myRowIndex==position)){
