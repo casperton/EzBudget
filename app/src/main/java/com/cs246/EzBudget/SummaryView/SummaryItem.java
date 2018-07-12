@@ -56,7 +56,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
         this.name = theBalData.getDescription();
         this.paid = theBalData.isPaid();
         this.amount = theBalData.getValue();
-        
+
         this.type = type;
         // Convert string into date
         SimpleDateFormat foreignFormat = new SimpleDateFormat("yyyy-MM-dd");
