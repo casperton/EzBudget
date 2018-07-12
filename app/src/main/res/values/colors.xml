@@ -12,8 +12,8 @@
     <color name="ListDebitDark">#ffb3b3</color>
     <color name="ListDebitSelected">#DF3A01</color>
 
-    <color name="ListCreditLight">#A9F5A9</color>
-    <color name="ListCreditDark">#58FA58</color>
+    <color name="ListCreditLight">#ccffe6</color>
+    <color name="ListCreditDark">#80ffbf</color>
     <color name="ListCreditSelected">#00FF40</color>
 
 </resources>
