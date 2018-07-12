@@ -374,13 +374,19 @@ public class DateHandler {
 
 
         Date ActualDate = FirstDate;
-        //if (daysToAdd > 0) {
-        //    while (ActualDate.before(EndDate)) {
-        //        Date newDate = addDays(ActualDate, daysToAdd);
-        //        theRetArray.add(newDate);
-         //       ActualDate = newDate;
-         //   }
-       // }
+
+int count =0;
+        if (daysToAdd > 0) {
+            while ( count < 4) {
+                Date newDate = addDays(ActualDate, daysToAdd);
+                Log.i("SALVADATES","ADDED DAYS to ActualDate: "+daysToAdd);
+                Log.i("SALVADATES","NEW DATE: "+newDate.toString());
+                theRetArray.add(newDate);
+                ActualDate = newDate;
+                Log.i("SALVADATES","ACTUAL DATE: "+ActualDate.toString());
+                count ++;
+            }
+        }
 
 
         return theRetArray;
