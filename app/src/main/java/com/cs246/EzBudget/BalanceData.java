@@ -547,6 +547,22 @@ public class BalanceData {
     }
 
 
+    public BalanceData getCopy(){
+        BalanceData thecopy = new BalanceData();
+
+        thecopy.myDate = this.myDate;  //due date if it is a bill or the day we eill receive if it is income
+        thecopy.myPaymentDate = this.myPaymentDate; //the date of payment if it is a bill
+        thecopy.myDescription = this.myDescription;
+        thecopy.myValue = this.myValue;
+        thecopy.myCategoryID = this.myCategoryID;
+        //private boolean isRecurrent;
+        thecopy.myRecPeriod = this.myRecPeriod;   //the peior of recurrence (daily, weekly,bi-weekly,monthly)
+        thecopy.myID = this.myID; //the
+        thecopy.myStatus = this.myStatus;
+
+        return  thecopy;
+
+    }
 
 
 }

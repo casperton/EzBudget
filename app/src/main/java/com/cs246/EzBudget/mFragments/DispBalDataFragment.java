@@ -450,14 +450,34 @@ public void setCateGoryText(String theText){
 
             //if it came from the recurrent list fragment
             if(myIsRecurrent){
+                BalanceData myRecordToInsert = theData.getCopy();
+                myRecordToInsert.setID(myIDtoChange);
                 if(myDBBalanceDataRec.update(myIDtoChange,theData)){
-                    Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Updated Recurrent Table", Toast.LENGTH_SHORT).show();
+                    //delete the old records
+                    Log.i("DBBalanceDataUpd", "Need to Update the related records: " + myIDtoChange);
+                    if(myDBBalanceData.deleteSelected(myIDtoChange,myDBBalanceDataRec)){
+                        Toast.makeText(getActivity().getApplicationContext(), " Deleted old Records from Balance Data", Toast.LENGTH_SHORT).show();
+
+                    } else{
+                        Toast.makeText(getActivity().getApplicationContext(), "not Deleted the Selected Selected", Toast.LENGTH_SHORT).show();
+                    }
+                    //insert new ones
+                    if (myDBBalanceData.insert(myRecordToInsert,myRecordToInsert.isRecurrent()) > 0) {
+                        //Log.i("SALVAREC","CHECK the recurrence again "+theData.isRecurrent());
+
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Added New Records",
+                                Toast.LENGTH_SHORT).show();
+                        if (CommonFragments.summaryFrag != null) CommonFragments.summaryFrag.onResume();
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "not Added the New Records",
+                                Toast.LENGTH_SHORT).show();
+                    }
 
                 } else{
                     Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
-
-                //Todo: figure out how to update all future lists in the DBBalanceData
 
 
             }else {
