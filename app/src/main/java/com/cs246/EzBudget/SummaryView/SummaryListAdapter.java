@@ -15,12 +15,12 @@ import com.cs246.EzBudget.Calculations;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
+import com.cs246.EzBudget.mFragments.SummaryFragment;
 
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -52,6 +52,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     public SummaryListAdapter(Context context, List<SummaryItem> list) {
         this.context = context;
         this.list = list;
+//        list.get(0).setPaid();
+//        Log.i("SummaryListAdapter", "SummaryListAdapter: " + SummaryFragment.bills.get(0).isPaid());
     }
 
     /**
@@ -69,9 +71,13 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         if (viewType == OPERATION.CREDIT) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.income_list_item, parent, false);
             holder = new IncomeViewHolder(itemView, viewType);
+        } else if (viewType == 3) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expense_paid_list_item, parent, false);
+            holder = new ExpenseViewHolder(itemView, viewType);
         } else {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expense_list_item, parent, false);
             holder = new ExpenseViewHolder(itemView, viewType);
+
         }
         return holder;
     }
@@ -89,37 +95,44 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         SummaryItem bill = list.get(position);
         // i DONT BIND THE VIEW WHEN THE ITEM IS PAID
         // but I do not know how to get rid of the item on the list
-        if (bill.isPaid()) {
-            //holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.ListCreditLight));;
-            Log.i("SummaryList", "Bill ID: "+bill.balData.getID());
-            Log.i("SummaryList", "Logging IsPaid: "+(bill.isPaid() ? "Paid" : "Unpaid"));
-            return;
+//        if (bill.isPaid()) {
+//            //holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.ListCreditLight));;
+//            Log.i("SummaryList", "Bill ID: "+bill.balData.getID());
+//            Log.i("SummaryList", "Logging IsPaid: "+(bill.isPaid() ? "Paid" : "Unpaid"));
+//
+//
+//        }
 
-        }
-            holder.name.setText(bill.getName());
-            Log.d("SummaryListAdapter", "Item added to summary list: " + bill.getName());
-            DecimalFormat df = new DecimalFormat();
-            df.setMinimumFractionDigits(0);
-            holder.amount.setText("$" + df.format(bill.getAmount()).toString());
-            // TODO : Format date for locale
-            String date = bill.getUsDate();
-            if (bill.getType() == OPERATION.CREDIT) {
-                // Set values for expense items
-                IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
-                incomeHolder.date.setText("Date: " + date);
-                // TODO : Replace with calculated total for only this period
-                Double total_needed = bill.getTotal_needed();
-                incomeHolder.total_needed.setText("Needed: $" + String.valueOf(df.format(total_needed)));
-            } else {
-                // Expense items have a due date only
-                holder.date.setText("Due: " + date);
-                SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATE_FORMAT);
-                Date now = new Date();
-                if (bill.getDate().before(now)) {
-                    ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
-                    expenseHolder.past_due.setText("(Past Due)");
-                }
+        holder.name.setText(bill.getName());
+//        Log.d("SummaryListAdapter", "Item added to summary list: " + bill.getName());
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        holder.amount.setText("$" + df.format(bill.getAmount()).toString());
+        // TODO : Format date for locale
+        String date = bill.getUsDate();
+        if (bill.getType() == OPERATION.CREDIT) {
+            // Set values for expense items
+            IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
+            incomeHolder.date.setText("Date: " + date);
+            // TODO : Replace with calculated total for only this period
+            Double total_needed = bill.getTotal_needed();
+            Double total_paid = bill.getTotal_paid();
+            Double expenseTotalRemaining = total_needed - total_paid;
+            incomeHolder.total_needed.setText("Expenses Left: $" + String.valueOf(df.format(expenseTotalRemaining)));
+        } else {
+            // Expense items have a due date only
+            holder.date.setText("Due: " + date);
+            SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+            Date now = new Date();
+            if (bill.getDate().before(now)) {
+                ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
+                expenseHolder.past_due.setText("(Past Due)");
             }
+            if (bill.isPaid()) {
+                ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
+                expenseHolder.past_due.setText("(Paid)");
+            }
+        }
 
     }
 
@@ -141,6 +154,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      */
     @Override
     public int getItemViewType(int position) {
+        if (list.get(position).isPaid()) return 3;
         return list.get(position).getType();
     }
 
@@ -153,13 +167,14 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      * @param position  The position index of the item in the list
      */
     public void removeItem(int position) {
-        // Mark the BalanceData item as paid and remove it from the list
-        list.get(position).setPaid();
-        list.remove(position);
-        // TODO : Recalculate total needed for this period once item is paid
-        Calculations calc  = new Calculations(list);
+        if (list.get(position).isPaid()) {
+           list.get(position).resetPaid();
+        } else {
+           list.get(position).setPaid();
+        }
+
+        Calculations calc = new Calculations();
         calc.updateTotals();
-        notifyItemRemoved(position);
         notifyDataSetChanged();
     }
 
@@ -175,10 +190,10 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     public void restoreItem(SummaryItem item, int position) {
         // Reset the BalanceData item paid status to unpaid and restore the item
         item.resetPaid();
-        list.add(position, item);
-        Calculations calc  = new Calculations(list);
+        //list.add(position, item);
+        Calculations calc = new Calculations();
         calc.updateTotals();
-        notifyItemInserted(position);
+        //notifyItemInserted(position);
         notifyDataSetChanged();
     }
 

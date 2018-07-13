@@ -16,4 +16,6 @@
     <color name="ListCreditDark">#80ffbf</color>
     <color name="ListCreditSelected">#00FF40</color>
 
+    <color name="PaidItemBackground">#b0b8c4</color>
+
 </resources>

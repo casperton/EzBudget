@@ -1,55 +1,37 @@
 package com.cs246.EzBudget.mFragments;
 
-
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.cs246.EzBudget.BALANCE_ITEM;
-import com.cs246.EzBudget.Balance;
 import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.BalanceView;
 import com.cs246.EzBudget.Calculations;
 import com.cs246.EzBudget.Database.DBBalanceData;
 import com.cs246.EzBudget.Database.DBBalanceView;
-import com.cs246.EzBudget.Database.DBHelper;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
-import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.R;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelper;
 import com.cs246.EzBudget.SummaryView.RecyclerItemTouchHelperListener;
 import com.cs246.EzBudget.SummaryView.SummaryItem;
 import com.cs246.EzBudget.SummaryView.SummaryListAdapter;
-
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -63,7 +45,8 @@ public class SummaryFragment extends Fragment
     public String date_pref;
 
     private RecyclerView recyclerView;
-    private List<SummaryItem> bills;
+    public static List<SummaryItem> bills;
+    private List<SummaryItem> summaryItems;
     private SummaryListAdapter adapter;
     private ConstraintLayout rootLayout;
     private View myView;
@@ -82,6 +65,8 @@ public class SummaryFragment extends Fragment
 
     public SummaryFragment() {
         // Required empty public constructor
+        bills = new ArrayList<>();
+        summaryItems = new ArrayList<>();
     }
 
     @Override
@@ -108,15 +93,13 @@ public class SummaryFragment extends Fragment
         // Print 3 month range title
         myTextView = myView.findViewById(R.id.sumTextViewMonthRange);
 
-
-
-        bills = new ArrayList<>();
+        setup();
 
         //  SWIPE MENU FOR BILL ITEMS
-
         recyclerView = myView.findViewById(R.id.recycler_view);
         rootLayout  = myView.findViewById(R.id.sumRootLayout);
-        adapter = new SummaryListAdapter(getActivity(), bills);
+
+        adapter = new SummaryListAdapter(getActivity(), summaryItems);
 
         //recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -131,35 +114,27 @@ public class SummaryFragment extends Fragment
 
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
-        setup();
+
         return myView;
     }
 
     private void setup(){
         if (bills != null) bills.clear();
+        if (summaryItems != null) summaryItems.clear();
+
         BalanceView myBalanceView = myCurrentView.getCurrent();
         String dateRange = "";
         String theTitle = "";
 
-        //  Kirk
-        // I moved this function to the DataHandler so I can reuse it in the Database in order to calculate the recurrenciveness.
-        // PLEASE, IF YOU NEED TO CHAGE IT> CHANGE IT THERE. SO the effect will be the same in the database calculations
-        //Salvatore
-        //Date date = new Date();
-        //Calendar calendar = Calendar.getInstance();
-        //calendar.setTime(date);
-        //int monthBegin = calendar.get(Calendar.MONTH);
+
         int monthBegin = DateHandler.getMonthBegin();
-        // int yearBegin = calendar.get(Calendar.YEAR);
+
         int yearBegin = DateHandler.getYearBegin();
-        // int monthEnd = (monthBegin + 2);
+
         int monthEnd = DateHandler.getMonthEnd();
-        //int yearEnd = yearBegin;
-        //if (monthEnd > 11) {
-        //    monthEnd = (monthEnd - 12);
-        //    yearEnd++;
-        //}
+
         int yearEnd =  DateHandler.getYearEnd();
+
         /*
         //todo: what to do when there is no cuurent
         if (myBalanceView == null){
@@ -222,63 +197,72 @@ public class SummaryFragment extends Fragment
             bills.add(summaryItem);
 
         }
-/*
-
-        //Log.i("SALVADATABASE","CURSOR INCOMES SIZE: "+cursorIncomes.getCount());
-        if (cursorIncomes !=null) {
-            if (cursorIncomes.moveToFirst()) {
-                do {
-                    String description = cursorIncomes.getString(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                    String due_date = cursorIncomes.getString(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                    Double amount = cursorIncomes.getDouble(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                    Long theCat = cursorIncomes.getLong(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
-                    //Thestatus can be:
-                    //UNKNOWN = -1;
-                    //PAID_RECEIVED = 0;
-                    //UNPAID_UNRECEIVED = 1;
-                    Integer Status = cursorIncomes.getInt(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
-                    boolean paid=false;
-                    Integer theStatus = cursorIncomes.getInt(cursorIncomes.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
-                    if (theStatus== PAY_STATUS.UNKNOWN) paid = false;
-                    if (theStatus== PAY_STATUS.UNPAID_UNRECEIVED) paid = false;
-                    if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
-
-                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                    SummaryItem payItem = new SummaryItem(description, due_date, amount, paid, OPERATION.CREDIT);
-                    //
-
-                    bills.add(payItem);
-                    //Log.i("SALVADATABASE","ADDED INCOMES: "+description);
-                    // TODO : Replace total with correct values for amount needed during this period
-                } while (cursorIncomes.moveToNext());
-            }
-        }
-*/
-
-        // Add a test paycheck
-        //SummaryItem payItem = new SummaryItem("My First Paycheck", "2018-06-01", 1200, false, OPERATION.CREDIT);
-        //bills.add(payItem);
-        //payItem = new SummaryItem("My Second Paycheck", "2018-06-15", 1200, false, OPERATION.CREDIT);
-        //bills.add(payItem);
 
         Collections.sort(bills);
-        Calculations calc  = new Calculations(bills);
+        // Calculations calc  = new Calculations(bills);
+        Calculations calc  = new Calculations();
         calc.updateTotals();
 
-        adapter.notifyDataSetChanged();
+        // Add on the items to the list that will show up in summary view
+        // summaryItems = new ArrayList<>();
 
+        // The following code segment will be used to filter
+        // the summary view so that only items 2 weeks old
+        // up to 2 months will be displayed rather than every
+        // item in the database
+        Date now = new Date();
+        Calendar c = Calendar.getInstance();
+
+        // Find date from 2 weeks ago to cutoff view
+        // Set calendar to current time
+        c.setTime(now);
+        // Subtract 14 days from current date
+        c.add(Calendar.DATE, -14);
+        // Set the value of the date to the variable
+        Date twoWeeksAgo = c.getTime();
+
+        // Find the date 2 months from now
+        // Set the calendar time to now
+        c.setTime(now);
+        // Add 2 months
+        c.add(Calendar.MONTH, 2);
+        // Set the value of the date to the variable
+        Date twoMonthsFromNow = c.getTime();
+
+        // Only add items to the summary list that are
+        // 2 weeks ago up to 2 months from now for viewing
+        for (SummaryItem item: bills) {
+            Date itemDate = item.getDate();
+            if (itemDate.after(twoWeeksAgo) && itemDate.before(twoMonthsFromNow)) {
+                summaryItems.add(item);
+            }
+        }
+
+        if (adapter != null) adapter.notifyDataSetChanged();
     }
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof SummaryListAdapter.MyViewHolder) {
-            String name = bills.get(viewHolder.getAdapterPosition()).getName();
+            SummaryItem currentItem = bills.get(viewHolder.getAdapterPosition());
+            String name = currentItem.getName();
 
             final SummaryItem deletedItem = bills.get(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
             adapter.removeItem(deleteIndex);
 
-            Snackbar snackbar = Snackbar.make(rootLayout, name + " marked as paid!", Snackbar.LENGTH_INDEFINITE);
+            /**
+             * Duration the snackbar item is displayed is controlled by setting
+             * Snackbar.LENGTH_INDEFINITE = Indefinitely displayed
+             * Snackbar.LENGTH_LONG = Long period
+             * Snackbar.LENGTH_SHORT = Short period
+             */
+            Snackbar snackbar;
+            if (currentItem.isPaid()) {
+                snackbar = Snackbar.make(rootLayout, name + " marked as paid.", Snackbar.LENGTH_LONG);
+            } else {
+                snackbar = Snackbar.make(rootLayout, name + " marked as unpaid.", Snackbar.LENGTH_LONG);
+            }
             snackbar.setAction("UNDO", new View.OnClickListener(){
 
                 @Override
@@ -290,6 +274,5 @@ public class SummaryFragment extends Fragment
             snackbar.show();
         }
     }
-
 
 }

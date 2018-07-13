@@ -1,6 +1,7 @@
 package com.cs246.EzBudget;
 
 import com.cs246.EzBudget.SummaryView.SummaryItem;
+import com.cs246.EzBudget.mFragments.SummaryFragment;
 
 import java.util.List;
 
@@ -14,15 +15,15 @@ import java.util.List;
 public class Calculations {
 
 
-    private double periodTotal = 0;
+    private double periodTotalNeeded = 0;
+    private double periodPaidTotal = 0;
     private List<SummaryItem> list;
 
     /**
      * Default constructor for the calculations.
-     * @param list  Requires the list of items for the summary view to be calculated
      */
-    public Calculations(List<SummaryItem> list) {
-        this.list = list;
+    public Calculations() {
+        list = SummaryFragment.bills;
     }
 
     /**
@@ -30,20 +31,25 @@ public class Calculations {
      * this period.
      * @return  Returns the total for the period as a double value
      */
-    public double getPeriodTotal(int start_position) {
-        periodTotal = 0;
+    public void getPeriodTotal(int start_position) {
+        periodTotalNeeded = 0;
         for (int i = start_position + 1; i < list.size() && list.get(i).getType() != OPERATION.CREDIT; i++)  {
-            if (list.get(i).getType() == OPERATION.DEBIT) {
-                periodTotal += list.get(i).getAmount();
+            SummaryItem currentItem = list.get(i);
+            if (currentItem.getType() == OPERATION.DEBIT) {
+                periodTotalNeeded += currentItem.getAmount();
+                if (currentItem.isPaid()) periodPaidTotal += currentItem.getAmount();
             }
         }
-        return periodTotal;
     }
 
     public void updateTotals() {
         for (SummaryItem item: list) {
             if (item.getType() == OPERATION.CREDIT) {
-                item.setTotal_needed(getPeriodTotal(list.indexOf(item)));
+                getPeriodTotal(list.indexOf(item));
+                item.setTotal_needed(periodTotalNeeded);
+                item.setTotal_paid(periodPaidTotal);
+                periodPaidTotal = 0;
+                periodPaidTotal = 0;
             }
         }
     }

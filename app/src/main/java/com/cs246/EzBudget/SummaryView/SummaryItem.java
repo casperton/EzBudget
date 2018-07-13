@@ -14,8 +14,8 @@ import java.util.Date;
 
 /**
  * <p>
- * This class is a temporary modal class created to store expense and income items
- * that are stored in the database. These are all added as objects in the list sent
+ * This class is stores expense and income items from the database
+ * These are all added as BalanceData objects in the list sent
  * to the summary view to be displayed
  */
 public class SummaryItem implements Comparable<SummaryItem>{
@@ -26,39 +26,11 @@ public class SummaryItem implements Comparable<SummaryItem>{
     private int type;
     private Date date; // Due date of bill, or date income is received
     private double total_needed;
+    private double total_paid;
     Context myContext;
-    /**
-     * Default contsructor method
-     * @param name      The name of the item
-     * @param date      The due_date of the item
-     * @param amount    The amount of the item
-     * @param paid      For expense items only to mark if paid or not
-     * @param type      Indicates whether it is an expense (0) or income (1)
-     */
-    /*public SummaryItem(String name, String date, double amount, boolean paid, int type) {
-        this.name = name;
-        this.paid = paid;
-        this.amount = amount;
-        this.type = type;
-
-        // Convert string into date
-        SimpleDateFormat foreignFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        Date converted_date = new Date() ;
-        // Dates are stored initially as foreign format
-        // Convert the strings to date in this format
-        try {
-            converted_date = foreignFormat.parse(date);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.date = converted_date;
-    }
-*/
 
     /**
-     * Default contsructor method
+     * Default constructor method
      * @param theContext The Context to be used by Database Operations
      * @param theBalData The BalanceData (Transactions Table)
      * @param type Credit or Debit
@@ -70,6 +42,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
         this.amount = theBalData.getValue();
         this.myContext = theContext;
         this.type = type;
+        this.paid = theBalData.isPaid();
         // Convert string into date is done in the BalanceData Class
         this.date = theBalData.getDueDate();
 
@@ -138,6 +111,28 @@ public class SummaryItem implements Comparable<SummaryItem>{
     }
 
     /**
+     * This method will store the total paid for
+     * bills out of this income item for the given
+     * period
+     *
+     * @param total_paid
+     */
+    public void setTotal_paid(double total_paid) {
+        this.total_paid = total_paid;
+    }
+
+    /**
+     * This method will return the total that has already
+     * beend paid for bills during the period if the item
+     * is income
+     *
+     * @return
+     */
+    public double getTotal_paid() {
+        return total_paid;
+    }
+
+    /**
      * This method will return the date in US format mm/dd/yyyy
      * @return Formatted date as string
      */
@@ -167,10 +162,12 @@ public class SummaryItem implements Comparable<SummaryItem>{
     }
 
     /**
-     * Set this BalanceData item as paid
+     * Set this BalanceData item as paid in the database
+     * and in this object
      */
     public void setPaid() {
-        this.balData.setPaid();
+        balData.setPaid();
+        paid = true;
         DBBalanceData myDB = new DBBalanceData(myContext);
         myDB.update(balData.getID(),balData);
         Log.d("SummaryItem", "Marked the following item as paid: " + this.name);
@@ -178,11 +175,12 @@ public class SummaryItem implements Comparable<SummaryItem>{
     }
 
     /**
-     * Set this BalanceData item as unpaid
+     * Set this BalanceData item as unpaid in the database
+     * and in this object
      */
     public void resetPaid() {
-        this.balData.resetPaid();
-        this.balData.setPaid();
+        balData.resetPaid();
+        paid = false;
         DBBalanceData myDB = new DBBalanceData(myContext);
         myDB.update(balData.getID(),balData);
 
