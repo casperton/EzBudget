@@ -11,6 +11,8 @@ import com.cs246.EzBudget.BalanceData;
 import com.cs246.EzBudget.Category;
 import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
+import com.cs246.EzBudget.PAY_STATUS;
+import com.cs246.EzBudget.RECURRENT;
 
 /**
  * Class to Handle the Table BalanceDataRec (The Recurrent Data) of the Database
@@ -95,6 +97,64 @@ public class DBBalanceDataRec{
         return res;
     }
 
+
+    public BalanceData getData(Long theID){
+        BalanceData retData= new BalanceData();
+        String theQuery = "select * from "+BalanceData.BALANCEDATAREC_TABLE_NAME+" where "+BalanceData.BALANCEDATAREC_COLUMN_ID+" = "+theID.toString()+"";
+
+
+        Double theValue = 0.0;
+        String theDescription = "";
+        Integer theStatus = PAY_STATUS.UNKNOWN;
+        Long theCategory = Long.valueOf(-1);
+        String theDueDate = "";
+        String thePaymentDate = "";
+        String theLastModification = "";
+        String myCatName = "";
+        Integer thePeriod = RECURRENT.UNKNOWN;
+        Cursor rs;
+        myDB.myLock.readLock().lock();
+        try {
+            SQLiteDatabase db = myDB.getReadableDatabase();
+            rs =  db.rawQuery( theQuery, null );
+            if (rs !=null ) {
+                if (rs.getCount()>0) {
+                    rs.moveToFirst();
+
+                    //column values
+                    theID = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_ID));
+                    theValue = rs.getDouble(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_VALUE));
+                    theDescription = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION));
+                    theStatus = PAY_STATUS.UNKNOWN;
+                    theCategory = rs.getLong(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY));
+                    //this date is formateed in the Database Format
+                    theDueDate = rs.getString(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE));
+                    thePeriod = rs.getInt(rs.getColumnIndex(BalanceData.BALANCEDATAREC_COLUMN_PERIOD));
+
+                    retData.setID(theID);
+                    retData.setValue(theValue);
+                    retData.setDescription(theDescription);
+                    retData.setStatus(theStatus);
+                    retData.setCategory(theCategory);
+                    retData.setDueDateFromDatabase(theDueDate);
+                    retData.setRecurrent(thePeriod);
+
+                    if (!rs.isClosed()) {
+                        rs.close();
+                    }
+                }
+            }
+
+
+
+
+        } finally {
+            myDB.myLock.readLock().unlock();
+        }
+
+
+        return retData;
+    }
     /**
      * Return the number of Rows of the Balance Data table
      * @return the number of rows in the Balance Data table

@@ -374,7 +374,7 @@ public class DateHandler {
         Date FirstDate = getDate(initialDay, iniMonth,iniYear);
         theRetArray.add(FirstDate);
 
-        int theEndMonth = getMonthEnd();
+        int theEndMonth = getMonthEnd()-1;
         int theEndYear = getYearEnd();
         int LastDayOftheLastMonth = getLastDayOfMonth(theEndMonth);
         Date EndDate = getDate(LastDayOftheLastMonth, theEndMonth,theEndYear);

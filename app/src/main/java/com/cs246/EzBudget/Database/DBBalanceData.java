@@ -16,6 +16,8 @@ import com.cs246.EzBudget.PAY_STATUS;
 import com.cs246.EzBudget.RECURRENT;
 import com.cs246.EzBudget.SummaryView.SummaryItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -116,10 +118,11 @@ public class DBBalanceData {
      * @return the number of the row inserted or -1 if failed
      */
     public Long insert (BalanceData theData, boolean isFromRec) {
+        Log.i("DBBalanceDataUpd", "WILL Insert. Is Recurrent: " + (isFromRec ? "TRUE" : "FALSE"));
         Long result = Long.valueOf(-1);
         boolean isFromRecurrent = theData.IsRecurrent();
         String theDate;
-        Log.i("SALVADATA", "data: "+ theData.getDueDateHuman());
+        Log.i("DBBalanceDataUpd", "date: "+ theData.getDueDateHuman());
         /**
          * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
          */
@@ -212,6 +215,49 @@ public class DBBalanceData {
         return retState;
     }
 
+
+
+
+    /**
+     * Delete only the BalanceData related to the Passed BalanceDataRec
+     * Delete only unpaid itens from now to the end of the period
+     * @param theBalRecID The BalanceDataRec Id of the correlated records to update
+     * @param
+     * @return true if success
+     */
+    public boolean deleteSelected (Long theBalRecID, DBBalanceDataRec theDB) {
+        Log.i("DBBalanceDataUpd", "Need to Update the related records: " + theBalRecID);
+        boolean retState = false;
+        if (theBalRecID == null) return false;
+        if (theBalRecID <=0) return false;
+
+        BalanceData theRecRecord =theDB.getData(theBalRecID);
+        Log.i("DBBalanceDataUpd", "Got from database the Bal Rec Id: " + theRecRecord.getID());
+        Cursor cursor =  getSelectedCursor(theBalRecID, PAY_STATUS.UNPAID_UNRECEIVED);
+        if(cursor != null){
+            if (cursor.moveToFirst()) {
+                Log.i("DBBalanceDataUpd", "Got cursor with this number of records from BalanceDAta: " + cursor.getCount());
+
+                do {
+                    Long theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
+                    Log.i("DBBalanceDataUpd", "will Delete this BalanceDAta: " + theID);
+
+                     delete(theID);
+                   // update(theID,theData);
+                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+
+                    //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
+                    Log.i("DBBalanceDataUpd", "ID Updated: " + theID);
+
+
+                } while (cursor.moveToNext());
+                retState = true;
+            }
+
+        }else retState = false;
+
+        return retState;
+    }
     /**
      * Return a Cursor with all BalanceDatas in the database
      * @return the Cursor with Outcomes and Incomes and Informative data ion the database
@@ -245,6 +291,93 @@ public class DBBalanceData {
         }
         return cursor;
     }
+
+/* This was just a try
+    private BalanceData fillData(Cursor cursor) {
+        if (cursor == null || cursor.getCount() > 1) return null;
+        BalanceData theBalData = new BalanceData();
+        if (cursor.moveToFirst()) {
+            do {
+
+                Long theID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_ID));
+                String theDescription = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
+                String theDueDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
+                Double theAmount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
+                Long theCatID = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
+                String thePaymentDate = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE));
+                String theTimesTamp = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP));
+                Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
+
+                //initialize BalanceData
+                theBalData.setDueDateFromDatabase(theDueDate);
+                theBalData.setDescription(theDescription);
+                theBalData.setValue(theAmount);
+                theBalData.setPaymentDateFromDatabase(thePaymentDate);
+                theBalData.setStatus(theStatus);
+                theBalData.setCategory(theCatID);
+                theBalData.setID(theID);
+                theBalData.resetRecurrent();
+
+                // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
+
+                //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
+                Log.i("DBBalanceData", "ID: " + theBalData.getID());
+                Log.i("DBBalanceData", "Status: " + (theStatus == 0 ? "Paid" : "Unpaid"));
+
+            } while (cursor.moveToNext());
+        }
+        return theBalData;
+    }
+    */
+
+    public Cursor getSelectedCursor(Long theBalRecID, Integer thePaymentStatus)
+    {
+        Log.i("DBBalanceDataUpd", "Will find this balance data Rec relationship: " + theBalRecID.toString());
+        Log.i("DBBalanceDataUpd", "Whis this status: " + thePaymentStatus.toString());
+        if (theBalRecID <= 0) return null;
+        Cursor cursor;
+        if (thePaymentStatus == PAY_STATUS.PAID_RECEIVED || thePaymentStatus == PAY_STATUS.UNPAID_UNRECEIVED) {
+
+
+            Log.i("DBBalanceDataUpd", "ID to get related: " + theBalRecID);
+
+            //return cursor;
+            //if (theView == null){
+            //   DBBalanceView myView = new DBBalanceView(myContex);
+            //   theView = myView.getCurrent();
+            //   if (theView == null){
+            //       return null;
+            //   }
+            //}
+            String theInitialDate = DateHandler.getNowDateDatabase();
+            int theEndMonth = DateHandler.getMonthEnd();
+            int theEndYear = DateHandler.getYearEnd();
+            int LastDayOftheLastMonth = DateHandler.getLastDayOfMonth(theEndMonth);
+            Date EndDate = DateHandler.getDate(LastDayOftheLastMonth, theEndMonth, theEndYear);
+            DateFormat df = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT, DateHandler.DEF_LOCALE);
+            String theEndDateStr = df.format(EndDate);
+            String theFinalDate = theEndDateStr;
+
+            myDB.myLock.readLock().lock();
+            try {
+                SQLiteDatabase db = myDB.getReadableDatabase();
+
+                //return cursor;
+                String[] Projections = getProjections();
+                String theWhere = BalanceData.BALANCEDATA_COLUMN_REC_ID + " = " + theBalRecID.toString() +
+                        " AND " + BalanceData.BALANCEDATA_COLUMN_DUE_DATE +
+                        " BETWEEN " + "\"" + theInitialDate + "\"" + " AND " + "\"" + theFinalDate + "\"";
+                cursor = db.query(BalanceData.BALANCEDATA_TABLE_NAME, Projections, theWhere, null,
+                        null, null, null);
+
+            } finally {
+                myDB.myLock.readLock().unlock();
+            }
+        }else return null;
+        Log.i("DBBalanceDataUpd", "Records: " + cursor.getCount());
+        return cursor;
+    }
+
 
     private String[] getProjections(){
         String[] Projections = {BalanceData.BALANCEDATA_COLUMN_ID,
