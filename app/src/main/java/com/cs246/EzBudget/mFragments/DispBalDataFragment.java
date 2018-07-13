@@ -456,6 +456,10 @@ public void setCateGoryText(String theText){
                 } else{
                     Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
+
+                //Todo: figure out how to update all future lists in the DBBalanceData
+
+
             }else {
 
                 if (myDBBalanceData.update(myIDtoChange, theData)) {
@@ -475,7 +479,8 @@ public void setCateGoryText(String theText){
             if(myIsRecurrent){
                 //Log.i("SALVAREC","ENTERED IN RECURRENT DATABASE ADD "+theData.isRecurrent());
                 if(theData.IsRecurrent()) { //Add only if the recurrent period is other than once
-                    if (myDBBalanceDataRec.insert(theData) > 0) {
+                    Long recId = myDBBalanceDataRec.insert(theData);
+                    if ( recId > 0) {
 
                         Toast.makeText(getActivity().getApplicationContext(), "Added in Recurrent Table",
                                 Toast.LENGTH_SHORT).show();
@@ -483,6 +488,7 @@ public void setCateGoryText(String theText){
                         Toast.makeText(getActivity().getApplicationContext(), "not Added in recuurent",
                                 Toast.LENGTH_SHORT).show();
                     }
+                    theData.setID(recId);
                 }
                 //came from recurrent but must add to summary as well
                 if (myAddToSumaryToo){

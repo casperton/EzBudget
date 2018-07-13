@@ -32,7 +32,7 @@ public class BalanceData {
     public static final String BALANCEDATA_COLUMN_VALUE = "value";
     public static final String BALANCEDATA_COLUMN_STATUS = "status";
     public static final String BALANCEDATA_COLUMN_TIMESTAMP = "modificationDateTime";
-
+    public static final String BALANCEDATA_COLUMN_REC_ID = "balRecID";
 
     /**
      * FIELDS FOR DATABASE DESCRIPTION OF THE RECURRENT TABLE

@@ -36,19 +36,22 @@ public class DBBalanceData {
         myContex =context;
 
     }
-    static public boolean insertBalData (SQLiteDatabase db , BalanceData theData, Long theCatID) {
+    static public boolean insertBalData (SQLiteDatabase db , BalanceData theData, Long theCatID, Long theRecID) {
         boolean isFromRecurrent = theData.IsRecurrent();
+
         String theDate;
         /**
          * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
          */
-        if(isFromRecurrent) {
-            String theDay = theData.getDueDateDay();
-            String theMonth = DateHandler.getActualMonth();
-            String theYear = DateHandler.getActualYear();
-            theDate = theYear + "-" + theMonth + "-" + theDay; //database format
-            theData.resetRecurrent();
-        }else theDate = theData.getDueDateDatabase();
+        //if(isFromRecurrent) {
+        //    String theDay = theData.getDueDateDay();
+        //    String theMonth = DateHandler.getActualMonth();
+        //    String theYear = DateHandler.getActualYear();
+        //    theDate = theYear + "-" + theMonth + "-" + theDay; //database format
+        //    theData.resetRecurrent();
+        //}else
+
+        theDate = theData.getDueDateDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
@@ -57,6 +60,7 @@ public class DBBalanceData {
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theCatID);
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_REC_ID, theRecID);
         db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
 
 
@@ -70,6 +74,8 @@ public class DBBalanceData {
      */
     private Long insert (BalanceData theData) {
         Long result;
+        Long recID = Long.valueOf(-1);
+        if (theData.getID() > 0) recID = theData.getID();
 
         myDB.myLock.writeLock().lock();
         try {
@@ -84,6 +90,7 @@ public class DBBalanceData {
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_REC_ID,recID);
                 result = db.insert(BalanceData.BALANCEDATA_TABLE_NAME, null, contentValues);
                 if (result < 0){
                     Log.e(TAG, "Insert forward failed");
@@ -117,6 +124,7 @@ public class DBBalanceData {
          * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
          */
         if(isFromRecurrent || isFromRec) {
+            Long theID = theData.getID();
             //DBBalanceView theViewDataBase = new DBBalanceView(myContex);
             //BalanceView theCurrentView = theViewDataBase.getCurrent();
             //Date theViewIniDate = theCurrentView.getInitialDate();
@@ -127,11 +135,13 @@ public class DBBalanceData {
                 theData.resetRecurrent();
                 theData.setDueDate(theDates.get(count));
                 result = insert(theData);
+
             }
 
 
             //END IS RECURRENT
         }else {
+            theData.setID(Long.valueOf(-1));
             Log.i("SALVADATA", "The Date Here: "+ theData.getDueDateHuman());
             result = insert(theData);
         }
