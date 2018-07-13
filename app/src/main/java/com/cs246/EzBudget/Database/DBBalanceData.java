@@ -41,15 +41,15 @@ public class DBBalanceData {
 
         String theDate;
         /**
-         * Whe hte Balance Data is Recurrent, the Date do not have, Year and Month.
+         * WheN THe Balance Data is FROM THE Recurrent record, there is no Year and Month in the date.
          */
-        //if(isFromRecurrent) {
-        //    String theDay = theData.getDueDateDay();
-        //    String theMonth = DateHandler.getActualMonth();
-        //    String theYear = DateHandler.getActualYear();
-        //    theDate = theYear + "-" + theMonth + "-" + theDay; //database format
-        //    theData.resetRecurrent();
-        //}else
+        if(isFromRecurrent) {
+            String theDay = theData.getDueDateDay();
+            String theMonth = DateHandler.getActualMonth();
+            String theYear = DateHandler.getActualYear();
+            theDate = theYear + "-" + theMonth + "-" + theDay; //database format
+            theData.resetRecurrent();
+        }else
 
         theDate = theData.getDueDateDatabase();
 
