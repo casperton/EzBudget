@@ -441,7 +441,8 @@ where category.operation = 1
                     // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
                     theArray.add(theBalData);
                     //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
-
+                    Log.i("DBBalanceData", "ID: "+theBalData.getID());
+                    Log.i("DBBalanceData", "Status: "+(theStatus==0 ? "Paid" : "Unpaid"));
 
                 } while (cursor.moveToNext());
             }
@@ -476,6 +477,8 @@ where category.operation = 1
                     theBalData.setID(theID);
                     theBalData.resetRecurrent();
 
+                    Log.i("DBBalanceData", "ID: "+theBalData.getID());
+                    Log.i("DBBalanceData", "Status: "+(theStatus==0 ? "Paid" : "Unpaid"));
                     // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
                     theArray.add(theBalData);
                     //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);

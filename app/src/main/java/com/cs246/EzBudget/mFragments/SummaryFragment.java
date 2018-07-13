@@ -194,40 +194,15 @@ public class SummaryFragment extends Fragment
 
         while(listIterator.hasNext()) {
             BalanceData theActualData = (BalanceData)listIterator.next();
+            Log.i("DBBalanceData", "Outcome ID: "+theActualData.getID());
+            Log.i("DBBalanceData", "Status: "+(theActualData.getStatus()==0 ? "Paid" : "Unpaid"));
 
             // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-            SummaryItem summaryItem = new SummaryItem(theActualData, OPERATION.DEBIT);
+            SummaryItem summaryItem = new SummaryItem(getActivity(),theActualData, OPERATION.DEBIT);
             bills.add(summaryItem);
 
         }
-/*
-        if (cursor !=null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    String description = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION));
-                    String due_date = cursor.getString(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_DUE_DATE));
-                    Double amount = cursor.getDouble(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_VALUE));
-                    Long theCat = cursor.getLong(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_CATEGORY));
-                    //Thestatus can be:
-                    //UNKNOWN = -1;
-                    //PAID_RECEIVED = 0;
-                    //UNPAID_UNRECEIVED = 1;
-                    Integer Status = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
-                    boolean paid=false;
-                    Integer theStatus = cursor.getInt(cursor.getColumnIndex(BalanceData.BALANCEDATA_COLUMN_STATUS));
-                    if (theStatus== PAY_STATUS.UNKNOWN) paid = false;
-                    if (theStatus== PAY_STATUS.UNPAID_UNRECEIVED) paid = false;
-                    if (theStatus== PAY_STATUS.PAID_RECEIVED) paid = true;
-                    // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-                    SummaryItem summaryItem = new SummaryItem(description, due_date, amount, paid, OPERATION.DEBIT);
-                    bills.add(summaryItem);
-                    //Log.i("SALVADATABASE","ADDED OUTCOMES: "+description);
 
-                    // TODO : Replace total with correct values for amount needed during this period
-                  } while (cursor.moveToNext());
-            }
-        }
-        */
         // THIS CODE WILL ADD INCOMES FROM THE BalanceDATA table the are in the same period as the current one (mBalanceView)
 
         Cursor cursorIncomes = myBalanceData.getIncomesCursor();
@@ -243,7 +218,7 @@ public class SummaryFragment extends Fragment
             BalanceData theActualData = (BalanceData)listIterator.next();
 
             // Set SummaryType.Expense for expenses. This allows them to be swiped for marking as paid on summary screen
-            SummaryItem summaryItem = new SummaryItem(theActualData, OPERATION.CREDIT);
+            SummaryItem summaryItem = new SummaryItem(getActivity(),theActualData, OPERATION.CREDIT);
             bills.add(summaryItem);
 
         }

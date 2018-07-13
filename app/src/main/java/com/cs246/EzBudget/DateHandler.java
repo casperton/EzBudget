@@ -19,7 +19,10 @@ public class DateHandler {
     public static final Locale DEF_LOCALE = Locale.ENGLISH;
     public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATABASE_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    //public static final String DATE_FORMAT = "dd/MM/yyyy";
+
+    // when I use MM-dd-yyyy it does not work well I do notknow why
+    public static final String DATE_FORMAT = "MM/dd/yyyy";
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String RECURRENT_DATE_FORMAT = "dd";
     private static final String YEAR_FORMAT = "yyyy";

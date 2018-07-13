@@ -1,6 +1,7 @@
 package com.cs246.EzBudget.SummaryView;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.cs246.EzBudget.BALANCE_ITEM;
 import com.cs246.EzBudget.Calculations;
+import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
 
@@ -83,31 +85,41 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      */
     @Override
     public void onBindViewHolder(SummaryListAdapter.MyViewHolder holder, int position) {
+
         SummaryItem bill = list.get(position);
-        holder.name.setText(bill.getName());
-        Log.d("SummaryListAdapter", "Item added to summary list: " + bill.getName());
-        DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(0);
-        holder.amount.setText("$" + df.format(bill.getAmount()).toString());
-        // TODO : Format date for locale
-        String date = bill.getUsDate();
-        if (bill.getType() == OPERATION.CREDIT) {
-            // Set values for expense items
-            IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
-            incomeHolder.date.setText("Date: " + date);
-            // TODO : Replace with calculated total for only this period
-            Double total_needed = bill.getTotal_needed();
-            incomeHolder.total_needed.setText("Needed: $" + String.valueOf(df.format(total_needed)));
-        } else {
-            // Expense items have a due date only
-            holder.date.setText("Due: " + date);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-            Date now = new Date();
-            if (bill.getDate().before(now)) {
-                ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
-                expenseHolder.past_due.setText("(Past Due)");
-            }
+        // i DONT BIND THE VIEW WHEN THE ITEM IS PAID
+        // but I do not know how to get rid of the item on the list
+        if (bill.isPaid()) {
+            //holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.ListCreditLight));;
+            Log.i("SummaryList", "Bill ID: "+bill.balData.getID());
+            Log.i("SummaryList", "Logging IsPaid: "+(bill.isPaid() ? "Paid" : "Unpaid"));
+            return;
+
         }
+            holder.name.setText(bill.getName());
+            Log.d("SummaryListAdapter", "Item added to summary list: " + bill.getName());
+            DecimalFormat df = new DecimalFormat();
+            df.setMinimumFractionDigits(0);
+            holder.amount.setText("$" + df.format(bill.getAmount()).toString());
+            // TODO : Format date for locale
+            String date = bill.getUsDate();
+            if (bill.getType() == OPERATION.CREDIT) {
+                // Set values for expense items
+                IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
+                incomeHolder.date.setText("Date: " + date);
+                // TODO : Replace with calculated total for only this period
+                Double total_needed = bill.getTotal_needed();
+                incomeHolder.total_needed.setText("Needed: $" + String.valueOf(df.format(total_needed)));
+            } else {
+                // Expense items have a due date only
+                holder.date.setText("Due: " + date);
+                SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+                Date now = new Date();
+                if (bill.getDate().before(now)) {
+                    ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
+                    expenseHolder.past_due.setText("(Past Due)");
+                }
+            }
 
     }
 

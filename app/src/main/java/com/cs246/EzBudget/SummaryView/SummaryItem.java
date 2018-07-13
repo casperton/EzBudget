@@ -1,8 +1,11 @@
 package com.cs246.EzBudget.SummaryView;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.cs246.EzBudget.BalanceData;
+import com.cs246.EzBudget.Database.DBBalanceData;
+import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.PAY_STATUS;
 
 import java.text.ParseException;
@@ -16,14 +19,14 @@ import java.util.Date;
  * to the summary view to be displayed
  */
 public class SummaryItem implements Comparable<SummaryItem>{
-    private BalanceData balData;
+    public BalanceData balData;
     private String name;
     private boolean paid;
     private double amount;
     private int type;
     private Date date; // Due date of bill, or date income is received
     private double total_needed;
-
+    Context myContext;
     /**
      * Default contsructor method
      * @param name      The name of the item
@@ -32,11 +35,12 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * @param paid      For expense items only to mark if paid or not
      * @param type      Indicates whether it is an expense (0) or income (1)
      */
-    public SummaryItem(String name, String date, double amount, boolean paid, int type) {
+    /*public SummaryItem(String name, String date, double amount, boolean paid, int type) {
         this.name = name;
         this.paid = paid;
         this.amount = amount;
         this.type = type;
+
         // Convert string into date
         SimpleDateFormat foreignFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -51,28 +55,25 @@ public class SummaryItem implements Comparable<SummaryItem>{
         }
         this.date = converted_date;
     }
+*/
 
-    public SummaryItem(BalanceData theBalData, int type) {
+    /**
+     * Default contsructor method
+     * @param theContext The Context to be used by Database Operations
+     * @param theBalData The BalanceData (Transactions Table)
+     * @param type Credit or Debit
+     */
+    public SummaryItem(Context theContext,BalanceData theBalData, int type) {
+
         this.balData = theBalData;
-
         this.name = theBalData.getDescription();
-        this.paid = theBalData.isPaid();
         this.amount = theBalData.getValue();
-
+        this.myContext = theContext;
         this.type = type;
-        // Convert string into date
-        SimpleDateFormat foreignFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // Convert string into date is done in the BalanceData Class
+        this.date = theBalData.getDueDate();
 
-        Date converted_date = new Date() ;
-        // Dates are stored initially as foreign format
-        // Convert the strings to date in this format
-        try {
-            converted_date = foreignFormat.parse(theBalData.getDueDateDatabase());
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.date = converted_date;
     }
 
     /**
@@ -88,7 +89,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * @return  Boolean value true if the expense is marked as paid
      */
     public boolean isPaid() {
-        return paid;
+        return balData.isPaid();
     }
 
     /**
@@ -141,16 +142,16 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * @return Formatted date as string
      */
     public String getUsDate() {
-        SimpleDateFormat formatter =  new SimpleDateFormat("MM-dd-yyyy");
+        SimpleDateFormat formatter =  new SimpleDateFormat(DateHandler.DATE_FORMAT);
         return formatter.format(this.date);
     }
 
     /**
-     * This method will return the date in non-US format yyyy-mm-dd
+     * This method will return the date in non-US format yyyy-mm-dd (database Format)
      * @return Formatted date as string
      */
     public String getForeignDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
         return formatter.format(this.date);
     }
 
@@ -170,8 +171,10 @@ public class SummaryItem implements Comparable<SummaryItem>{
      */
     public void setPaid() {
         this.balData.setPaid();
+        DBBalanceData myDB = new DBBalanceData(myContext);
+        myDB.update(balData.getID(),balData);
         Log.d("SummaryItem", "Marked the following item as paid: " + this.name);
-        this.paid = true;
+
     }
 
     /**
@@ -179,6 +182,9 @@ public class SummaryItem implements Comparable<SummaryItem>{
      */
     public void resetPaid() {
         this.balData.resetPaid();
-        this.paid = false;
+        this.balData.setPaid();
+        DBBalanceData myDB = new DBBalanceData(myContext);
+        myDB.update(balData.getID(),balData);
+
     }
 }
