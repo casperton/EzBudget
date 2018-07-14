@@ -19,12 +19,10 @@ import java.util.Date;
  * to the summary view to be displayed
  */
 public class SummaryItem implements Comparable<SummaryItem>{
-    public BalanceData balData;
+    private BalanceData balData;
     private String name;
-    private boolean paid;
     private double amount;
     private int type;
-    private Date date; // Due date of bill, or date income is received
     private double total_needed;
     private double total_paid;
     Context myContext;
@@ -42,11 +40,19 @@ public class SummaryItem implements Comparable<SummaryItem>{
         this.amount = theBalData.getValue();
         this.myContext = theContext;
         this.type = type;
-        this.paid = theBalData.isPaid();
-        // Convert string into date is done in the BalanceData Class
-        this.date = theBalData.getDueDate();
 
 
+
+
+    }
+
+
+    /**
+     * Gets the BalanceData Record
+     * @return the Balance Data Record.
+     */
+    public BalanceData getBalData(){
+        return this.balData;
     }
 
     /**
@@ -86,7 +92,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * @return  String date value for the item
      */
     public Date getDate() {
-        return date;
+        return balData.getDueDate();
     }
 
     /**
@@ -137,8 +143,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * @return Formatted date as string
      */
     public String getUsDate() {
-        SimpleDateFormat formatter =  new SimpleDateFormat(DateHandler.DATE_FORMAT);
-        return formatter.format(this.date);
+        return balData.getDueDateHuman();
     }
 
     /**
@@ -146,8 +151,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * @return Formatted date as string
      */
     public String getForeignDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATABASE_DATE_FORMAT);
-        return formatter.format(this.date);
+        return balData.getDueDateDatabase();
     }
 
     /**
@@ -167,7 +171,6 @@ public class SummaryItem implements Comparable<SummaryItem>{
      */
     public void setPaid() {
         balData.setPaid();
-        paid = true;
         DBBalanceData myDB = new DBBalanceData(myContext);
         myDB.update(balData.getID(),balData);
         Log.d("SummaryItem", "Marked the following item as paid: " + this.name);
@@ -180,7 +183,6 @@ public class SummaryItem implements Comparable<SummaryItem>{
      */
     public void resetPaid() {
         balData.resetPaid();
-        paid = false;
         DBBalanceData myDB = new DBBalanceData(myContext);
         myDB.update(balData.getID(),balData);
 

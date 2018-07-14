@@ -54,7 +54,7 @@ public class DateHandler {
     }
 
     /**
-     * Get Only Date in the Database Date Format
+     * Get Only Date (dya,month,year) without time information in the Database Date Format
      * @return the String with the Date Formated
      */
     static public String getNowDateDatabase() {
@@ -71,6 +71,17 @@ public class DateHandler {
 
         return reportDate;
 
+    }
+
+    /**
+     * Get the Now in date format
+     * @return A date corresponding to Now
+     */
+    static public Date getNowDate(){
+        Date retDate = new Date();
+
+        retDate = Calendar.getInstance().getTime();
+        return retDate;
     }
     public static String getActualMonth(){
        String theMonth="";

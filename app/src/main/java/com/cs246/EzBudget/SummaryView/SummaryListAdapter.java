@@ -123,10 +123,9 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         } else {
             // Expense items have a due date only
             holder.date.setText("Due: " + date);
-            //SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATE_FORMAT);
-            Date now = new Date();
+
             ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
-            if (bill.getDate().before(now)) {
+            if (bill.getBalData().isPastDue()) {
                 expenseHolder.past_due.setText("(Past Due)");
             } else {
                 expenseHolder.past_due.setText("");

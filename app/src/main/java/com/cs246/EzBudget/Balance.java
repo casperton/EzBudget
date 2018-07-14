@@ -3,6 +3,10 @@ package com.cs246.EzBudget;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class should be used to hold calculations in the database.
+ * It is now for future use
+ */
 public class Balance {
 
     /**

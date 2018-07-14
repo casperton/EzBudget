@@ -564,6 +564,15 @@ public class BalanceData {
 
     }
 
+    /**
+     * Return true if DueDate if before now
+     * @return
+     */
+    public boolean isPastDue(){
+
+        return this.myDate.before(DateHandler.getNowDate());
+
+    }
 
 }
 
