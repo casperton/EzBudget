@@ -18,4 +18,6 @@
 
     <color name="PaidItemBackground">#b0b8c4</color>
 
+    <color name="mylight_gray">#f2f2f2</color>
+
 </resources>
