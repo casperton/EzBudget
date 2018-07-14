@@ -228,13 +228,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <EditText
+                <TextView
                     android:id="@+id/dispBalDataDueDate"
-                    android:layout_width="251dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="213dp"
+                    android:layout_height="37dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:background="@color/mylight_gray"/>
 
                 <Space
                     android:layout_width="wrap_content"

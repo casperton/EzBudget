@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs246.EzBudget.BalanceData;
@@ -54,7 +55,7 @@ public class DispBalDataFragment extends Fragment {
     Calendar myCalendar;
     DatePickerDialog myDateDialog;
 
-    EditText myDueDate;
+    TextView myDueDate;
     EditText myValue;
     Switch myCategory;
     EditText myDescription;
@@ -114,7 +115,7 @@ public class DispBalDataFragment extends Fragment {
 
         }
 
-        myDueDate = (EditText) myView.findViewById(R.id.dispBalDataDueDate);
+        myDueDate = (TextView) myView.findViewById(R.id.dispBalDataDueDate);
         myValue = (EditText) myView.findViewById(R.id.dispBalDataValue);
         myCategory = (Switch) myView.findViewById(R.id.switchCategory);
         myDescription = (EditText) myView.findViewById(R.id.dispBalDataDescription);
@@ -265,10 +266,12 @@ public class DispBalDataFragment extends Fragment {
                 else if (thePeriod == RECURRENT.MONTHLY) myRecMonthly.setChecked(true);
 
             }
-        }else {
+        }else { //add new
             mySaveButton.setVisibility(View.VISIBLE);
             myUpdateButton.setVisibility(View.INVISIBLE);
             myDeleteButton.setVisibility(View.INVISIBLE);
+            myRecOnce.setChecked(true);
+            myCategory.setChecked(true);
         }
 
         mySaveButton.setOnClickListener(new View.OnClickListener() {
@@ -292,9 +295,12 @@ public class DispBalDataFragment extends Fragment {
 /**
  * Long Click Show the DatePick Dialog, otherwhise one can enter date manualy
  */
-        myDueDate.setOnLongClickListener(new View.OnLongClickListener() {
+
+
+
+        myDueDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View view) {
                 myCalendar = Calendar.getInstance();
                 int day = myCalendar.get(Calendar.DAY_OF_MONTH);
                 int month = myCalendar.get(Calendar.MONTH);
@@ -309,7 +315,7 @@ public class DispBalDataFragment extends Fragment {
                 },year,month,day);
 
                 myDateDialog.show();
-                return false;
+                return;
             }
         });
 
