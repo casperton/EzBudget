@@ -97,10 +97,10 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
                 Bundle bundle = new Bundle();
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                bundle.putBoolean("isRec", true ); //is not a recurrent data
                 bundle.putBoolean("addToSummaryToo", true); //do not show recurrence layout
                 bundle.putBoolean("showStatus", false); //do not show status layout
-                DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
+                DispRecBalDataFragment fragInfo = DispRecBalDataFragment.newInstance();
+                CommonFragments.dispRecBalData = fragInfo;
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_FRAG");
@@ -122,11 +122,9 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
                             Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putLong("id", id_To_Search);
-                    bundle.putBoolean("isRec", true);
 
-
-                    DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
-                    CommonFragments.dispBalData = fragInfo;
+                    DispRecBalDataFragment fragInfo = DispRecBalDataFragment.newInstance();
+                    CommonFragments.dispRecBalData = fragInfo;
                     fragInfo.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.containerID, fragInfo, "DISPLAY_BAL_DATA_FRAG");

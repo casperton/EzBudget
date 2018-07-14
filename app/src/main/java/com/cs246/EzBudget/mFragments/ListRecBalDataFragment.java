@@ -96,13 +96,12 @@ public class ListRecBalDataFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 Long myMessage = Long.valueOf(-1);
                 bundle.putLong("id", myMessage );
-                bundle.putBoolean("isRec", true );
                 bundle.putBoolean("showRec", true);
-                DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
-                CommonFragments.dispBalData = fragInfo;
+                DispRecBalDataFragment fragInfo = DispRecBalDataFragment.newInstance();
+                CommonFragments.dispRecBalData = fragInfo;
                 fragInfo.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_BAL_DATA_FRAG");
+                fragmentTransaction.replace(R.id.containerID, fragInfo,"DISPLAY_REC_BAL_DATA_FRAG");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -121,13 +120,12 @@ public class ListRecBalDataFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putLong("id", id_To_Search);
-                    bundle.putBoolean("isRec", true);
                     bundle.putBoolean("showRec", true);
-                    DispBalDataFragment fragInfo = DispBalDataFragment.newInstance();
-                    CommonFragments.dispBalData = fragInfo;
+                    DispRecBalDataFragment fragInfo = DispRecBalDataFragment.newInstance();
+                    CommonFragments.dispRecBalData = fragInfo;
                     fragInfo.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = myFagmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.containerID, fragInfo, "DISPLAY_BAL_DATA_FRAG");
+                    fragmentTransaction.replace(R.id.containerID, fragInfo, "DISPLAY_REC_BAL_DATA_FRAG");
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }

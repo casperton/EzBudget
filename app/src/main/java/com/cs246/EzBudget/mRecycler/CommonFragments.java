@@ -15,6 +15,7 @@ public class CommonFragments {
     //display fragments
     public static Fragment dispCategory = null;
     public static Fragment dispBalData = null;
+    public static Fragment dispRecBalData = null;
     public static Fragment dispBalView = null;
     //choose dialog fragments
     public static Fragment chooseCategory = null;
