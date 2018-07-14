@@ -106,11 +106,14 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
             // Set values for expense items
             IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
             incomeHolder.date.setText("Date: " + date);
-            // TODO : Replace with calculated total for only this period
-            Double total_needed = bill.getTotal_needed();
-            Double total_paid = bill.getTotal_paid();
-            Double expenseTotalRemaining = total_needed - total_paid;
-            incomeHolder.total_needed.setText("Expenses Left: $" + String.valueOf(df.format(expenseTotalRemaining)));
+            Double unpaidTotal = bill.getUnpaidTotal();
+            Double overageTotal = bill.getOverageTotal();
+            incomeHolder.expensesLeft.setText("Expenses Left: $" + String.valueOf(df.format(unpaidTotal)));
+            if (overageTotal > 0) {
+                incomeHolder.overageTotal.setText("Save for next: $" + String.valueOf(df.format(overageTotal)));
+            } else {
+                incomeHolder.overageTotal.setText("");
+            }
         } else {
             // Expense items have a due date only
             holder.date.setText("Due: " + date);
@@ -248,7 +251,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      * the ability to swipe them away as paid.
      */
     public class IncomeViewHolder extends MyViewHolder {
-        public TextView total_needed;
+        public TextView expensesLeft;
+        public TextView overageTotal;
 
         /**
          * The constructor method sets up the items in the
@@ -264,7 +268,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
             name = itemView.findViewById(R.id.name);
             amount = itemView.findViewById(R.id.amount);
             date = itemView.findViewById(R.id.date);
-            total_needed = itemView.findViewById(R.id.total_needed);
+            expensesLeft = itemView.findViewById(R.id.total_needed);
+            overageTotal = itemView.findViewById(R.id.overage);
             viewForeground = itemView.findViewById(R.id.view_foreground);
         }
     }

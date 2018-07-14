@@ -23,8 +23,9 @@ public class SummaryItem implements Comparable<SummaryItem>{
     private String name;
     private double amount;
     private int type;
-    private double total_needed;
-    private double total_paid;
+    private double expenseTotal;
+    private double unpaidTotal;
+    private double overageTotal;
     Context myContext;
 
     /**
@@ -40,10 +41,6 @@ public class SummaryItem implements Comparable<SummaryItem>{
         this.amount = theBalData.getAmount();
         this.myContext = theContext;
         this.type = type;
-
-
-
-
     }
 
 
@@ -101,8 +98,8 @@ public class SummaryItem implements Comparable<SummaryItem>{
      *
      * @return
      */
-    public double getTotal_needed() {
-        return total_needed;
+    public double getExpenseTotal() {
+        return expenseTotal;
     }
 
     /**
@@ -110,21 +107,21 @@ public class SummaryItem implements Comparable<SummaryItem>{
      * expenses that will be taken out of this income
      * item for the given period
      *
-     * @param total_needed
+     * @param expenseTotal
      */
-    public void setTotal_needed(double total_needed) {
-        this.total_needed = total_needed;
+    public void setExpenseTotal(double expenseTotal) {
+        this.expenseTotal = expenseTotal;
     }
 
     /**
-     * This method will store the total paid for
-     * bills out of this income item for the given
+     * This method will return the total of
+     * unpaid bill items for the given
      * period
      *
-     * @param total_paid
+     * @param unpaidTotal
      */
-    public void setTotal_paid(double total_paid) {
-        this.total_paid = total_paid;
+    public void setUnpaidTotal(double unpaidTotal) {
+        this.unpaidTotal = unpaidTotal;
     }
 
     /**
@@ -134,8 +131,8 @@ public class SummaryItem implements Comparable<SummaryItem>{
      *
      * @return
      */
-    public double getTotal_paid() {
-        return total_paid;
+    public double getUnpaidTotal() {
+        return unpaidTotal;
     }
 
     /**
@@ -187,4 +184,46 @@ public class SummaryItem implements Comparable<SummaryItem>{
         myDB.update(balData.getID(),balData);
 
     }
+
+    /**
+     * This will store overage amounts to be carried for
+     * pay periods that do not have enough money to cover
+     * bills for that period
+     * @return The total amount
+     */
+    public double getOverageTotal() {
+        return overageTotal;
+    }
+
+    /**
+     * This method will store an overage amount for a
+     * pay period that has an overage of expenses
+     * for that pay period it cannot cover
+     * @param overageTotal
+     */
+    public void setOverageTotal(double overageTotal) {
+        this.overageTotal = overageTotal;
+    }
+
+    /**
+     * This will return the total of expenses
+     * (unpaid or paid) as well as the overage
+     * total
+     * @return The combined total
+     */
+    public double getTotalCombined() {
+        return expenseTotal + overageTotal;
+    }
+
+    /**
+     * This method is used to calculate the total
+     * remaining bills that have not been paid
+     * plus the overage amount from other pay
+     * periods
+     * @return The combined unpaid and overages
+     */
+    public double getTotalUnpaidCombined() {
+        return unpaidTotal + overageTotal;
+    }
+
 }
