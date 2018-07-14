@@ -110,6 +110,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         holder.amount.setText("$" + df.format(bill.getAmount()).toString());
         // TODO : Format date for locale
         String date = bill.getUsDate();
+        // Date due_date = parse.bill.getUsDate();
         if (bill.getType() == OPERATION.CREDIT) {
             // Set values for expense items
             IncomeViewHolder incomeHolder = (IncomeViewHolder) holder;
@@ -122,14 +123,15 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         } else {
             // Expense items have a due date only
             holder.date.setText("Due: " + date);
-            SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATE_FORMAT);
+            //SimpleDateFormat formatter = new SimpleDateFormat(DateHandler.DATE_FORMAT);
             Date now = new Date();
+            ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
             if (bill.getDate().before(now)) {
-                ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
                 expenseHolder.past_due.setText("(Past Due)");
+            } else {
+                expenseHolder.past_due.setText("");
             }
             if (bill.isPaid()) {
-                ExpenseViewHolder expenseHolder = (ExpenseViewHolder) holder;
                 expenseHolder.past_due.setText("(Paid)");
             }
         }
