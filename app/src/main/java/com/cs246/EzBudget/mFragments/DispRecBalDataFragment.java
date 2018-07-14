@@ -468,7 +468,7 @@ public class DispRecBalDataFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
 
-
+            getActivity().getFragmentManager().popBackStack();
 
         } else{ //add
 
@@ -506,9 +506,11 @@ public class DispRecBalDataFragment extends Fragment {
 
                 }
 
-
+            getActivity().getFragmentManager().popBackStack();
         }
 
+        ChooseRecBalDataDialogFrag theChoFrag = (ChooseRecBalDataDialogFrag) CommonFragments.chooseRecData;
+        theChoFrag.close();
     }
 
 }

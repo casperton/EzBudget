@@ -158,6 +158,7 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
                     if (theBalDataDatabase.insert( myBalData,true) > 0) {
                         Toast.makeText(getActivity(), "Added Successfully",
                                 Toast.LENGTH_SHORT).show();
+                        myFagmentManager.popBackStack();
                         if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
 
                     } else {
@@ -176,6 +177,12 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         myBackGroundTask = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, myUpdateButton, myAddToSummaryButton );
 
         myBackGroundTask.execute();
+    }
+
+    public void close(){
+
+        myFagmentManager.popBackStack();
+        this.dismiss();
     }
 }
 
