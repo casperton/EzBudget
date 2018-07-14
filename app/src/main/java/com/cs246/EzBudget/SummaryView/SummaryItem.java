@@ -37,7 +37,7 @@ public class SummaryItem implements Comparable<SummaryItem>{
 
         this.balData = theBalData;
         this.name = theBalData.getDescription();
-        this.amount = theBalData.getValue();
+        this.amount = theBalData.getAmount();
         this.myContext = theContext;
         this.type = type;
 

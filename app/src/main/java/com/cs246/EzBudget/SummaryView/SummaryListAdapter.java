@@ -71,7 +71,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         if (viewType == OPERATION.CREDIT) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.income_list_item, parent, false);
             holder = new IncomeViewHolder(itemView, viewType);
-        } else if (viewType == 3) {
+        } else if (viewType == 3) {  //3 is for a paid item
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.expense_paid_list_item, parent, false);
             holder = new ExpenseViewHolder(itemView, viewType);
         } else {
@@ -93,15 +93,6 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     public void onBindViewHolder(SummaryListAdapter.MyViewHolder holder, int position) {
 
         SummaryItem bill = list.get(position);
-        // i DONT BIND THE VIEW WHEN THE ITEM IS PAID
-        // but I do not know how to get rid of the item on the list
-//        if (bill.isPaid()) {
-//            //holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.ListCreditLight));;
-//            Log.i("SummaryList", "Bill ID: "+bill.balData.getID());
-//            Log.i("SummaryList", "Logging IsPaid: "+(bill.isPaid() ? "Paid" : "Unpaid"));
-//
-//
-//        }
 
         holder.name.setText(bill.getName());
 //        Log.d("SummaryListAdapter", "Item added to summary list: " + bill.getName());
@@ -151,7 +142,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
      * or income item for the item view
      *
      * @param position  The position index of the item in the list
-     * @return          Returns the type of the item (expense or income)
+     * @return          Returns the type of the item (expense or income).
+     *                  If the item is already paid, return 3
      */
     @Override
     public int getItemViewType(int position) {

@@ -7,6 +7,7 @@ import com.cs246.EzBudget.Database.DBCategory;
 import com.cs246.EzBudget.Database.DBHelper;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -397,13 +398,24 @@ public class BalanceData {
     }
 
     /**
-     * Get the value of myValue
-     * @return the value of myValue
+     * Get the Ammount of myValue
+     * @return the the Ammount
      */
-    public Double getValue () {
+    public Double getAmount () {
         return myValue;
     }
 
+    /**
+     * Get the ammountformatted with 2 decimals
+     * @return he ammountformatted with 2 decimals
+     */
+    public String getAmmountFormated () {
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        return df.format(getAmount().toString());
+
+    }
     /**
      * Set the value of myCategory
      * @param newVar the new value of myCategory
@@ -566,7 +578,7 @@ public class BalanceData {
 
     /**
      * Return true if DueDate if before now
-     * @return
+     * @return true if DueDate if before now
      */
     public boolean isPastDue(){
 

@@ -32,7 +32,7 @@ public class DBBalanceDataRec{
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theCat.getDescription());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theCat.getDueDateDatabase());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theCat.getRecPeriod());
-        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theCat.getValue());
+        contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theCat.getAmount());
         contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theCatID);
         id = db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
 
@@ -58,7 +58,7 @@ public class DBBalanceDataRec{
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_CATEGORY, theData.getCategory());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE, theData.getDueDateDatabase());
-                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getValue());
+                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getAmount());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD, theData.getStatus());
                 ;
                 result = db.insert(BalanceData.BALANCEDATAREC_TABLE_NAME, null, contentValues);
@@ -181,7 +181,7 @@ public class DBBalanceDataRec{
             db.beginTransactionNonExclusive();
             try {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getValue());
+                contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_VALUE, theData.getAmount());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DESCRIPTION, theData.getDescription());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_DUE_DATE,theData.getDueDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATAREC_COLUMN_PERIOD,theData.getRecPeriod());

@@ -142,7 +142,7 @@ public class RecyclerBalanceAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
             holder.myRecurrence.setText(RECURRENT.getStrName(myBalanceDataList.get(theNewPosition).getRecPeriod()));
 
-            holder.myValue.setText(Double.toString(myBalanceDataList.get(theNewPosition).getValue()));
+            holder.myValue.setText(Double.toString(myBalanceDataList.get(theNewPosition).getAmount()));
             holder.myDescription.setText(myBalanceDataList.get(theNewPosition).getDescription());
 
 

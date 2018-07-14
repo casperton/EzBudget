@@ -59,7 +59,7 @@ public class DBBalanceData {
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theDate);
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
-        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
+        contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getAmount());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_CATEGORY, theCatID);
         contentValues.put(BalanceData.BALANCEDATA_COLUMN_REC_ID, theRecID);
@@ -89,7 +89,7 @@ public class DBBalanceData {
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE, theData.getDueDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE, theData.getPaymentDateDatabase());
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getAmount());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_TIMESTAMP, DateHandler.getNowDatabaseFormat());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_STATUS, theData.getStatus());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_REC_ID,recID);
@@ -189,7 +189,7 @@ public class DBBalanceData {
             db.beginTransactionNonExclusive();
             try {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getValue());
+                contentValues.put(BalanceData.BALANCEDATA_COLUMN_VALUE, theData.getAmount());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DESCRIPTION, theData.getDescription());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_PAYMENT_DATE,theData.getPaymentDateDatabase());
                 contentValues.put(BalanceData.BALANCEDATA_COLUMN_DUE_DATE,theData.getDueDateDatabase());
