@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         //viewAdapter.addFragment(theSelect, "Select View");
         SummaryFragment theSummary = new SummaryFragment();
         CommonFragments.summaryFrag = theSummary;
-        viewAdapter.addFragment(theSummary,"Summary");
+        viewAdapter.addFragment(theSummary,"");
         //Adapter Setup
         myViewPager.setAdapter(viewAdapter);
         myTabLayout.setupWithViewPager(myViewPager);

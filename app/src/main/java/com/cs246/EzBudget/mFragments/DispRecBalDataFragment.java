@@ -357,6 +357,7 @@ public class DispRecBalDataFragment extends Fragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         myDBBalanceData.delete(myIDtoChange);
+                        if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
                         Toast.makeText(getActivity(), "Deleted Successfully",
                                 Toast.LENGTH_SHORT).show();
 
