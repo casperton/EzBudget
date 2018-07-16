@@ -356,11 +356,21 @@ public class DispRecBalDataFragment extends Fragment {
         builder.setMessage(R.string.deleteConfirmation)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        myDBBalanceData.delete(myIDtoChange);
-                        if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
-                        Toast.makeText(getActivity(), "Deleted Successfully",
-                                Toast.LENGTH_SHORT).show();
+                        /*myDBBalanceData.delete(myIDtoChange);
 
+                        Toast.makeText(getActivity(), "Deleted Successfully",
+                                Toast.LENGTH_SHORT).show();*/
+                        //delete the old records
+                        Log.i("DBBalanceDataUpd", "Need to Update the related records: " + myIDtoChange);
+                        if(myDBBalanceData.deleteSelected(myIDtoChange,myDBBalanceDataRec)){
+                            if (CommonFragments.summaryFrag!=null) CommonFragments.summaryFrag.onResume();
+                            Toast.makeText(getActivity().getApplicationContext(), " Deleted old Records from Balance Data", Toast.LENGTH_SHORT).show();
+                            getActivity().getFragmentManager().popBackStack();
+                        } else{
+                            Toast.makeText(getActivity().getApplicationContext(), "not Deleted the Selected Selected", Toast.LENGTH_SHORT).show();
+                        }
+                        ChooseRecBalDataDialogFrag theChoFrag = (ChooseRecBalDataDialogFrag) CommonFragments.chooseRecData;
+                        theChoFrag.close();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
