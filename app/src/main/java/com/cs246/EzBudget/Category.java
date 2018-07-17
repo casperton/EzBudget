@@ -373,8 +373,6 @@ public class Category {
         return myOperation == OPERATION.INFORMATIVE;
     }
 
-    public void setMyCategory(BalanceData _balancedata) {}
 
-    public BalanceData getMyCategory() { return null; }
 }
 

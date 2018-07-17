@@ -46,6 +46,11 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter{
         return FragmentListTtitles.get(position);
     }
 
+    /**
+     * Add Fragment to the adapter
+     * @param theFrag the gragment to add
+     * @param theTitle the title
+     */
     public void addFragment(Fragment theFrag, String theTitle){
         fragmentList.add(theFrag);
         FragmentListTtitles.add(theTitle);

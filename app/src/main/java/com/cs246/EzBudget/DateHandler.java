@@ -598,6 +598,10 @@ public class DateHandler {
 
     }
 
+    /**
+     * Get the initial month of the period
+     * @return the initial month
+     */
     public static int getMonthBegin(){
 
         Date date = new Date();
@@ -614,6 +618,10 @@ public class DateHandler {
         return monthBegin;
     }
 
+    /**
+     * Get the end month of the period
+     * @return the end month
+     */
     public static int getMonthEnd(){
 
 
@@ -627,6 +635,10 @@ public class DateHandler {
         return monthEnd;
     }
 
+    /**
+     * Get the initial Year of the Period
+     * @return the initial Year
+     */
     public static int getYearBegin(){
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -635,6 +647,10 @@ public class DateHandler {
         return yearBegin;
     }
 
+    /**
+     * Get the end Year of the period
+     * @return the end year
+     */
     public static int getYearEnd(){
         int monthBegin = getMonthBegin();
         int yearBegin = getYearBegin();
