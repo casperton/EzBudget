@@ -20,6 +20,10 @@ public class DBBalanceView  {
     private static final String TAG = "DB_BALANCE_VIEW";
     private DBHelper myDB;
 
+    /**
+     * Class Constructor
+     * @param context the Context
+     */
     public DBBalanceView(Context context) {
         myDB = DBHelper.getInstance(context);
 
@@ -240,7 +244,10 @@ public class DBBalanceView  {
         return res;
     }
 
-    //Todo: What if there is no current setted?
+    /**
+     * get the current Viw
+     * @return the CurrentView
+     */
     public BalanceView getCurrent(){
         BalanceView theView = new BalanceView();
         Cursor rs =  getCurrentCursor();
@@ -268,6 +275,10 @@ public class DBBalanceView  {
 
     }
 
+    /**
+     * get the array with column names
+     * @return return the array with column names
+     */
     String[] getProjections(){
         String[] Projections = {
                 BalanceView.BALANCEVIEW_COLUMN_ID,
@@ -280,6 +291,7 @@ public class DBBalanceView  {
         };
         return Projections;
     }
+
     /**
      * Return a Cursor with all Balance Views in the database
      * @return All Data in The Database in the Cursor Format

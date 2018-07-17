@@ -25,6 +25,14 @@ public class DBBalanceDataRec{
         myDB = DBHelper.getInstance(context);
 
     }
+
+    /**
+     * Static method to insert a new row in the Database
+     * @param db the SQLLIte Database
+     * @param theCat  the Data to be inserted
+     * @param theCatID  the Category Id of the data to be inserted
+     * @return
+     */
     static public Long insertBalDataRec (SQLiteDatabase db , BalanceData theCat, Long theCatID) {
 
         Long id;
@@ -98,6 +106,11 @@ public class DBBalanceDataRec{
     }
 
 
+    /**
+     * Get a BalanceData Class filled with the respective Row in the Database
+     * @param theID the if of the row to get
+     * @return  An object of the Class BalanceData filled with data from the Database
+     */
     public BalanceData getData(Long theID){
         BalanceData retData= new BalanceData();
         String theQuery = "select * from "+BalanceData.BALANCEDATAREC_TABLE_NAME+" where "+BalanceData.BALANCEDATAREC_COLUMN_ID+" = "+theID.toString()+"";
@@ -155,6 +168,7 @@ public class DBBalanceDataRec{
 
         return retData;
     }
+
     /**
      * Return the number of Rows of the Balance Data table
      * @return the number of rows in the Balance Data table

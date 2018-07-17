@@ -96,6 +96,12 @@ public class DBCategory {
         return result;
     }
 
+    /**
+     * Static method to insert a row in the database
+     * @param db The SQLite Database
+     * @param theCat the Data to insert
+     * @return the id of the inserted row on success, -1 on failure
+     */
     static public Long insertCategory (SQLiteDatabase db , Category theCat) {
 
         Long id;
@@ -110,6 +116,11 @@ public class DBCategory {
     }
 
 
+    /**
+     * Static Method to fill the database with default data
+     * @param theDataBase
+     * @return always true
+     */
    static public boolean insertDefaultCategories(SQLiteDatabase theDataBase){
 
         insertCategory(theDataBase,Category.DB_CAT_HOUSING);
@@ -384,6 +395,10 @@ public class DBCategory {
         return array_list;
     }
 
+    /**
+     * Get the array of column names
+     * @return
+     */
     String[] getProjections(){
         String[] Projections = {
                 Category.CATEGORY_COLUMN_ID,

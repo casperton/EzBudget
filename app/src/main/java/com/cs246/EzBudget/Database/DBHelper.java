@@ -69,6 +69,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dh = null;
 
+    /**
+     * Get the running instance of the DBHelper Singleton
+     * @param context
+     * @return the running instance
+     */
     public static DBHelper getInstance(Context context) {
         if (dh == null)
             dh = new DBHelper(context.getApplicationContext());
@@ -76,6 +81,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Class Constructor
+     * @param context
+     */
     protected DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         myPrefs = PreferenceManager.getDefaultSharedPreferences(context);

@@ -25,6 +25,7 @@ import java.util.List;
 
 /**
  * Class to Handle the Table BalanceData of the Database
+ * BalanceData represents the financial transactions
  */
 public class DBBalanceData {
 
@@ -33,11 +34,23 @@ public class DBBalanceData {
     private Context myContex;
 
 
+    /**
+    Class Constructor
+     */
     public DBBalanceData(Context context) {
         myDB = DBHelper.getInstance(context);
         myContex =context;
 
     }
+
+    /**
+     * Static method to insert a record in the Database
+     * @param db The SQLDatabase
+     * @param theData the Data to be inserted
+     * @param theCatID the Category Id of the data
+     * @param theRecID the BalanceDataRec   id of the relationship
+     * @return true if it a success
+     */
     static public boolean insertBalData (SQLiteDatabase db , BalanceData theData, Long theCatID, Long theRecID) {
         boolean isFromRecurrent = theData.IsRecurrent();
 
@@ -112,7 +125,7 @@ public class DBBalanceData {
 
     /**
      *  Insert a Register of Balance Data into the Database
-     * @param theData
+     * @param theData the data to be inserted
      * @param isFromRec the theData parameter came from the RecurrentDatabase. This indicates we must
      *                  calculate how much recurrences of this record must be inserted in the current view period.
      * @return the number of the row inserted or -1 if failed
@@ -181,6 +194,12 @@ public class DBBalanceData {
         return numRows;
     }
 
+    /**
+     * Updates a row in the Database
+     * @param id the id of the row to be updates
+     * @param theData The Data to replace the row in the database
+     * @return true in success
+     */
     public boolean update (Long id, BalanceData theData) {
         boolean retState = false;
         myDB.myLock.writeLock().lock();
@@ -330,6 +349,12 @@ public class DBBalanceData {
     }
     */
 
+    /**
+     * Get Selected data from the Database. Select all data with BalRecId= theBalRecId and paymentStatus= thePaymentStatus
+     * @param theBalRecID The id of the BalanceDataRec we want data for
+     * @param thePaymentStatus The payment status of the data we want to select
+     * @returnReturn a Cursor with the selected data
+     */
     public Cursor getSelectedCursor(Long theBalRecID, Integer thePaymentStatus)
     {
         Log.i("DBBalanceDataUpd", "Will find this balance data Rec relationship: " + theBalRecID.toString());
@@ -379,6 +404,10 @@ public class DBBalanceData {
     }
 
 
+    /**
+     * Get An Array with the names odf the Columns of the Table in the Database
+     * @return An Array with the names odf the Columns of the Table in the Database
+     */
     private String[] getProjections(){
         String[] Projections = {BalanceData.BALANCEDATA_COLUMN_ID,
                 BalanceData.BALANCEDATA_COLUMN_CATEGORY,
@@ -555,6 +584,10 @@ where category.operation = 1
         return cursor;
     }
 
+    /**
+     * Get the Array of BalanceData filled with all Outcomes(Bills) Transactions in the Database
+     * @return the filled array
+     */
     public ArrayList<BalanceData> getOutcomesArray(){
         ArrayList<BalanceData> theArray = new ArrayList<>();
         Cursor cursor = getOutcomesCursor();
@@ -594,6 +627,10 @@ where category.operation = 1
         return theArray;
     }
 
+    /**
+     * Get the Array of BalanceData filled with all Income Transactions in the Database
+     * @return the filled array
+     */
     public ArrayList<BalanceData> getIncomesArray(){
         ArrayList<BalanceData> theArray = new ArrayList<>();
         Cursor cursor = getIncomesCursor();
@@ -672,7 +709,7 @@ where category.operation = 1
     }
 
     /**
-     * Delete a Balance Data from the Database
+     * Delete a row of Balance Data from the Database
      * @param id The id of the Balance Data to delete
      * @return true if the delete was a success, false otherwise
      */
