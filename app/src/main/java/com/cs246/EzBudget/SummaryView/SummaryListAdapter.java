@@ -1,28 +1,18 @@
 package com.cs246.EzBudget.SummaryView;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cs246.EzBudget.BALANCE_ITEM;
 import com.cs246.EzBudget.Calculations;
-import com.cs246.EzBudget.DateHandler;
 import com.cs246.EzBudget.OPERATION;
 import com.cs246.EzBudget.R;
-import com.cs246.EzBudget.mFragments.SummaryFragment;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Fragment Holds the Summary View for the Financial Data
  */
 public class SummaryFragment extends Fragment
         implements RecyclerItemTouchHelperListener {

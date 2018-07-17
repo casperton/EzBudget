@@ -13,6 +13,11 @@ public class RECURRENT {
     public static final Integer BI_WEEKLI = 2;
     public static final Integer MONTHLY = 3;
 
+    /**
+     * Get a String identifier for the status
+     * @param theStatus to get a sring identifier
+     * @return The String identifier for the Payment Status
+     */
     public static String getStrName(Integer theStatus){
      String myRecStatus="U";
      if(theStatus==UNKNOWN) myRecStatus="U";

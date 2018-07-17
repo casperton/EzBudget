@@ -1,7 +1,14 @@
 package com.cs246.EzBudget;
 
+/**
+ * Class to Handle Categories of Financial Data
+ *
+ */
 public class Category {
 
+    /**
+     * To be used whe the category is not known
+     */
     static public final Long UNKNOWN = Long.valueOf(-1);
     //
     // Fields

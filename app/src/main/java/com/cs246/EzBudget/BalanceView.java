@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * This class handles the Views for the Transactions (BalanceData)
+ */
 public class BalanceView{
 
     /**

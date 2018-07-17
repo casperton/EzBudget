@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * This class holds data from two database tables: BalanceData and BalanceDataRec
+ * This class holds Transactions from the Database
  */
 public class BalanceData {
 

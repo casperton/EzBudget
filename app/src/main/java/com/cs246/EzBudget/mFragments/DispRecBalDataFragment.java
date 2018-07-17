@@ -39,7 +39,7 @@ import com.cs246.EzBudget.mRecycler.CommonFragments;
 import java.util.Calendar;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Fragment Allows the user to edit/delete/insert Data in the BalanceDataRec table of the Database
  */
 public class DispRecBalDataFragment extends Fragment {
 

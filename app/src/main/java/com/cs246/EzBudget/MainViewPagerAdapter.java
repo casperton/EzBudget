@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Adapter used in the ViewPager of the main Winfdow
+ * Adapter used in the ViewPager of the main Window
  */
 public class MainViewPagerAdapter extends FragmentPagerAdapter{
 

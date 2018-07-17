@@ -2,6 +2,9 @@ package com.cs246.EzBudget.mRecycler;
 
 import android.support.v4.app.Fragment;
 
+/**
+ * This Class hols the address of the current fragments
+ */
 public class CommonFragments {
 
     // tab fragments
