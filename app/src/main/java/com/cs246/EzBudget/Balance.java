@@ -22,26 +22,37 @@ public class Balance {
     private BalanceView myBalanceView;
     private List<BalanceData> myFinancialData;
 
+    /**
+     * Constructor
+     */
     public Balance() {
 
     }
 
+    /**
+     * Setter
+     * @param _balanceView
+     */
     private void setBalanceView(BalanceView _balanceView) {
 
     }
 
+    /**
+     * getter
+     * @return
+     */
     private BalanceView getBalanceView() {
        return null;
-    }
-
-    private void addFinancialData(List<BalanceData> _balanceData) {
-
     }
 
     private List<BalanceData> getFinancialData() {
         return null;
     }
 
+    /**
+     * Get the End Balance
+     * @return the end balance
+     */
     public double getEndBalance() {
         return 0;
     }

@@ -52,8 +52,11 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
         return new ChooseRecBalDataDialogFrag();
     }
 
+    /**
+     * Required empty public constructor
+     */
     public ChooseRecBalDataDialogFrag() {
-        // Required empty public constructor
+        //
     }
 
     @Override
@@ -173,12 +176,19 @@ public class ChooseRecBalDataDialogFrag extends DialogFragment {
 
         return myView;
     }
+
+    /**
+     * Class The BackGround Activity and fill the list with Data
+     */
     private void setup(){
         myBackGroundTask = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager, BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_CHOOSE, myUpdateButton, myAddToSummaryButton );
 
         myBackGroundTask.execute();
     }
 
+    /**
+     * Close the Dialog
+     */
     public void close(){
 
         myFagmentManager.popBackStack();

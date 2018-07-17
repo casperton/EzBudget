@@ -59,10 +59,12 @@ public class DispBalViewFragment extends Fragment {
         return theFrag;
     }
 
-
+    /**
+     * Required empty public constructor
+     */
     public DispBalViewFragment() {
 
-        // Required empty public constructor
+        //
     }
 
     @Override
@@ -314,8 +316,10 @@ public class DispBalViewFragment extends Fragment {
     }
 
 
-
-
+    /**
+     * Runs when the Delete button is pressed
+     * @param view the View
+     */
  public void DeleteButton(View view){
 
      AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -343,7 +347,7 @@ public class DispBalViewFragment extends Fragment {
  }
 
     /**
-     * Run when the save button is clicked
+     * Run when the save/update button is clicked
      * @param view
      */
     public void SaveButton(View view) {

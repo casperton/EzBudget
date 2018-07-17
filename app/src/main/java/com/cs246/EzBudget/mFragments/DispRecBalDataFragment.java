@@ -86,16 +86,21 @@ public class DispRecBalDataFragment extends Fragment {
 
 
 
-
+/*
+Constructor
+ */
     static public DispRecBalDataFragment newInstance(){
         DispRecBalDataFragment theFrag = new DispRecBalDataFragment();
 
         return theFrag;
     }
 
+    /**
+     *  Required empty public constructor
+     */
     public DispRecBalDataFragment() {
 
-        // Required empty public constructor
+        //
     }
 
 
@@ -333,7 +338,12 @@ public class DispRecBalDataFragment extends Fragment {
 
     }
 
-
+    /**
+     * Set the text of the Due Date TextView
+     * @param mDay   The Day
+     * @param mMonth  the Month
+     * @param mYear the Year
+     */
     public void setDueDateText(int mDay ,int mMonth,int mYear){
 
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
@@ -342,6 +352,13 @@ public class DispRecBalDataFragment extends Fragment {
         myDueDate.setText(sdf.format(c.getTime()));
 
     }
+
+    /**
+     *  Set the Text of the Payent Date TextView
+     * @param mDay the Day
+     * @param mMonth the Month
+     * @param mYear the Year
+     */
     public void setMyPaymentDateText(int mDay ,int mMonth,int mYear){
         GregorianCalendar c = new GregorianCalendar(mYear, mMonth, mDay);
         SimpleDateFormat sdf = new SimpleDateFormat(DateHandler.DATE_FORMAT,DateHandler.DEF_LOCALE);
@@ -350,6 +367,10 @@ public class DispRecBalDataFragment extends Fragment {
 
     }
 
+    /**
+     * Runs when the Delete button is clicked
+     * @param view
+     */
     public void DeleteButton(View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -386,10 +407,15 @@ public class DispRecBalDataFragment extends Fragment {
 
     }
 
+    /**
+     * Set the text of the category TextView
+     * @param theText
+     */
     public void setCateGoryText(String theText){
 
         //myCategory.setText(theText);
     }
+
     /**
      * Run when the save button is clicked
      * @param view

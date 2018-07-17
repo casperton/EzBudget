@@ -118,6 +118,9 @@ public class SummaryFragment extends Fragment
         return myView;
     }
 
+    /**
+     * fills the list with data
+     */
     private void setup(){
         if (bills != null) bills.clear();
         if (summaryItems != null) summaryItems.clear();

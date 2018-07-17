@@ -141,6 +141,9 @@ public class ListRecBalDataFragment extends Fragment {
         return myView;
     }
 
+    /**
+     * Calls the Background Thread and Fills The List with DAta
+     */
     void setup(){
 
         myBackGroundTask = new BackGroundRecData(myRecyclerView,myProgress,getActivity(),myFagmentManager,BackGroundRecData.BAL_ALL, LIST_ACTION.ACT_LIST_ADD , myUpdateButton,null);

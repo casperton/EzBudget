@@ -40,8 +40,11 @@ public class ListBalViewFragment extends Fragment {
         return new ListBalViewFragment();
     }
 
+    /**
+     * Required empty public constructor
+     */
     public ListBalViewFragment() {
-        // Required empty public constructor
+        //
     }
 
 
@@ -109,7 +112,10 @@ public class ListBalViewFragment extends Fragment {
        return myView;
     }
 
-void setup(){
+    /**
+     * Call the Background Thread and fill the list with data
+     */
+    void setup(){
         //AsyncTask instances can only be used one time.
     myBackGroundAction = new BackGroundBalView(myRecyclerView,myProgress,getActivity(),myFagmentManager , RecyclerBalViewAdapter.ACTION_ADD,myUpdateButton);
     myBackGroundAction.execute();

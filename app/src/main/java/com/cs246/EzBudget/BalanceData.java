@@ -181,9 +181,9 @@ public class BalanceData {
 
     private int myStatus;
 
-    //
+    /**
     // Constructors
-    //
+    **/
     public BalanceData () {
 
         this.myStatus = PAY_STATUS.UNKNOWN;
@@ -192,6 +192,16 @@ public class BalanceData {
     }
 
 
+    /**
+     * Constructor
+     * @param theDescr  Description
+     * @param theValue  Amount
+     * @param theStatus Status of Paiyment
+     * @param theDueDay  Due Day
+     * @param theMonth    Due Month
+     * @param theYear  Due year
+     * @param theRecurrence   The Recurrence Type
+     */
     public BalanceData (String theDescr, Double theValue, Integer theStatus, Integer theDueDay,Integer theMonth, Integer theYear, Integer theRecurrence) {
         boolean isRecurrent;
         this.myStatus = theStatus;
@@ -215,11 +225,18 @@ public class BalanceData {
     // Accessor methods
     //
 
-
+    /**
+     * Set the Id
+     * @param theID the Id
+     */
     public void setID(Long theID) {
         this.myID = theID;
     }
 
+    /**
+     * Get the ID
+     * @return the ID
+     */
     public Long getID() {
         return myID;
     }
@@ -301,10 +318,20 @@ public class BalanceData {
     }
 
 
+    /**
+     * Set the Due Date
+     * @param theDate the Date to set
+     */
     public void setDueDate(Date theDate){
         myDate = theDate;
     }
 
+    /**
+     * Set the Due Date
+     * @param theDay the Day
+     * @param theMonth the Month
+     * @param theYear the Year
+     */
     public void setDueDate (Integer theDay, Integer theMonth, Integer theYear) {
         
         myDate  = DateHandler.getDate(theDay, theMonth, theYear);
@@ -332,6 +359,10 @@ public class BalanceData {
         }
     }
 
+    /**
+     * Get the Due Date
+     * @return the Due Date in Java Date format
+     */
     public Date getDueDate(){
         if (myDate !=null)
         return myDate;
@@ -550,7 +581,7 @@ public class BalanceData {
         this.myRecPeriod = RECURRENT.MONTHLY;
     }
 
-    /*
+    /**
     Set this Balance data to be not recurrent
      */
     public void setNOrec(){
@@ -559,6 +590,10 @@ public class BalanceData {
     }
 
 
+    /**
+     * Get an object copy of this one
+     * @return the Copy obkject
+     */
     public BalanceData getCopy(){
         BalanceData thecopy = new BalanceData();
 

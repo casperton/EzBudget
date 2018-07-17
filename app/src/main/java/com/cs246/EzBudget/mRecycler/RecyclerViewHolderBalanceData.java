@@ -32,7 +32,12 @@ public class RecyclerViewHolderBalanceData extends RecyclerView.ViewHolder imple
     //public final static int LAYOUT_TWO = 2;
 
 
-
+    /**
+     * Constructor
+     * @param itemView  the View
+     * @param theFrag  The Fragment Manager
+     * @param theViewType The View Type
+     */
     public RecyclerViewHolderBalanceData(View itemView, FragmentManager theFrag, int theViewType /*, int LayoutType*/) {
         super(itemView);
         if (theViewType == TYPE_LIST) {

@@ -38,6 +38,16 @@ public class BackGroundCategory extends AsyncTask<Void,Category,Void>{
     private int myLayOut;
     private Button myUpdateButton;
 
+    /**
+     * Constructor
+     * @param theView  The RecyclerView Object
+     * @param theBar   The Progress Bar Object
+     * @param context the Context
+     * @param theConsult   The consult type
+     * @param theLayOut  The LayOut of the Dialog
+     * @param theFrag  The Fragment Manager
+     * @param theUpdateButton  The UpdateButton Object
+     */
     public BackGroundCategory(RecyclerView theView, ProgressBar theBar, Context context, int theConsult, int theLayOut, FragmentManager theFrag, Button theUpdateButton) {
         this.context = context;
         this.mylistView = theView;

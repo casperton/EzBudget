@@ -31,7 +31,11 @@ public class RecyclerViewHolderBalView extends RecyclerView.ViewHolder implement
     //public final static int LAYOUT_TWO = 2;
 
 
-
+    /**
+     * Constructor
+     * @param itemView  The View
+     * @param theViewType  the View Type
+     */
     public RecyclerViewHolderBalView(View itemView, int theViewType/*, int LayoutType*/) {
         super(itemView);
         //id = (TextView)itemView.findViewById(R.id.textViewCatID);

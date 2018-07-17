@@ -19,6 +19,10 @@ public class DatePickerDialogFragment extends DialogFragment {
         // nothing to see here, move along
     }
 
+    /**
+     * Alternative Constructor
+     * @param callback
+     */
     public DatePickerDialogFragment(DatePickerDialog.OnDateSetListener callback) {
         mDateSetListener = (OnDateSetListener) callback;
     }

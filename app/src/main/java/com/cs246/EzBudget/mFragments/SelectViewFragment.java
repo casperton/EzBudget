@@ -42,8 +42,11 @@ private DBHelper myDB;
         return new SelectViewFragment();
     }
 
+    /**
+     * Required empty public constructor
+     */
     public SelectViewFragment() {
-        // Required empty public constructor
+        //
     }
     @Override
     public void onResume() {
@@ -95,6 +98,9 @@ private DBHelper myDB;
     }
 
 
+    /**
+     * Calls the BackGround Thread and fills the list with data
+     */
     void setup(){
         //Toast.makeText(getActivity(), "Database Changed and setup executed",
         //        Toast.LENGTH_SHORT).show();

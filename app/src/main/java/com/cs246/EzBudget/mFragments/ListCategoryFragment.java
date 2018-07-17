@@ -45,8 +45,11 @@ public class ListCategoryFragment extends Fragment {
         return theFrag;
     }
 
+    /**
+     * Required empty public constructor
+     */
     public ListCategoryFragment() {
-        // Required empty public constructor
+        //
     }
 
     @Override
@@ -133,6 +136,9 @@ public class ListCategoryFragment extends Fragment {
         return myView;
     }
 
+    /**
+     * Calls the BackGround Thread and fills the list with data
+     */
     void setup(){
 
         myBackGroundAction = new BackGroundCategory(myRecyclerView,myProgress,getActivity(),BackGroundCategory.CAT_ALL, RecyclerViewHolderCategory.ACTION_ADD,null,myUpdateButton);

@@ -99,6 +99,9 @@ public class ChooseCategoryDialogFrag extends DialogFragment {
         return rootView;
     }
 
+    /**
+     * Class The BackGround Activity and fill the list with Data
+     */
     void setup(){
         myBackGroundCat = new BackGroundCategory(myRecyclerView,myProgress,getActivity(),  BackGroundCategory.CAT_ALL, RecyclerViewHolderCategory.ACTION_CHOOSE,myFragmentManager,null);
         myBackGroundCat.execute();

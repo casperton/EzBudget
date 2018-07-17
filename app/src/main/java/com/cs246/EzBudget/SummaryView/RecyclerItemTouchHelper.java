@@ -16,6 +16,12 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private RecyclerItemTouchHelperListener listener;
 
+    /**
+     * Constructor
+     * @param dragDirs  The Dirs
+     * @param swipeDirs  the swipedirs
+     * @param listener the Listener
+     * */
     public RecyclerItemTouchHelper(int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
         super(dragDirs, swipeDirs);
         this.listener = listener;

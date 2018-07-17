@@ -32,6 +32,17 @@ public class BackGroundBalView extends AsyncTask<Void,BalanceView,Void> {
 
     private Button myUpdateButton;
 
+    /**
+     * Constructor
+     * @param theView   the RecyclerView object
+     * @param theBar     the Progress Bar object
+     * @param context   the context
+     * @param theFrag   the calling FragmentManager
+     * @param theActionType  The Action Type
+     *                       used when the user will choose the selected view for something: ACTION_CHOOSE=0;
+                            used when the user will choose the selected view for edit or add: ACTION_ADD=1;
+     * @param theUpdateButton  the UpdateButton Object
+     */
     public BackGroundBalView(RecyclerView theView, ProgressBar theBar, Context context,  FragmentManager theFrag, int theActionType, Button theUpdateButton) {
         this.context = context;
         this.mylistView = theView;

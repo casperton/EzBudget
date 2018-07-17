@@ -45,8 +45,11 @@ public class DispCategoryFragment extends Fragment {
         return new DispCategoryFragment();
     }
 
+    /**
+     * Required empty public constructor
+     */
     public DispCategoryFragment() {
-        // Required empty public constructor
+        //
     }
 
 
@@ -147,7 +150,10 @@ public class DispCategoryFragment extends Fragment {
         return myView;
     }
 
-
+    /**
+     * Runs when the Delete Button is pressed
+     * @param view the view
+     */
     public void DeleteButton(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.deleteConfirmation)
@@ -171,7 +177,7 @@ public class DispCategoryFragment extends Fragment {
     }
 
     /**
-     * Run when the save button is clicked
+     * Run when the save/update button is clicked
      * @param view
      */
     public void SaveButton(View view) {

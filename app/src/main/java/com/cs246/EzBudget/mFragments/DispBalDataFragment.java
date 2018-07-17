@@ -392,12 +392,17 @@ public class DispBalDataFragment extends Fragment {
 
     }
 
-public void setCateGoryText(String theText){
+    /**
+     *  Set the Text of the Category Dialog
+     *  @deprecated
+     * @param theText
+     */
+    public void setCateGoryText(String theText){
 
-        //myCategory.setText(theText);
+       // myCategory.setText(theText);
 }
     /**
-     * Run when the save button is clicked
+     * Run when the save/update button is clicked
      * @param view
      */
     public void SaveButton(View view) {

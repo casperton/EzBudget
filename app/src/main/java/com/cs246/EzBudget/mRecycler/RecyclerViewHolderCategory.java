@@ -26,8 +26,8 @@ public class RecyclerViewHolderCategory extends RecyclerView.ViewHolder implemen
     public static final int ACTION_ADD=1;
 
     /**
-     *
-     * @param itemView
+     * Constructor
+     * @param itemView  The View
      * @param ActionType  ACTION_CHOOSE to choosea item only / ACTION_ADD to be able to add/delete/update
      */
     public RecyclerViewHolderCategory(View itemView, int ActionType) {

@@ -41,7 +41,7 @@ public class BackGroundRecData extends AsyncTask<Void,BalanceData,Void> {
     private Button myAddToSummaryButton;
 
     /**
-     *
+     *  Constructor
      * @param theView the view
      * @param theBar  the progress bar
      * @param context  the context
